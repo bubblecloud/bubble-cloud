@@ -28,7 +28,7 @@ var async = require('async');
 var querystring = require('querystring');
 
 
-var secrets = require('../secrets');
+var secrets = require('../config/secrets');
 
 
 

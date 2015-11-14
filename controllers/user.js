@@ -4,7 +4,7 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
 var User = require('../models/User');
-var secrets = require('../secrets');
+var secrets = require('../config/secrets');
 
 /**
  * GET /login

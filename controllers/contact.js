@@ -1,4 +1,4 @@
-var secrets = require('../secrets');
+var secrets = require('../config/secrets');
 var nodemailer = require("nodemailer");
 var transporter = nodemailer.createTransport({
   service: 'SendGrid',
