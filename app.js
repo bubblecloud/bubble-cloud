@@ -33,7 +33,7 @@ var contactController = require('./controllers/contact');
 /**
  * API keys and Passport configuration.
  */
-var secrets = require('./config/secrets');
+var secrets = require('./secrets');
 var passportConf = require('./config/passport');
 
 /**
