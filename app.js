@@ -214,5 +214,5 @@ module.exports = app;
  * MIME table extensions
  */
  //app.mime.type['.fx'] = 'application/fx';
- //app.mime.type['.babylon'] = 'application/babylon';
+ //app.mime.type['.babylonjs'] = 'application/babylonjs';
  //app.mime.type['.babylonmeshdata'] = 'application/babylonmeshdata';
