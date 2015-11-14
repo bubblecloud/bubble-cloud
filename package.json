@@ -57,7 +57,8 @@
     "twilio": "^2.5.2",
     "twit": "^2.1.1",
     "validator": "^4.2.1",
-    "yui": "^3.18.1"
+    "yui": "^3.18.1",    
+    "babylonjs": "^2.2.0"
   },
   "devDependencies": {
     "blessed": "^0.1.81",

@@ -209,3 +209,10 @@ app.listen(app.get('port'), function() {
 });
 
 module.exports = app;
+
+/**
+ * MIME table extensions
+ */
+ //app.mime.type['.fx'] = 'application/fx';
+ //app.mime.type['.babylon'] = 'application/babylon';
+ //app.mime.type['.babylonmeshdata'] = 'application/babylonmeshdata';

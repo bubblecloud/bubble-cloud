@@ -65,8 +65,8 @@ footer {
 
 // VR Canvas
 // -------------------------
-.canvas {
+#renderCanvas {
   width: 100%;
   height: 70vh;
-  background-color: #EEEEEE;
+  touch-action: none;
 }
