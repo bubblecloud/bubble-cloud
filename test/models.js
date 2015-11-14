@@ -1,5 +1,8 @@
 var chai = require('chai');
 var should = chai.should();
+
+var app = require('../app.js');
+
 var User = require('../models/User');
 
 describe('User Model', function() {
