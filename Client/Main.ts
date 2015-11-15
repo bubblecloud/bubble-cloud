@@ -75,7 +75,7 @@ $(document).ready(function() {
          }
          });*/
 
-        invokeApi('subtract', [44, 23]).then(function (result) {
+        jsonRpc('subtract', [44, 23]).then(function (result) {
             alert(result);
         }).catch(function (error) {
             alert(error);

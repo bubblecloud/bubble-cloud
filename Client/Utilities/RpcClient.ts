@@ -1,7 +1,7 @@
 /// <reference path="../../typings/jquery/jquery.d.ts" />
 /// <reference path="../../typings/es6-promise/es6-promise.d.ts" />
 
-function invokeApi(method: string, params: any[]): Promise<Object> {
+function jsonRpc(method: string, params: any[]): Promise<Object> {
     return new Promise<Object>( function (resolve, reject) {
         $.ajax({
             'url': 'rpc',
@@ -10,7 +10,7 @@ function invokeApi(method: string, params: any[]): Promise<Object> {
             'headers': {'x-csrf-token': $('input[name=_csrf]').val()},
             'dataType': 'json',
             'success': function(response) {
-                resolve(response.result);
+                resolve(JSON.parse(response.result));
             },
             'error': function (xhr, ajaxOptions, thrownError) {
                 reject('Error Message: ' + thrownError + ' (' + xhr.status + ')');
