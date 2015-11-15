@@ -1,6 +1,6 @@
-/// <reference path="../../typings/jquery/jquery.d.ts" />
-/// <reference path="../../typings/es6-promise/es6-promise.d.ts" />
-/// <reference path="./RpcClient.ts" />
+/// <reference path="../typings/jquery/jquery.d.ts" />
+/// <reference path="../typings/es6-promise/es6-promise.d.ts" />
+/// <reference path="./Utilities/RpcClient.ts" />
 $(document).ready(function () {
     if (BABYLON.Engine.isSupported()) {
         var canvas = document.getElementById("renderCanvas");
