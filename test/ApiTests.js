@@ -54,6 +54,8 @@ describe('API Unit Tests:', function () {
                 return done(err);
             }
             console.log(res.text);
+            var rpcResponse = JSON.parse(res.text);
+            expect(rpcResponse.result).to.equal(19);
             done();
         });
     });

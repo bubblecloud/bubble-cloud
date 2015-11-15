@@ -57,7 +57,6 @@ describe('API Unit Tests:', () => {
                         done();
                     });
             });
-
     });
 
     it('should return 404', function(done) {
@@ -69,6 +68,8 @@ describe('API Unit Tests:', () => {
             .end(function(err, res){
                 if (err) { return done(err);}
                 console.log(res.text);
+                var rpcResponse = JSON.parse(res.text);
+                expect(rpcResponse.result).to.equal(19);
                 done();
             });
     });
