@@ -1,7 +1,7 @@
 /// <reference path="../../typings/jquery/jquery.d.ts" />
 /// <reference path="../../typings/es6-promise/es6-promise.d.ts" />
 
-export function invokeApi(method: string, params: string[]): Promise<Object> {
+function invokeApi(method: string, params: any[]): Promise<Object> {
     return new Promise<Object>( function (resolve, reject) {
         $.ajax({
             'url': 'rpc',

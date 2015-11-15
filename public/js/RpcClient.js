@@ -17,4 +17,3 @@ function invokeApi(method, params) {
         });
     });
 }
-exports.invokeApi = invokeApi;
