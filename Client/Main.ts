@@ -63,22 +63,18 @@ $(document).ready(function() {
             engine.resize();
         });
 
-
-        /*$.ajax({
-         url: 'rpc',
-         type: 'post',
-         data: {"jsonrpc": "2.0", "method": "subtract", "params": [42, 23], "id": 1},
-         headers: {'x-csrf-token': $('input[name=_csrf]').val()},
-         dataType: 'json',
-         success: function (response) {
-         alert(response.result);
-         }
-         });*/
-
         jsonRpc('subtract', [44, 23]).then(function (result) {
             alert(result);
         }).catch(function (error) {
             alert(error);
         });
+
+        var exampleSocket = new WebSocket("ws://127.0.0.1:3000/ws", "json");
+        exampleSocket.onmessage = function (event) {
+            alert(event.data);
+        }
+        exampleSocket.onopen = function (event) {
+            exampleSocket.send("Echo");
+        };
     }
 });

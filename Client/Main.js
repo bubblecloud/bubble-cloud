@@ -30,5 +30,12 @@ $(document).ready(function () {
         }).catch(function (error) {
             alert(error);
         });
+        var exampleSocket = new WebSocket("ws://127.0.0.1:3000/ws", "json");
+        exampleSocket.onmessage = function (event) {
+            alert(event.data);
+        };
+        exampleSocket.onopen = function (event) {
+            exampleSocket.send("Echo");
+        };
     }
 });

@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var errorHandler = require('errorhandler');
 var lusca = require('lusca');
+var csrf           = lusca.csrf();
 var methodOverride = require('method-override');
 
 var _ = require('lodash');
@@ -42,6 +43,8 @@ var passportConf = require('./Server/Legacy/Config/passport');
  * Create Express server.
  */
 var app = express();
+
+var ws = require('express-ws')(app); //app = express app
 
 /**
  * Connect to MongoDB.
@@ -82,10 +85,20 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(lusca({
-  csrf: true,
+  csrf: false,
   xframe: 'SAMEORIGIN',
   xssProtection: true
 }));
+
+app.use( function( req, res, next ) {
+    var path = req.path;
+    if( path === '/ws' ) {
+        next();
+    } else {
+        csrf( req, res, next );
+    }
+} );
+
 app.use(function(req, res, next) {
   res.locals.user = req.user;
   next();
@@ -220,9 +233,17 @@ module.exports = app;
  //app.mime.type['.babylonmeshdata'] = 'application/babylonmeshdata';
 
 /**
- * JSON RPC
+ * WebSockets End Point
  */
-// RPC end point
+app.ws('/ws', function(ws, req) {
+    ws.on('message', function(msg) {
+        ws.send(msg + ' (' + req.user.email + ')');
+    });
+});
+
+/**
+ * JSON RPC End Point
+ */
 app.post('/rpc', function(req, res) {
   res.header('Content-Type', 'application/json');
   var data = req.body, err = null, rpcMethod;
