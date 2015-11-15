@@ -5,9 +5,10 @@ import mongodb = require('mongodb');
 
 // Module initialization
 var server = new mongodb.Server('localhost', 27017, {auto_reconnect: true})
-var db = new mongodb.Db('test', server, { w: 1 });
-db.open(function() {});
-db.collection('entities', function(error, entities) {
+var db = new mongodb.Db('test', server, {w: 1});
+db.open(function () {
+});
+db.collection('entities', function (error, entities) {
     if (error) {
         console.error(error);
     }
@@ -16,7 +17,10 @@ db.collection('entities', function(error, entities) {
     }
 });
 
-// Module exports
-export function getDatabaseConnection() : mongodb.Db {
+/**
+ * Gets the database connection.
+ * @returns {"mongodb".Db}
+ */
+export function getDatabaseConnection():mongodb.Db {
     return db;
 }

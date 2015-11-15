@@ -2,12 +2,12 @@
 
 // Module imports
 import {Promise} from 'es6-promise';
-import dbConnection = require('../api/db-connection');
-import model = require('../api/model');
+import database = require('../storage/database');
+import model = require('../storage/model');
 import Entity = model.Entity;
 
 // Module initialization
-var db = dbConnection.getDatabaseConnection();
+var db = database.getDatabaseConnection();
 
 /**
  * Insert entity to database.

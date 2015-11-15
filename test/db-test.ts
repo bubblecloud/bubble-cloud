@@ -8,8 +8,8 @@ import chai = require('chai');
 
 var app = require('../app.js');
 
-import db = require('../api/db');
-import model = require('../api/model');
+import db = require('../storage/dao');
+import model = require('../storage/model');
 import Entity = model.Entity;
 
 /**
