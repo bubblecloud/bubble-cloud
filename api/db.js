@@ -1,5 +1,6 @@
 /// <reference path="../typings/mongodb/mongodb.d.ts" />
 var dbConnection = require('../api/db-connection');
+var es6_promise_1 = require('es6-promise');
 var db = dbConnection.getDatabaseConnection();
 var Vector3 = (function () {
     function Vector3() {
@@ -29,64 +30,66 @@ var Entity = (function () {
     return Entity;
 })();
 exports.Entity = Entity;
-function insertEntity(entity, callback) {
-    db.collection('entities', function (error, entities) {
-        if (error) {
-            console.error("Error:" + error);
-            callback(error, null);
-            return;
-        }
-        entities.insertOne(entity, function (error, insertedEntity) {
+function insertEntity(entity) {
+    return new es6_promise_1.Promise(function (resolve, reject) {
+        db.collection('entities', function (error, entities) {
             if (error) {
-                console.error("Error:" + error);
+                return reject(error);
             }
-            callback(error, insertedEntity);
+            entities.insertOne(entity, function (error, inserted) {
+                if (error) {
+                    return reject(error);
+                }
+                return resolve(inserted);
+            });
         });
     });
 }
 exports.insertEntity = insertEntity;
-function getEntity(id, callback) {
-    db.collection('entities', function (error, entities) {
-        if (error) {
-            console.error(error);
-            callback(error, null);
-        }
-        entities.findOne({ _id: id }, function (error, foundEntity) {
+function getEntity(id) {
+    return new es6_promise_1.Promise(function (resolve, reject) {
+        db.collection('entities', function (error, entities) {
             if (error) {
-                console.error(error);
+                return reject(error);
             }
-            callback(error, foundEntity);
+            entities.findOne({ _id: id }, function (error, foundEntity) {
+                if (error) {
+                    return reject(error);
+                }
+                return resolve(foundEntity);
+            });
         });
     });
 }
 exports.getEntity = getEntity;
-function getEntities(id, callback) {
-    db.collection('entities', function (error, entities) {
-        if (error) {
-            console.error(error);
-            callback(error, null);
-        }
-        entities.find({ _id: id }).toArray(function (error, entities) {
+function getEntities() {
+    return new es6_promise_1.Promise(function (resolve, reject) {
+        db.collection('entities', function (error, entities) {
             if (error) {
-                console.error(error);
+                return reject(error);
             }
-            callback(error, entities);
+            entities.find().toArray(function (error, entities) {
+                if (error) {
+                    return reject(error);
+                }
+                return resolve(entities);
+            });
         });
     });
 }
 exports.getEntities = getEntities;
-function removeEntity(id, callback) {
-    db.collection('entities', function (error, entities) {
-        if (error) {
-            console.error(error);
-            return;
-        }
-        entities.deleteOne({ _id: id }, function (error, deletedEntity) {
+function removeEntity(id) {
+    return new es6_promise_1.Promise(function (resolve, reject) {
+        db.collection('entities', function (error, entities) {
             if (error) {
-                console.error(error);
-                callback(error, null);
+                return reject(error);
             }
-            callback(error, deletedEntity);
+            entities.deleteOne({ _id: id }, function (error, deletedEntity) {
+                if (error) {
+                    return reject(error);
+                }
+                resolve(deletedEntity);
+            });
         });
     });
 }

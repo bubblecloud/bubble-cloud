@@ -26,57 +26,58 @@ describe('Entity Model Unit Tests:', () => {
         var entity: Entity = new Entity();
 
         it('should insert entity', (done) => {
-            db.insertEntity(entity, function(error, insertedEntity) {
-                if (error) {
-                    console.error(error);
-                    return done(error);
+            db.insertEntity(entity).then(function(inserted: Entity) {
+                if (inserted == null) {
+                    done("No entity returned.");
                 }
                 done();
+            }).catch(function(error: Error) {
+                console.error(error);
+                done(error);
             });
         });
         it('should get entity', (done) => {
-            db.getEntity(entity._id, function(error, gottenEntity) {
-                if (error) {
-                    console.error(error);
-                    return done(error);
-                }
-                if (gottenEntity == null) {
-                    done("No entity found.");
+            db.getEntity(entity._id).then(function(result: Entity) {
+                if (result == null) {
+                    done("No entity returned.");
                 }
                 done();
+            }).catch(function(error: Error) {
+                console.error(error);
+                done(error);
             });
         });
         it('should get entities', (done) => {
-            db.getEntities(entity._id, function(error, entities) {
-                if (error) {
-                    console.error(error);
-                    return done(error);
-                }
-                if (entities.length == 0) {
+            db.getEntities().then(function(result: Entity[]) {
+                if (result.length == 0) {
                     done("Entity not found.");
                 }
                 done();
+            }).catch(function(error: Error) {
+                console.error(error);
+                done(error);
             });
         });
         it('should delete entity', (done) => {
-            db.removeEntity(entity._id, function(error, removedEntity) {
-                if (error) {
-                    console.error(error);
-                    return done(error);
+            db.removeEntity(entity._id).then(function(result: Entity) {
+                if (result == null) {
+                    done("No entity returned.");
                 }
                 done();
+            }).catch(function(error: Error) {
+                console.error(error);
+                done(error);
             });
         });
         it('should not get entities', (done) => {
-            db.getEntities(entity._id, function(error, entities) {
-                if (error) {
-                    console.error(error);
-                    return done(error);
-                }
-                if (entities.length != 0) {
-                    done("Entities found.");
+            db.getEntities().then(function(result: Entity[]) {
+                if (result.length != 0) {
+                    done("Entity still found.");
                 }
                 done();
+            }).catch(function(error: Error) {
+                console.error(error);
+                done(error);
             });
         });
     });

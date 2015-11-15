@@ -27,6 +27,7 @@
         "typings/babylonjs/babylonjs.d.ts",
         "typings/chai/chai.d.ts",
         "typings/express/express.d.ts",
+        "typings/es6-promise/es6-promise.d.ts",
         "typings/mime/mime.d.ts",
         "typings/mocha/mocha.d.ts",
         "typings/mongodb/mongodb.d.ts",

@@ -2,6 +2,7 @@
 
 // Module imports
 import dbConnection = require('../api/db-connection');
+import {Promise} from 'es6-promise';
 
 // Module initialization
 var db = dbConnection.getDatabaseConnection();
@@ -26,57 +27,59 @@ export class Entity {
     scaling: Vector3 = new Vector3();
 }
 
-export function insertEntity(entity: Entity, callback: (error: Error, entity: Entity) => void) {
-    db.collection('entities', function(error, entities) {
-        if(error) {
-            console.error("Error:" + error);
-            callback(error, null);
-            return;
-        }
-        entities.insertOne(entity, function(error, insertedEntity) {
-            if(error) {
-                console.error("Error:" + error);
-            }
-            callback(error, insertedEntity);
+export function insertEntity(entity: Entity) : Promise<Entity> {
+    return new Promise<Entity>( function (resolve, reject) {
+
+        db.collection('entities', function (error, entities) {
+            if(error) { return reject(error); }
+
+            entities.insertOne(entity, function (error, inserted) {
+                if(error) { return reject(error); }
+                return resolve(inserted);
+            });
+        });
+
+    });
+}
+
+export function getEntity(id: string) : Promise<Entity> {
+    return new Promise<Entity>( function (resolve, reject) {
+
+        db.collection('entities', function(error, entities) {
+            if(error) { return reject(error); }
+
+            entities.findOne({_id: id}, function(error, foundEntity) {
+                if(error) { return reject(error); }
+                return resolve(foundEntity);
+            });
+        });
+
+    });
+}
+
+export function getEntities() : Promise<Entity[]> {
+    return new Promise<Entity[]>( function (resolve, reject) {
+        db.collection('entities', function (error, entities) {
+            if(error) { return reject(error); }
+
+            entities.find().toArray(function (error, entities) {
+                if(error) { return reject(error); }
+                return resolve(entities);
+            });
         });
     });
 }
 
-export function getEntity(id: string, callback: (error: Error, entity: Entity) => void) {
-    db.collection('entities', function(error, entities) {
-        if(error) {
-            console.error(error);
-            callback(error, null);
-        }
-        entities.findOne({_id: id}, function(error, foundEntity) {
-            if(error) { console.error(error);}
-            callback(error, foundEntity);
-        });
-    });
-}
+export function removeEntity(id: string) : Promise<Entity> {
+    return new Promise<Entity>( function (resolve, reject) {
+        db.collection('entities', function (error, entities) {
+            if(error) { return reject(error); }
 
-export function getEntities(id: string, callback: (error: Error, entity: Entity[]) => void) {
-    db.collection('entities', function(error, entities) {
-        if(error) {
-            console.error(error);
-            callback(error, null);
-        }
-        entities.find({_id: id}).toArray(function(error, entities) {
-            if(error) { console.error(error);}
-            callback(error, entities);
-        });
-    });
-}
+            entities.deleteOne({_id: id}, function (error, deletedEntity) {
+                if(error) { return reject(error); }
 
-export function removeEntity(id: string, callback: (error: Error, entity: Entity) => void) {
-    db.collection('entities', function(error, entities) {
-        if(error) { console.error(error); return; }
-        entities.deleteOne({_id: id}, function(error, deletedEntity) {
-            if(error) {
-                console.error(error);
-                callback(error, null);
-            }
-            callback(error, deletedEntity);
+                resolve(deletedEntity);
+            });
         });
     });
 }
