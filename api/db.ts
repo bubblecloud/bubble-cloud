@@ -1,32 +1,19 @@
 /// <reference path="../typings/mongodb/mongodb.d.ts" />
 
 // Module imports
-import dbConnection = require('../api/db-connection');
 import {Promise} from 'es6-promise';
+import dbConnection = require('../api/db-connection');
+import model = require('../api/model');
+import Entity = model.Entity;
 
 // Module initialization
 var db = dbConnection.getDatabaseConnection();
 
-export class Vector3 {
-    x:number = 0;
-    y:number = 0;
-    z:number = 0;
-}
-
-export class Quaternion {
-    x:number = 0;
-    y:number = 0;
-    z:number = 0;
-    w:number = 0;
-}
-
-export class Entity {
-    _id: string;
-    position: Vector3 = new Vector3();
-    rotationQuaternion: Quaternion = new Quaternion();
-    scaling: Vector3 = new Vector3();
-}
-
+/**
+ * Insert entity to database.
+ * @param entity the entity
+ * @returns {Promise<Entity>}
+ */
 export function insertEntity(entity: Entity) : Promise<Entity> {
     return new Promise<Entity>( function (resolve, reject) {
 
@@ -42,6 +29,11 @@ export function insertEntity(entity: Entity) : Promise<Entity> {
     });
 }
 
+/**
+ * Gets entity from database or null if no entity was found.
+ * @param id the ID of the entity
+ * @returns {Promise<Entity>}
+ */
 export function getEntity(id: string) : Promise<Entity> {
     return new Promise<Entity>( function (resolve, reject) {
 
@@ -57,6 +49,10 @@ export function getEntity(id: string) : Promise<Entity> {
     });
 }
 
+/**
+ * Gets all entities from database.
+ * @returns {Promise<Entity[]>}
+ */
 export function getEntities() : Promise<Entity[]> {
     return new Promise<Entity[]>( function (resolve, reject) {
         db.collection('entities', function (error, entities) {
@@ -70,6 +66,11 @@ export function getEntities() : Promise<Entity[]> {
     });
 }
 
+/**
+ * Removes entity from database
+ * @param id the ID of the entity
+ * @returns {Promise<Entity>}
+ */
 export function removeEntity(id: string) : Promise<Entity> {
     return new Promise<Entity>( function (resolve, reject) {
         db.collection('entities', function (error, entities) {

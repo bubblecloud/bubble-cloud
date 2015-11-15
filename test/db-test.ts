@@ -9,7 +9,8 @@ import chai = require('chai');
 var app = require('../app.js');
 
 import db = require('../api/db');
-import Entity = db.Entity;
+import model = require('../api/model');
+import Entity = model.Entity;
 
 /**
  * Globals

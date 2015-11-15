@@ -3,7 +3,8 @@
 var chai = require('chai');
 var app = require('../app.js');
 var db = require('../api/db');
-var Entity = db.Entity;
+var model = require('../api/model');
+var Entity = model.Entity;
 var expect = chai.expect;
 describe('Entity Model Unit Tests:', function () {
     describe('test persistence', function () {
