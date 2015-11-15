@@ -3,7 +3,7 @@
 var chai = require('chai');
 var request = require('supertest');
 var app = require('../../app.js');
-var User = require('../../models/User');
+var User = require('./User');
 var StringUtil = require('../Utilities/StringUtil');
 var expect = chai.expect;
 describe('API Unit Tests:', function () {

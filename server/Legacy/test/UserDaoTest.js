@@ -3,7 +3,7 @@ var should = chai.should();
 
 var app = require('../app.js');
 
-var User = require('../models/User');
+var User = require('./User');
 
 describe('User Model', function() {
   it('should create a new user', function(done) {
