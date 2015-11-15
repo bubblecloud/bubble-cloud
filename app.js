@@ -29,6 +29,8 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
+var rpcApi = require('./rpc/api');
+var rpcApiMethods = rpcApi.getRpcApiMethods();
 
 /**
  * API keys and Passport configuration.
@@ -234,7 +236,7 @@ app.post('/rpc', function(req, res) {
     return;
   }
 
-  if (!err && !(rpcMethod = rpcMethods[data.method])) {
+  if (!err && !(rpcMethod = rpcApiMethods[data.method])) {
     onError({
       code: -32601,
       message: 'Method not found : ' + data.method
@@ -243,23 +245,20 @@ app.post('/rpc', function(req, res) {
   }
 
   try {
-    rpcMethod(data.params, {
-      onSuccess: function(result) {
+    rpcMethod.apply(null, data.params).then(function(result) {
         res.send(JSON.stringify({
           jsonrpc: '2.0',
           result: result,
           error : null,
           id: data.id
         }), 200);
-      },
-      onFailure: function(error) {
+      }).catch(function(error) {
         onError({
           code: -32603,
           message: 'Failed',
           data: error
         }, 500);
-      }
-    });
+      });
   } catch (e) {
     onError({
       code: -32603,
@@ -270,10 +269,10 @@ app.post('/rpc', function(req, res) {
   return;
 
   function onError(err, statusCode) {
-    res.send(JSON.stringify({
+    res.status(statusCode).send(JSON.stringify({
       jsonrpc: '2.0',
       error: err,
       id: data.id
-    }), statusCode);
+    }));
   }
 });

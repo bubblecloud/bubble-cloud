@@ -13,6 +13,8 @@ var User = require('../models/User');
 import model = require('../storage/model');
 import Entity = model.Entity;
 
+import StringUtil = require('../util/StringUtil');
+
 /**
  * Globals
  */
@@ -23,6 +25,8 @@ var expect = chai.expect;
  * Unit tests
  */
 describe('API Unit Tests:', () => {
+    var agent = request.agent(app);
+    var csrfToken: string;
 
     it('should create a new user', function(done) {
         var user = new User({
@@ -36,14 +40,12 @@ describe('API Unit Tests:', () => {
     });
 
     it('should login user', function(done) {
-        var agent = request.agent(app);
         agent
             .get('/login')
             .expect(200)
             .end(function(err, res){
                 if (err) { return done(err);}
-                var csrfToken = parseBetween("name=\"_csrf\" value=\"", "\"",res.res.text);
-                console.log('CSRF TOKEN:"' + csrfToken + '"');
+                csrfToken = StringUtil.parseBetween("name=\"_csrf\" value=\"", "\"",res.res.text);
                 agent
                     .post('/login')
                     .set("x-csrf-token", csrfToken)
@@ -52,20 +54,24 @@ describe('API Unit Tests:', () => {
                     .expect(302)
                     .end(function(err, res){
                         if (err) { return done(err);}
-                        console.log(res);
                         done();
                     });
             });
 
     });
 
-    /*it('should return 404', function(done) {
-        request(app)
-            .get('/').expect(200);
-        request(app)
+    it('should return 404', function(done) {
+        agent
             .post('/rpc')
-            .expect(404, done);
-    });*/
+            .set("x-csrf-token", csrfToken)
+            .send({"jsonrpc": "2.0", "method": "subtract", "params": [42, 23], "id": 1})
+            .expect(200)
+            .end(function(err, res){
+                if (err) { return done(err);}
+                console.log(res.text);
+                done();
+            });
+    });
 
     it('should delete a user', function(done) {
         User.remove({ email: 'test@gmail.com' }, function(err) {
@@ -74,11 +80,3 @@ describe('API Unit Tests:', () => {
         });
     });
 });
-
-function parseBetween(firstTag, secondTag, value) {
-    var firstTagBegin = value.indexOf(firstTag);
-    var firstTagLength = firstTag.length;
-    var firstTagEnd = firstTagBegin + firstTagLength;
-    var secondTagBegin = value.indexOf(secondTag, firstTagEnd);
-    return value.substring(firstTagEnd, secondTagBegin);
-}

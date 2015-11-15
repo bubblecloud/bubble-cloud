@@ -4,8 +4,11 @@ var chai = require('chai');
 var request = require('supertest');
 var app = require('../app.js');
 var User = require('../models/User');
+var StringUtil = require('../util/StringUtil');
 var expect = chai.expect;
 describe('API Unit Tests:', function () {
+    var agent = request.agent(app);
+    var csrfToken;
     it('should create a new user', function (done) {
         var user = new User({
             email: 'test@gmail.com',
@@ -18,7 +21,6 @@ describe('API Unit Tests:', function () {
         });
     });
     it('should login user', function (done) {
-        var agent = request.agent(app);
         agent
             .get('/login')
             .expect(200)
@@ -26,8 +28,7 @@ describe('API Unit Tests:', function () {
             if (err) {
                 return done(err);
             }
-            var csrfToken = parseBetween("name=\"_csrf\" value=\"", "\"", res.res.text);
-            console.log('CSRF TOKEN:"' + csrfToken + '"');
+            csrfToken = StringUtil.parseBetween("name=\"_csrf\" value=\"", "\"", res.res.text);
             agent
                 .post('/login')
                 .set("x-csrf-token", csrfToken)
@@ -38,9 +39,22 @@ describe('API Unit Tests:', function () {
                 if (err) {
                     return done(err);
                 }
-                console.log(res);
                 done();
             });
+        });
+    });
+    it('should return 404', function (done) {
+        agent
+            .post('/rpc')
+            .set("x-csrf-token", csrfToken)
+            .send({ "jsonrpc": "2.0", "method": "subtract", "params": [42, 23], "id": 1 })
+            .expect(200)
+            .end(function (err, res) {
+            if (err) {
+                return done(err);
+            }
+            console.log(res.text);
+            done();
         });
     });
     it('should delete a user', function (done) {
@@ -51,10 +65,3 @@ describe('API Unit Tests:', function () {
         });
     });
 });
-function parseBetween(firstTag, secondTag, value) {
-    var firstTagBegin = value.indexOf(firstTag);
-    var firstTagLength = firstTag.length;
-    var firstTagEnd = firstTagBegin + firstTagLength;
-    var secondTagBegin = value.indexOf(secondTag, firstTagEnd);
-    return value.substring(firstTagEnd, secondTagBegin);
-}
