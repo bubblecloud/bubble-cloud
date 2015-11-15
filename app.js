@@ -246,12 +246,12 @@ app.post('/rpc', function(req, res) {
 
   try {
     rpcMethod.apply(null, data.params).then(function(result) {
-        res.send(JSON.stringify({
+        res.status(200).send(JSON.stringify({
           jsonrpc: '2.0',
           result: result,
           error : null,
           id: data.id
-        }), 200);
+        }));
       }).catch(function(error) {
         onError({
           code: -32603,
