@@ -58,5 +58,21 @@ $(document).ready(function() {
     window.addEventListener("resize", function () {
       engine.resize();
     });
+
+
+    /*$.ajax({
+      url: 'rpc',
+      type: 'post',
+      data: {"jsonrpc": "2.0", "method": "subtract", "params": [42, 23], "id": 1},
+      headers: {'x-csrf-token': $('input[name=_csrf]').val()},
+      dataType: 'json',
+      success: function (response) {
+          alert(response.result);
+      }
+    });*/
+
+    invokeApi('subtract', [44, 23], function (response) {
+        alert(response.result);
+    });
   }
 });
