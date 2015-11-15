@@ -29,7 +29,7 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
-var rpcApi = require('./server/rpc/api');
+var rpcApi = require('./Server/ApplicationInterface/RpcApi');
 var rpcApiMethods = rpcApi.getRpcApiMethods();
 
 /**

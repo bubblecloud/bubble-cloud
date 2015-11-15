@@ -10,10 +10,10 @@ var request = require('supertest');
 var app = require('../../app.js');
 var User = require('../../models/User');
 
-import model = require('../storage/model');
+import model = require('../Storage/Model');
 import Entity = model.Entity;
 
-import StringUtil = require('../util/StringUtil');
+import StringUtil = require('../Utilities/StringUtil');
 
 /**
  * Globals
