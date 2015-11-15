@@ -1,9 +1,9 @@
-/// <reference path="../typings/mocha/mocha.d.ts" />
-/// <reference path="../typings/chai/chai.d.ts" />
+/// <reference path="../../typings/mocha/mocha.d.ts" />
+/// <reference path="../../typings/chai/chai.d.ts" />
 var chai = require('chai');
 var request = require('supertest');
-var app = require('../app.js');
-var User = require('../models/User');
+var app = require('../../app.js');
+var User = require('../../models/User');
 var StringUtil = require('../util/StringUtil');
 var expect = chai.expect;
 describe('API Unit Tests:', function () {

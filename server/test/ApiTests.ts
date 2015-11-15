@@ -1,5 +1,5 @@
-/// <reference path="../typings/mocha/mocha.d.ts" />
-/// <reference path="../typings/chai/chai.d.ts" />
+/// <reference path="../../typings/mocha/mocha.d.ts" />
+/// <reference path="../../typings/chai/chai.d.ts" />
 
 /**
  * Module dependencies.
@@ -7,8 +7,8 @@
 import chai = require('chai');
 
 var request = require('supertest');
-var app = require('../app.js');
-var User = require('../models/User');
+var app = require('../../app.js');
+var User = require('../../models/User');
 
 import model = require('../storage/model');
 import Entity = model.Entity;

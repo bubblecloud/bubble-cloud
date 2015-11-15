@@ -1,6 +1,6 @@
-/// <reference path="../typings/mongodb/mongodb.d.ts" />
+/// <reference path="../../typings/mongodb/mongodb.d.ts" />
 var es6_promise_1 = require('es6-promise');
-var database = require('../storage/database');
+var database = require('./database');
 var db = database.getDatabaseConnection();
 function insertEntity(entity) {
     return new es6_promise_1.Promise(function (resolve, reject) {

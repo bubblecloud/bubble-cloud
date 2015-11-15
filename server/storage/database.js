@@ -1,4 +1,4 @@
-/// <reference path="../typings/mongodb/mongodb.d.ts" />
+/// <reference path="../../typings/mongodb/mongodb.d.ts" />
 var mongodb = require('mongodb');
 var server = new mongodb.Server('localhost', 27017, { auto_reconnect: true });
 var db = new mongodb.Db('test', server, { w: 1 });

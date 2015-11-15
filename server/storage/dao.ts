@@ -1,9 +1,9 @@
-/// <reference path="../typings/mongodb/mongodb.d.ts" />
+/// <reference path="../../typings/mongodb/mongodb.d.ts" />
 
 // Module imports
 import {Promise} from 'es6-promise';
-import database = require('../storage/database');
-import model = require('../storage/model');
+import database = require('./database');
+import model = require('./model');
 import Entity = model.Entity;
 
 // Module initialization
