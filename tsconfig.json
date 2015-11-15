@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "isolatedModules": false,
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "noLib": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true
+    },
+    "filesGlob": [
+        "**/*.ts",
+        "**/*.tsx",
+        "!node_modules/**"
+    ],
+    "files": [
+        "api/db.ts",
+        "api/db-connection.ts",
+        "test/db-test.ts",
+        "typings/assertion-error/assertion-error.d.ts",
+        "typings/babylonjs/babylonjs.d.ts",
+        "typings/chai/chai.d.ts",
+        "typings/express/express.d.ts",
+        "typings/mime/mime.d.ts",
+        "typings/mocha/mocha.d.ts",
+        "typings/mongodb/mongodb.d.ts",
+        "typings/node/node.d.ts",
+        "typings/serve-static/serve-static.d.ts",
+        "typings/tsd.d.ts"
+    ]
+}

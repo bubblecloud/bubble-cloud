@@ -1,18 +1,6 @@
 /// <reference path="../typings/mongodb/mongodb.d.ts" />
-/// <reference path="../typings/babylonjs/babylonjs.d.ts" />
-// Mongo
-var mongodb = require('mongodb');
-var server = new mongodb.Server('localhost', 27017, { auto_reconnect: true });
-var db = new mongodb.Db('test', server, { w: 1 });
-db.open(function () { });
-db.collection('entities', function (error, entities) {
-    if (error) {
-        console.error(error);
-    }
-    if (!entities) {
-        db.createCollection('entities');
-    }
-});
+var dbConnection = require('../api/db-connection');
+var db = dbConnection.getDatabaseConnection();
 var Vector3 = (function () {
     function Vector3() {
         this.x = 0;
@@ -103,4 +91,3 @@ function removeEntity(id, callback) {
     });
 }
 exports.removeEntity = removeEntity;
-//# sourceMappingURL=db.js.map

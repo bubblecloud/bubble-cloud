@@ -1,21 +1,10 @@
 /// <reference path="../typings/mongodb/mongodb.d.ts" />
-/// <reference path="../typings/babylonjs/babylonjs.d.ts" />
 
-// Mongo
-import mongodb = require('mongodb');
+// Module imports
+import dbConnection = require('../api/db-connection');
 
-var server = new mongodb.Server('localhost', 27017, {auto_reconnect: true})
-var db = new mongodb.Db('test', server, { w: 1 });
-db.open(function() {});
-
-db.collection('entities', function(error, entities) {
-    if (error) {
-        console.error(error);
-    }
-    if (!entities) {
-        db.createCollection('entities');
-    }
-});
+// Module initialization
+var db = dbConnection.getDatabaseConnection();
 
 export class Vector3 {
     x:number = 0;

@@ -1,19 +1,10 @@
 /// <reference path="../typings/mocha/mocha.d.ts" />
 /// <reference path="../typings/chai/chai.d.ts" />
-/**
- * Module dependencies.
- */
 var chai = require('chai');
 var app = require('../app.js');
 var db = require('../api/db');
 var Entity = db.Entity;
-/**
- * Globals
- */
 var expect = chai.expect;
-/**
- * Unit tests
- */
 describe('Entity Model Unit Tests:', function () {
     describe('test persistence', function () {
         var entity = new Entity();
@@ -73,4 +64,3 @@ describe('Entity Model Unit Tests:', function () {
         });
     });
 });
-//# sourceMappingURL=db-test.js.map
