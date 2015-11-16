@@ -29,9 +29,12 @@ class Model {
 
             entity.interpolatedPosition = entity.interpolatedPosition.add(stepVector);
 
+            var rotationQuaternion = new BABYLON.Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
+            entity.interpolatedRotationQuaternion = BABYLON.Quaternion.Slerp(entity.interpolatedRotationQuaternion, rotationQuaternion, timeDeltaMillis / maxInterpolateTimeMillis);
+
             this.onUpdate(entity);
 
-            console.log('interpolated:' + JSON.stringify(entity));
+            //console.log('interpolated:' + JSON.stringify(entity));
         });
     }
 
@@ -46,6 +49,7 @@ class Model {
             }
         } else {
             entity.interpolatedPosition = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
+            entity.interpolatedRotationQuaternion = new BABYLON.Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
             this.mobiles.push(entity);
             this.entities[entity.id] = entity;
             if (this.onUpdate) {

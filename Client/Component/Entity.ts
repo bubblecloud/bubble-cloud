@@ -12,6 +12,7 @@ class Entity {
     scaling: BABYLON.Vector3 = new BABYLON.Vector3(0,0,0);
 
     interpolatedPosition: BABYLON.Vector3;
+    interpolatedRotationQuaternion: BABYLON.Quaternion;
 
     newId() {
         entityIdCounter++;

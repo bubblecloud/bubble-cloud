@@ -21,8 +21,9 @@ var Model = (function () {
             var stepLength = deltaLength * timeDeltaMillis / maxInterpolateTimeMillis;
             var stepVector = deltaUnitVector.scale(stepLength);
             entity.interpolatedPosition = entity.interpolatedPosition.add(stepVector);
+            var rotationQuaternion = new BABYLON.Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
+            entity.interpolatedRotationQuaternion = BABYLON.Quaternion.Slerp(entity.interpolatedRotationQuaternion, rotationQuaternion, timeDeltaMillis / maxInterpolateTimeMillis);
             _this.onUpdate(entity);
-            console.log('interpolated:' + JSON.stringify(entity));
         });
     };
     Model.prototype.put = function (entity) {
@@ -37,6 +38,7 @@ var Model = (function () {
         }
         else {
             entity.interpolatedPosition = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
+            entity.interpolatedRotationQuaternion = new BABYLON.Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
             this.mobiles.push(entity);
             this.entities[entity.id] = entity;
             if (this.onUpdate) {

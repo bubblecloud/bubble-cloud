@@ -24,26 +24,15 @@ class Renderer {
         //console.log('add:' + JSON.stringify(entity));
         // Let's try our built-in 'sphere' shape. Params: name, subdivisions, size, scene
         var shape = BABYLON.Mesh.CreateBox(entity.id, 1, this.scene);
-        shape.position.x = entity.interpolatedPosition.x;
-        shape.position.y = entity.interpolatedPosition.y;
-        shape.position.z = entity.interpolatedPosition.z;
-        shape.rotationQuaternion = new BABYLON.Quaternion();
-        shape.rotationQuaternion.x = entity.rotationQuaternion.x;
-        shape.rotationQuaternion.y = entity.rotationQuaternion.y;
-        shape.rotationQuaternion.z = entity.rotationQuaternion.z;
-        shape.rotationQuaternion.w = entity.rotationQuaternion.w;
+        shape.position = entity.interpolatedPosition
+        shape.rotationQuaternion = entity.interpolatedRotationQuaternion
     }
 
     onUpdate(entity: Entity) {
         //console.log('update:' + JSON.stringify(entity));
         var shape = this.scene.getMeshByName(entity.id);
-        shape.position.x = entity.interpolatedPosition.x;
-        shape.position.y = entity.interpolatedPosition.y;
-        shape.position.z = entity.interpolatedPosition.z;
-        shape.rotationQuaternion.x = entity.rotationQuaternion.x;
-        shape.rotationQuaternion.y = entity.rotationQuaternion.y;
-        shape.rotationQuaternion.z = entity.rotationQuaternion.z;
-        shape.rotationQuaternion.w = entity.rotationQuaternion.w;
+        shape.position = entity.interpolatedPosition
+        shape.rotationQuaternion = entity.interpolatedRotationQuaternion
     }
 
     onRemove(entity: Entity) {

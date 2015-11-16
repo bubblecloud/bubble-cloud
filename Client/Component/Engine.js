@@ -16,6 +16,7 @@ var Engine = (function () {
         this.avatar.newId();
         this.avatar.position.x = 3 * Math.cos(2 * Math.PI * (timeMillis / 10000));
         this.avatar.position.z = 3 * Math.sin(2 * Math.PI * (timeMillis / 10000));
+        this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * (timeMillis / 10000), 0, 0);
         this.ws = new WsClient('ws://127.0.0.1:3000/ws');
         this.ws.setOnReceiveObject(function (message) {
             _this.model.put(message);
