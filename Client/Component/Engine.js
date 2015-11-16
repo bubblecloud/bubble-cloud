@@ -3,6 +3,7 @@
 var Engine = (function () {
     function Engine() {
         this.api = getProxy('rpc', RpcApi);
+        this.renderer = new Renderer();
     }
     Engine.prototype.start = function () {
         this.ws = new WsClient('ws://127.0.0.1:3000/ws');
@@ -18,12 +19,13 @@ var Engine = (function () {
         }).catch(function (error) {
             console.log(error);
         });
-        this.intervalHandle = setInterval(this.run, 300);
+        this.renderer.start();
+        this.intervalHandle = setInterval(this.loop, 300);
     };
     Engine.prototype.stop = function () {
         clearInterval(this.intervalHandle);
     };
-    Engine.prototype.run = function () {
+    Engine.prototype.loop = function () {
         console.log((new Date).getTime());
     };
     return Engine;

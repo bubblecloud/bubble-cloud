@@ -3,8 +3,9 @@
 
 class Engine {
     intervalHandle : any;
-    api:RpcApi = getProxy('rpc', RpcApi);
+    api: RpcApi = getProxy('rpc', RpcApi);
     ws: WsClient;
+    renderer: Renderer = new Renderer();
 
     start() {
         this.ws = new WsClient('ws://127.0.0.1:3000/ws');
@@ -23,14 +24,16 @@ class Engine {
             console.log(error);
         });
 
-        this.intervalHandle = setInterval(this.run, 300);
+        this.renderer.start();
+
+        this.intervalHandle = setInterval(this.loop, 300);
     }
 
     stop() {
         clearInterval(this.intervalHandle);
     }
 
-    run() {
+    loop() {
         console.log((new Date).getTime());
     }
 
