@@ -236,8 +236,13 @@ module.exports = app;
  * WebSockets End Point
  */
 app.ws('/ws', function(ws, req) {
-    ws.on('message', function(msg) {
+  ws.on('message', function(msg) {
+      ws.send(msg);
+      /*if (req.user) {
         ws.send(msg + ' (' + req.user.email + ')');
+      } else {
+        ws.send(msg + ' (anonymous)');
+      }*/
     });
 });
 

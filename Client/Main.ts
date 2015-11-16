@@ -1,6 +1,7 @@
 /// <reference path="../typings/jquery/jquery.d.ts" />
 /// <reference path="../typings/es6-promise/es6-promise.d.ts" />
 /// <reference path="./Utilities/RpcClient.ts" />
+/// <reference path="./Utilities/WsClient.ts" />
 
 $(document).ready(function() {
 
@@ -69,6 +70,17 @@ $(document).ready(function() {
             alert(error);
         });
 
+        var ws : WsClient = new WsClient('ws://127.0.0.1:3000/ws');
+
+        ws.setOnReceiveObject(function (message: any) {
+            alert(JSON.stringify(message));
+        });
+
+        ws.setOnOpen(function () {
+            ws.sendObject({'test':'message'});
+        });
+
+        /*
         var exampleSocket = new WebSocket("ws://127.0.0.1:3000/ws", "json");
         exampleSocket.onmessage = function (event) {
             alert(event.data);
@@ -76,5 +88,6 @@ $(document).ready(function() {
         exampleSocket.onopen = function (event) {
             exampleSocket.send("Echo");
         };
+        */
     }
 });

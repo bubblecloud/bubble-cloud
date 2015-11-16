@@ -1,6 +1,7 @@
 /// <reference path="../typings/jquery/jquery.d.ts" />
 /// <reference path="../typings/es6-promise/es6-promise.d.ts" />
 /// <reference path="./Utilities/RpcClient.ts" />
+/// <reference path="./Utilities/WsClient.ts" />
 $(document).ready(function () {
     if (BABYLON.Engine.isSupported()) {
         var canvas = document.getElementById("renderCanvas");
@@ -30,12 +31,12 @@ $(document).ready(function () {
         }).catch(function (error) {
             alert(error);
         });
-        var exampleSocket = new WebSocket("ws://127.0.0.1:3000/ws", "json");
-        exampleSocket.onmessage = function (event) {
-            alert(event.data);
-        };
-        exampleSocket.onopen = function (event) {
-            exampleSocket.send("Echo");
-        };
+        var ws = new WsClient('ws://127.0.0.1:3000/ws');
+        ws.setOnReceiveObject(function (message) {
+            alert(JSON.stringify(message));
+        });
+        ws.setOnOpen(function () {
+            ws.sendObject({ 'test': 'message' });
+        });
     }
 });
