@@ -1,7 +1,30 @@
 var Model = (function () {
     function Model() {
         this.entities = {};
+        this.mobiles = [];
+        this.lastTimeMillis = (new Date).getTime();
     }
+    Model.prototype.interpolate = function () {
+        var _this = this;
+        this.mobiles.forEach(function (entity) {
+            var maxInterpolateTimeMillis = 1000;
+            var timeMillis = (new Date).getTime();
+            var timeDeltaMillis = timeMillis - _this.lastTimeMillis;
+            _this.lastTimeMillis = timeMillis;
+            if (timeDeltaMillis > maxInterpolateTimeMillis) {
+                timeDeltaMillis = maxInterpolateTimeMillis;
+            }
+            var position = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
+            var deltaVector = position.subtract(entity.interpolatedPosition);
+            var deltaUnitVector = deltaVector.normalize();
+            var deltaLength = deltaVector.length();
+            var stepLength = deltaLength * timeDeltaMillis / maxInterpolateTimeMillis;
+            var stepVector = deltaUnitVector.scale(stepLength);
+            entity.interpolatedPosition = entity.interpolatedPosition.add(stepVector);
+            _this.onUpdate(entity);
+            console.log('interpolated:' + JSON.stringify(entity));
+        });
+    };
     Model.prototype.put = function (entity) {
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {
@@ -13,6 +36,8 @@ var Model = (function () {
             }
         }
         else {
+            entity.interpolatedPosition = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
+            this.mobiles.push(entity);
             this.entities[entity.id] = entity;
             if (this.onUpdate) {
                 this.onAdd(entity);

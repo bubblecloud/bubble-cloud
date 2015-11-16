@@ -7,7 +7,6 @@ class Renderer {
     model: Model;
     engine: BABYLON.Engine;
     scene: BABYLON.Scene;
-
     constructor(model: Model) {
         this.model = model;
         this.model.setOnAdd((entity: Entity) => {
@@ -22,12 +21,12 @@ class Renderer {
     }
 
     onAdd(entity: Entity) {
-        console.log('add:' + JSON.stringify(entity));
+        //console.log('add:' + JSON.stringify(entity));
         // Let's try our built-in 'sphere' shape. Params: name, subdivisions, size, scene
         var shape = BABYLON.Mesh.CreateBox(entity.id, 1, this.scene);
-        shape.position.x = entity.position.x;
-        shape.position.y = entity.position.y;
-        shape.position.z = entity.position.z;
+        shape.position.x = entity.interpolatedPosition.x;
+        shape.position.y = entity.interpolatedPosition.y;
+        shape.position.z = entity.interpolatedPosition.z;
         shape.rotationQuaternion = new BABYLON.Quaternion();
         shape.rotationQuaternion.x = entity.rotationQuaternion.x;
         shape.rotationQuaternion.y = entity.rotationQuaternion.y;
@@ -36,11 +35,11 @@ class Renderer {
     }
 
     onUpdate(entity: Entity) {
-        console.log('update:' + JSON.stringify(entity));
+        //console.log('update:' + JSON.stringify(entity));
         var shape = this.scene.getMeshByName(entity.id);
-        shape.position.x = entity.position.x;
-        shape.position.y = entity.position.y;
-        shape.position.z = entity.position.z;
+        shape.position.x = entity.interpolatedPosition.x;
+        shape.position.y = entity.interpolatedPosition.y;
+        shape.position.z = entity.interpolatedPosition.z;
         shape.rotationQuaternion.x = entity.rotationQuaternion.x;
         shape.rotationQuaternion.y = entity.rotationQuaternion.y;
         shape.rotationQuaternion.z = entity.rotationQuaternion.z;
@@ -48,7 +47,7 @@ class Renderer {
     }
 
     onRemove(entity: Entity) {
-        console.log('remove:' + JSON.stringify(entity));
+        //console.log('remove:' + JSON.stringify(entity));
         var shape = this.scene.getMeshByName(entity.id);
         this.scene.removeMesh(shape);
     }
@@ -109,6 +108,7 @@ class Renderer {
 
             // Register a render loop to repeatedly render the scene
             this.engine.runRenderLoop(() => {
+                this.model.interpolate();
                 this.scene.render();
             });
 

@@ -1,10 +1,39 @@
 class Model {
 
     entities : {[key: string]: Entity} = {}
+    mobiles : Entity[] = [];
 
     onAdd : (entity: Entity) => void;
     onUpdate : (entity: Entity) => void;
     onRemove : (entity: Entity) => void;
+
+    lastTimeMillis: number = (new Date).getTime();
+
+    interpolate() : void {
+        this.mobiles.forEach(entity => {
+            var maxInterpolateTimeMillis = 1000;
+            var timeMillis = (new Date).getTime();
+            var timeDeltaMillis : number = timeMillis - this.lastTimeMillis;
+            this.lastTimeMillis = timeMillis;
+
+            if (timeDeltaMillis > maxInterpolateTimeMillis) {
+                timeDeltaMillis = maxInterpolateTimeMillis;
+            }
+
+            var position = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
+            var deltaVector = position.subtract(entity.interpolatedPosition);
+            var deltaUnitVector = deltaVector.normalize();
+            var deltaLength = deltaVector.length();
+            var stepLength = deltaLength * timeDeltaMillis / maxInterpolateTimeMillis;
+            var stepVector = deltaUnitVector.scale(stepLength);
+
+            entity.interpolatedPosition = entity.interpolatedPosition.add(stepVector);
+
+            this.onUpdate(entity);
+
+            console.log('interpolated:' + JSON.stringify(entity));
+        });
+    }
 
     put(entity: Entity) : void {
         var existingEntity = this.entities[entity.id];
@@ -16,6 +45,8 @@ class Model {
                 this.onUpdate(existingEntity);
             }
         } else {
+            entity.interpolatedPosition = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
+            this.mobiles.push(entity);
             this.entities[entity.id] = entity;
             if (this.onUpdate) {
                 this.onAdd(entity);

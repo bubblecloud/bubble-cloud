@@ -11,6 +11,8 @@ class Entity {
     rotationQuaternion: BABYLON.Quaternion = new BABYLON.Quaternion();
     scaling: BABYLON.Vector3 = new BABYLON.Vector3(0,0,0);
 
+    interpolatedPosition: BABYLON.Vector3;
+
     newId() {
         entityIdCounter++;
         this.id = '' + entityIdCounter;
