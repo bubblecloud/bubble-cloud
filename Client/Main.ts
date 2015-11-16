@@ -2,7 +2,7 @@
 /// <reference path="../typings/es6-promise/es6-promise.d.ts" />
 /// <reference path="./Utilities/RpcClient.ts" />
 /// <reference path="./Utilities/WsClient.ts" />
-/// <reference path="./Utilities/ServerApi.ts" />
+/// <reference path="./Utilities/RpcApi.ts" />
 
 $(document).ready(function() {
 
@@ -72,7 +72,7 @@ $(document).ready(function() {
             alert(error);
         });*/
 
-        var api = new ServerApiProxy();
+        var api = new RpcApiProxy();
         api.subtract(44, 23).then(function (result: number) {
             alert(result);
         }).catch(function (error) {
