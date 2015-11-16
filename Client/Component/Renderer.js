@@ -17,39 +17,43 @@ var Renderer = (function () {
     }
     Renderer.prototype.onAdd = function (entity) {
         console.log('add:' + JSON.stringify(entity));
+        var shape = BABYLON.Mesh.CreateSphere(entity.id, 16, 2, this.scene);
+        shape.position = entity.position;
     };
     Renderer.prototype.onUpdate = function (entity) {
         console.log('update:' + JSON.stringify(entity));
+        var shape = this.scene.getMeshByName(entity.id);
+        shape.position = entity.position;
     };
     Renderer.prototype.onRemove = function (entity) {
         console.log('remove:' + JSON.stringify(entity));
+        var shape = this.scene.getMeshByName(entity.id);
+        this.scene.removeMesh(shape);
     };
     Renderer.prototype.start = function () {
+        var _this = this;
         var canvas = document.getElementById("renderCanvas");
         if (!canvas) {
             return;
         }
         if (BABYLON.Engine.isSupported()) {
-            var engine = new BABYLON.Engine(canvas, true);
+            this.engine = new BABYLON.Engine(canvas, true);
             var createScene = function () {
-                var scene = new BABYLON.Scene(engine);
-                scene.clearColor = new BABYLON.Color3(1, 1, 1);
-                var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+                _this.scene = new BABYLON.Scene(_this.engine);
+                _this.scene.clearColor = new BABYLON.Color3(1, 1, 1);
+                var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), _this.scene);
                 camera.setTarget(BABYLON.Vector3.Zero());
                 camera.attachControl(canvas, false);
-                var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
+                var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), _this.scene);
                 light.intensity = .5;
-                var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, scene);
-                sphere.position.y = 1;
-                var ground = BABYLON.Mesh.CreateGround("ground1", 6, 6, 2, scene);
-                return scene;
+                return _this.scene;
             };
-            var scene = createScene();
-            engine.runRenderLoop(function () {
-                scene.render();
+            this.scene = createScene();
+            this.engine.runRenderLoop(function () {
+                _this.scene.render();
             });
             window.addEventListener("resize", function () {
-                engine.resize();
+                _this.engine.resize();
             });
         }
     };

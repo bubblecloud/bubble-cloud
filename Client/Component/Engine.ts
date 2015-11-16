@@ -15,7 +15,10 @@ class Engine {
     avatar: Entity = new Entity();
 
     start() {
+        var timeMillis = (new Date).getTime();
         this.avatar.newId();
+        this.avatar.position.x = 3 * Math.cos(2 * Math.PI * (timeMillis/10000));
+        this.avatar.position.z = 3 * Math.sin(2 * Math.PI * (timeMillis/10000));
         this.ws = new WsClient('ws://127.0.0.1:3000/ws');
 
         this.ws.setOnReceiveObject( (message: any) => {
@@ -42,11 +45,13 @@ class Engine {
 
     loop() {
         var timeMillis = (new Date).getTime();
-        var timeDeltaMillis : number = timeMillis - this.lastLoopTimeMillis;
-
-        this.lastLoopTimeMillis = timeMillis;
-        this.avatar.position.x = 100*Math.sin(2 * Math.PI * (timeMillis/10000));
+        this.avatar.position.x = 3 * Math.cos(2 * Math.PI * (timeMillis/10000));
+        this.avatar.position.z = 3 * Math.sin(2 * Math.PI * (timeMillis/10000));
         this.ws.sendObject({'id':this.avatar.id,'position':this.avatar.position});
+
+        var timeDeltaMillis : number = timeMillis - this.lastLoopTimeMillis;
+        this.lastLoopTimeMillis = timeMillis;
+
         //80*Math.sin(t*0.7);
     }
 

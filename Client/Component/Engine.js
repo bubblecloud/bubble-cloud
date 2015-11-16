@@ -12,7 +12,10 @@ var Engine = (function () {
     }
     Engine.prototype.start = function () {
         var _this = this;
+        var timeMillis = (new Date).getTime();
         this.avatar.newId();
+        this.avatar.position.x = 3 * Math.cos(2 * Math.PI * (timeMillis / 10000));
+        this.avatar.position.z = 3 * Math.sin(2 * Math.PI * (timeMillis / 10000));
         this.ws = new WsClient('ws://127.0.0.1:3000/ws');
         this.ws.setOnReceiveObject(function (message) {
             _this.model.put(message);
@@ -33,10 +36,11 @@ var Engine = (function () {
     };
     Engine.prototype.loop = function () {
         var timeMillis = (new Date).getTime();
+        this.avatar.position.x = 3 * Math.cos(2 * Math.PI * (timeMillis / 10000));
+        this.avatar.position.z = 3 * Math.sin(2 * Math.PI * (timeMillis / 10000));
+        this.ws.sendObject({ 'id': this.avatar.id, 'position': this.avatar.position });
         var timeDeltaMillis = timeMillis - this.lastLoopTimeMillis;
         this.lastLoopTimeMillis = timeMillis;
-        this.avatar.position.x = 100 * Math.sin(2 * Math.PI * (timeMillis / 10000));
-        this.ws.sendObject({ 'id': this.avatar.id, 'position': this.avatar.position });
     };
     return Engine;
 })();

@@ -5,6 +5,9 @@
 class Renderer {
 
     model: Model;
+    engine: BABYLON.Engine;
+    scene: BABYLON.Scene;
+
     constructor(model: Model) {
         this.model = model;
         this.model.setOnAdd((entity: Entity) => {
@@ -20,14 +23,21 @@ class Renderer {
 
     onAdd(entity: Entity) {
         console.log('add:' + JSON.stringify(entity));
+        // Let's try our built-in 'sphere' shape. Params: name, subdivisions, size, scene
+        var shape = BABYLON.Mesh.CreateSphere(entity.id, 16, 2, this.scene);
+        shape.position = entity.position;
     }
 
     onUpdate(entity: Entity) {
         console.log('update:' + JSON.stringify(entity));
+        var shape = this.scene.getMeshByName(entity.id);
+        shape.position = entity.position;
     }
 
     onRemove(entity: Entity) {
         console.log('remove:' + JSON.stringify(entity));
+        var shape = this.scene.getMeshByName(entity.id);
+        this.scene.removeMesh(shape);
     }
 
     start() {
@@ -41,19 +51,19 @@ class Renderer {
         if (BABYLON.Engine.isSupported()) {
 
             // Load the BABYLON 3D engine
-            var engine = new BABYLON.Engine(canvas, true);
+            this.engine = new BABYLON.Engine(canvas, true);
 
             // This begins the creation of a function that we will 'call' just after it's built
-            var createScene = function () {
+            var createScene = () => {
 
                 // Now create a basic Babylon Scene object
-                var scene = new BABYLON.Scene(engine);
+                this.scene = new BABYLON.Scene(this.engine);
 
                 // Change the scene background color to green.
-                scene.clearColor = new BABYLON.Color3(1, 1, 1);
+                this.scene.clearColor = new BABYLON.Color3(1, 1, 1);
 
                 // This creates and positions a free camera
-                var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+                var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), this.scene);
 
                 // This targets the camera to scene origin
                 camera.setTarget(BABYLON.Vector3.Zero());
@@ -62,36 +72,36 @@ class Renderer {
                 camera.attachControl(canvas, false);
 
                 // This creates a light, aiming 0,1,0 - to the sky.
-                var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
+                var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), this.scene);
 
                 // Dim the light a small amount
                 light.intensity = .5;
 
                 // Let's try our built-in 'sphere' shape. Params: name, subdivisions, size, scene
-                var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, scene);
+                //var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, this.scene);
 
                 // Move the sphere upward 1/2 its height
-                sphere.position.y = 1;
+                //sphere.position.y = 1;
 
                 // Let's try our built-in 'ground' shape.  Params: name, width, depth, subdivisions, scene
-                var ground = BABYLON.Mesh.CreateGround("ground1", 6, 6, 2, scene);
+                //var ground = BABYLON.Mesh.CreateGround("ground1", 6, 6, 2, this.scene);
 
                 // Leave this function
-                return scene;
+                return this.scene;
 
             };  // End of createScene function
 
             // Now, call the createScene function that you just finished creating
-            var scene = createScene();
+            this.scene = createScene();
 
             // Register a render loop to repeatedly render the scene
-            engine.runRenderLoop(function () {
-                scene.render();
+            this.engine.runRenderLoop(() => {
+                this.scene.render();
             });
 
             // Watch for browser/canvas resize events
-            window.addEventListener("resize", function () {
-                engine.resize();
+            window.addEventListener("resize", () => {
+                this.engine.resize();
             });
         }
     }
