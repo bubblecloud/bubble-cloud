@@ -24,14 +24,27 @@ class Renderer {
     onAdd(entity: Entity) {
         console.log('add:' + JSON.stringify(entity));
         // Let's try our built-in 'sphere' shape. Params: name, subdivisions, size, scene
-        var shape = BABYLON.Mesh.CreateSphere(entity.id, 16, 2, this.scene);
-        shape.position = entity.position;
+        var shape = BABYLON.Mesh.CreateBox(entity.id, 1, this.scene);
+        shape.position.x = entity.position.x;
+        shape.position.y = entity.position.y;
+        shape.position.z = entity.position.z;
+        shape.rotationQuaternion = new BABYLON.Quaternion();
+        shape.rotationQuaternion.x = entity.rotationQuaternion.x;
+        shape.rotationQuaternion.y = entity.rotationQuaternion.y;
+        shape.rotationQuaternion.z = entity.rotationQuaternion.z;
+        shape.rotationQuaternion.w = entity.rotationQuaternion.w;
     }
 
     onUpdate(entity: Entity) {
         console.log('update:' + JSON.stringify(entity));
         var shape = this.scene.getMeshByName(entity.id);
-        shape.position = entity.position;
+        shape.position.x = entity.position.x;
+        shape.position.y = entity.position.y;
+        shape.position.z = entity.position.z;
+        shape.rotationQuaternion.x = entity.rotationQuaternion.x;
+        shape.rotationQuaternion.y = entity.rotationQuaternion.y;
+        shape.rotationQuaternion.z = entity.rotationQuaternion.z;
+        shape.rotationQuaternion.w = entity.rotationQuaternion.w;
     }
 
     onRemove(entity: Entity) {

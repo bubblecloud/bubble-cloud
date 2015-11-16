@@ -47,7 +47,8 @@ class Engine {
         var timeMillis = (new Date).getTime();
         this.avatar.position.x = 3 * Math.cos(2 * Math.PI * (timeMillis/10000));
         this.avatar.position.z = 3 * Math.sin(2 * Math.PI * (timeMillis/10000));
-        this.ws.sendObject({'id':this.avatar.id,'position':this.avatar.position});
+        this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * (timeMillis/10000), 0, 0);
+        this.ws.sendObject({'id':this.avatar.id,'position':this.avatar.position, 'rotationQuaternion': this.avatar.rotationQuaternion});
 
         var timeDeltaMillis : number = timeMillis - this.lastLoopTimeMillis;
         this.lastLoopTimeMillis = timeMillis;

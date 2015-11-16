@@ -8,7 +8,7 @@ var entityIdCounter = 0;
 class Entity {
     id: string;
     position: BABYLON.Vector3 = new BABYLON.Vector3(0,0,0);
-    rotation: BABYLON.Quaternion = new BABYLON.Quaternion();
+    rotationQuaternion: BABYLON.Quaternion = new BABYLON.Quaternion();
     scaling: BABYLON.Vector3 = new BABYLON.Vector3(0,0,0);
 
     newId() {
