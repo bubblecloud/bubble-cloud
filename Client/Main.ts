@@ -2,6 +2,7 @@
 /// <reference path="../typings/es6-promise/es6-promise.d.ts" />
 /// <reference path="./Utilities/RpcClient.ts" />
 /// <reference path="./Utilities/WsClient.ts" />
+/// <reference path="./Utilities/ServerApi.ts" />
 
 $(document).ready(function() {
 
@@ -64,7 +65,15 @@ $(document).ready(function() {
             engine.resize();
         });
 
-        jsonRpc('subtract', [44, 23]).then(function (result) {
+        /*var rpc = new RpcClient('rpc');
+        rpc.invoke('subtract', [44, 23]).then(function (result) {
+            alert(result);
+        }).catch(function (error) {
+            alert(error);
+        });*/
+
+        var api = new ServerApiProxy();
+        api.subtract(44, 23).then(function (result: number) {
             alert(result);
         }).catch(function (error) {
             alert(error);
@@ -75,19 +84,9 @@ $(document).ready(function() {
         ws.setOnReceiveObject(function (message: any) {
             alert(JSON.stringify(message));
         });
-
         ws.setOnOpen(function () {
             ws.sendObject({'test':'message'});
         });
 
-        /*
-        var exampleSocket = new WebSocket("ws://127.0.0.1:3000/ws", "json");
-        exampleSocket.onmessage = function (event) {
-            alert(event.data);
-        }
-        exampleSocket.onopen = function (event) {
-            exampleSocket.send("Echo");
-        };
-        */
     }
 });

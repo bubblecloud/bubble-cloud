@@ -1,9 +1,9 @@
 /**
- * WebSockets client which can send and receive objects encoded in JSON format.
+ * WebSocket client which can send and receive objects encoded in JSON format.
  */
 class WsClient {
     /**
-     * The WebSockets socket.
+     * The WebSocket socket.
      */
     wsSocket : WebSocket;
 

@@ -2,6 +2,7 @@
 /// <reference path="../typings/es6-promise/es6-promise.d.ts" />
 /// <reference path="./Utilities/RpcClient.ts" />
 /// <reference path="./Utilities/WsClient.ts" />
+/// <reference path="./Utilities/ServerApi.ts" />
 $(document).ready(function () {
     if (BABYLON.Engine.isSupported()) {
         var canvas = document.getElementById("renderCanvas");
@@ -26,7 +27,8 @@ $(document).ready(function () {
         window.addEventListener("resize", function () {
             engine.resize();
         });
-        jsonRpc('subtract', [44, 23]).then(function (result) {
+        var api = new ServerApiProxy();
+        api.subtract(44, 23).then(function (result) {
             alert(result);
         }).catch(function (error) {
             alert(error);
