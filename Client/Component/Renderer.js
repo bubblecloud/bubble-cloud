@@ -2,8 +2,28 @@
 /// <reference path="../../typings/es6-promise/es6-promise.d.ts" />
 /// <reference path="../../typings/babylonjs/babylonjs.d.ts" />
 var Renderer = (function () {
-    function Renderer() {
+    function Renderer(model) {
+        var _this = this;
+        this.model = model;
+        this.model.setOnAdd(function (entity) {
+            _this.onAdd(entity);
+        });
+        this.model.setOnUpdate(function (entity) {
+            _this.onUpdate(entity);
+        });
+        this.model.setOnRemove(function (entity) {
+            _this.onRemove(entity);
+        });
     }
+    Renderer.prototype.onAdd = function (entity) {
+        console.log('add:' + JSON.stringify(entity));
+    };
+    Renderer.prototype.onUpdate = function (entity) {
+        console.log('update:' + JSON.stringify(entity));
+    };
+    Renderer.prototype.onRemove = function (entity) {
+        console.log('remove:' + JSON.stringify(entity));
+    };
     Renderer.prototype.start = function () {
         var canvas = document.getElementById("renderCanvas");
         if (!canvas) {

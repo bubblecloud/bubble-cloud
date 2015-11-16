@@ -3,6 +3,33 @@
 /// <reference path="../../typings/babylonjs/babylonjs.d.ts" />
 
 class Renderer {
+
+    model: Model;
+    constructor(model: Model) {
+        this.model = model;
+        this.model.setOnAdd((entity: Entity) => {
+            this.onAdd(entity);
+        });
+        this.model.setOnUpdate((entity: Entity) => {
+            this.onUpdate(entity);
+        });
+        this.model.setOnRemove((entity: Entity) => {
+            this.onRemove(entity);
+        });
+    }
+
+    onAdd(entity: Entity) {
+        console.log('add:' + JSON.stringify(entity));
+    }
+
+    onUpdate(entity: Entity) {
+        console.log('update:' + JSON.stringify(entity));
+    }
+
+    onRemove(entity: Entity) {
+        console.log('remove:' + JSON.stringify(entity));
+    }
+
     start() {
         // Get the canvas element from our HTML above
         var canvas: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("renderCanvas");

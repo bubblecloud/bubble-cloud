@@ -6,8 +6,8 @@ function runLoop() {
 var Engine = (function () {
     function Engine() {
         this.api = getProxy('rpc', RpcApi);
-        this.renderer = new Renderer();
         this.model = new Model();
+        this.renderer = new Renderer(this.model);
         this.avatar = new Entity();
     }
     Engine.prototype.start = function () {

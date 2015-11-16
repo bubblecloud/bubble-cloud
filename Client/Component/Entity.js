@@ -8,7 +8,7 @@ var Entity = (function () {
     }
     Entity.prototype.newId = function () {
         entityIdCounter++;
-        this.id = entityIdCounter;
+        this.id = '' + entityIdCounter;
     };
     return Entity;
 })();

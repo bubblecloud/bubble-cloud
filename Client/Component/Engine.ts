@@ -9,9 +9,9 @@ function runLoop() {
 class Engine {
     api: RpcApi = getProxy('rpc', RpcApi);
     ws: WsClient;
-    renderer: Renderer = new Renderer();
-    lastLoopTimeMillis: number;
     model: Model = new Model();
+    renderer: Renderer = new Renderer(this.model);
+    lastLoopTimeMillis: number;
     avatar: Entity = new Entity();
 
     start() {
