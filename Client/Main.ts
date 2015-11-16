@@ -3,13 +3,17 @@
 /// <reference path="./Utilities/RpcClient.ts" />
 /// <reference path="./Utilities/WsClient.ts" />
 /// <reference path="./Utilities/RpcApi.ts" />
+/// <reference path="./Component/Engine.ts" />
 
 $(document).ready(function() {
+    // Get the canvas element from our HTML above
+    var canvas: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("renderCanvas");
+
+    if (!canvas) {
+        return;
+    }
 
     if (BABYLON.Engine.isSupported()) {
-
-        // Get the canvas element from our HTML above
-        var canvas: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("renderCanvas");
 
         // Load the BABYLON 3D engine
         var engine = new BABYLON.Engine(canvas, true);
@@ -65,28 +69,8 @@ $(document).ready(function() {
             engine.resize();
         });
 
-        /*var rpc = new RpcClient('rpc');
-        rpc.invoke('subtract', [44, 23]).then(function (result) {
-            alert(result);
-        }).catch(function (error) {
-            alert(error);
-        });*/
-
-        var api = new RpcApiProxy();
-        api.subtract(44, 23).then(function (result: number) {
-            alert(result);
-        }).catch(function (error) {
-            alert(error);
-        });
-
-        var ws : WsClient = new WsClient('ws://127.0.0.1:3000/ws');
-
-        ws.setOnReceiveObject(function (message: any) {
-            alert(JSON.stringify(message));
-        });
-        ws.setOnOpen(function () {
-            ws.sendObject({'test':'message'});
-        });
+        var myEngine: Engine = new Engine();
+        myEngine.start();
 
     }
 });

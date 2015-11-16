@@ -3,9 +3,13 @@
 /// <reference path="./Utilities/RpcClient.ts" />
 /// <reference path="./Utilities/WsClient.ts" />
 /// <reference path="./Utilities/RpcApi.ts" />
+/// <reference path="./Component/Engine.ts" />
 $(document).ready(function () {
+    var canvas = document.getElementById("renderCanvas");
+    if (!canvas) {
+        return;
+    }
     if (BABYLON.Engine.isSupported()) {
-        var canvas = document.getElementById("renderCanvas");
         var engine = new BABYLON.Engine(canvas, true);
         var createScene = function () {
             var scene = new BABYLON.Scene(engine);
@@ -27,18 +31,7 @@ $(document).ready(function () {
         window.addEventListener("resize", function () {
             engine.resize();
         });
-        var api = new RpcApiProxy();
-        api.subtract(44, 23).then(function (result) {
-            alert(result);
-        }).catch(function (error) {
-            alert(error);
-        });
-        var ws = new WsClient('ws://127.0.0.1:3000/ws');
-        ws.setOnReceiveObject(function (message) {
-            alert(JSON.stringify(message));
-        });
-        ws.setOnOpen(function () {
-            ws.sendObject({ 'test': 'message' });
-        });
+        var myEngine = new Engine();
+        myEngine.start();
     }
 });

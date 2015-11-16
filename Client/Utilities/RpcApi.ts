@@ -1,14 +1,13 @@
 /// <reference path="./RpcClient.ts" />
-
-var rpcClient = new RpcClient("rpc");
-
-class RpcApiProxy {
+class RpcApi {
     subtract(x: number, y: number): Promise<number> { return null };
 }
 
-function populateProxy(proxyClass: any) {
+function getProxy(url: string, proxyClass: any): any {
+    var proxy = new Object();
+    var rpcClient = new RpcClient(url);
     Object.getOwnPropertyNames(proxyClass.prototype).forEach(name => {
-        proxyClass.prototype[name] = function prototype(...args): Promise<any> {
+        proxy[name] = function prototype(...args): Promise<any> {
             return new Promise<Object>(function (resolve, reject) {
                 rpcClient.invoke(name, args).then(function (result) {
                     resolve(result);
@@ -18,18 +17,7 @@ function populateProxy(proxyClass: any) {
             });
         }
     })
+    return proxy;
 }
 
-populateProxy(RpcApiProxy);
-
-/*
- function subtract(...args): Promise<any> {
- return new Promise<Object>(function (resolve, reject) {
- rpc.invoke('subtract', args).then(function (result) {
- resolve(result);
- }).catch(function (error) {
- reject(error);
- });
- });
- }
- */
+//populateProxy(RpcApi);

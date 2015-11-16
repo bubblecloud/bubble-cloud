@@ -1,15 +1,16 @@
 /// <reference path="./RpcClient.ts" />
-var rpcClient = new RpcClient("rpc");
-var RpcApiProxy = (function () {
-    function RpcApiProxy() {
+var RpcApi = (function () {
+    function RpcApi() {
     }
-    RpcApiProxy.prototype.subtract = function (x, y) { return null; };
+    RpcApi.prototype.subtract = function (x, y) { return null; };
     ;
-    return RpcApiProxy;
+    return RpcApi;
 })();
-function populateProxy(proxyClass) {
+function getProxy(url, proxyClass) {
+    var proxy = new Object();
+    var rpcClient = new RpcClient(url);
     Object.getOwnPropertyNames(proxyClass.prototype).forEach(function (name) {
-        proxyClass.prototype[name] = function prototype() {
+        proxy[name] = function prototype() {
             var args = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i - 0] = arguments[_i];
@@ -23,5 +24,5 @@ function populateProxy(proxyClass) {
             });
         };
     });
+    return proxy;
 }
-populateProxy(RpcApiProxy);
