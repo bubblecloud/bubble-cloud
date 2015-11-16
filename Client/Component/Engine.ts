@@ -1,21 +1,30 @@
 /// <reference path="../Utilities/WsClient.ts" />
 /// <reference path="../Utilities/RpcApi.ts" />
 
+function runLoop() {
+    console.log((new Date).getTime());
+    //engine.loop();
+}
+
 class Engine {
-    intervalHandle : any;
     api: RpcApi = getProxy('rpc', RpcApi);
     ws: WsClient;
     renderer: Renderer = new Renderer();
+    lastLoopTimeMillis: number;
+    model: Model = new Model();
+    avatar: Entity = new Entity();
 
     start() {
+        this.avatar.newId();
         this.ws = new WsClient('ws://127.0.0.1:3000/ws');
 
-        this.ws.setOnReceiveObject(function (message: any) {
-            console.log(JSON.stringify(message));
+        this.ws.setOnReceiveObject( (message: any) => {
+            this.model.put(message);
         });
         var wsClient = this.ws;
-        this.ws.setOnOpen(function () {
-            wsClient.sendObject({'test':'message'});
+        this.ws.setOnOpen(() => {
+            this.ws.sendObject(this.avatar);
+            //wsClient.sendObject({'test':'message'});
         });
 
         this.api.subtract(44, 23).then(function (result: number) {
@@ -25,16 +34,20 @@ class Engine {
         });
 
         this.renderer.start();
-
-        this.intervalHandle = setInterval(this.loop, 300);
+        this.lastLoopTimeMillis = (new Date).getTime();
     }
 
     stop() {
-        clearInterval(this.intervalHandle);
     }
 
     loop() {
-        console.log((new Date).getTime());
+        var timeMillis = (new Date).getTime();
+        var timeDeltaMillis : number = timeMillis - this.lastLoopTimeMillis;
+
+        this.lastLoopTimeMillis = timeMillis;
+        this.avatar.position.x = 100*Math.sin(2 * Math.PI * (timeMillis/10000));
+        this.ws.sendObject({'id':this.avatar.id,'position':this.avatar.position});
+        //80*Math.sin(t*0.7);
     }
 
 }
