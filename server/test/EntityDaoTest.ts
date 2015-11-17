@@ -9,7 +9,7 @@ import chai = require('chai');
 var app = require('../../app.js');
 
 import db = require('../Storage/EntityDao');
-import model = require('../Storage/Model');
+import model = require('../Storage/Entity');
 import Entity = model.Entity;
 
 /**

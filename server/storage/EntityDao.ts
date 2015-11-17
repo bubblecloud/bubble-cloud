@@ -3,7 +3,7 @@
 // Module imports
 import {Promise} from 'es6-promise';
 import database = require('./Database');
-import model = require('./Model');
+import model = require('./Entity');
 import Entity = model.Entity;
 
 // Module initialization
