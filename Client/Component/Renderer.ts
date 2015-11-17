@@ -50,13 +50,11 @@ class Renderer {
         }
 
         if (BABYLON.Engine.isSupported()) {
-
             // Load the BABYLON 3D engine
             this.engine = new BABYLON.Engine(canvas, true);
 
             // This begins the creation of a function that we will 'call' just after it's built
             var createScene = () => {
-
                 // Now create a basic Babylon Scene object
                 this.scene = new BABYLON.Scene(this.engine);
 
@@ -99,6 +97,7 @@ class Renderer {
             this.engine.runRenderLoop(() => {
                 this.model.interpolate();
                 this.scene.render();
+                //console.log(this.engine.getFps().toFixed());
             });
 
             // Watch for browser/canvas resize events
