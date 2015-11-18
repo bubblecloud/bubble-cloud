@@ -59,7 +59,7 @@ class Renderer {
                 this.scene = new BABYLON.Scene(this.engine);
 
                 // Change the scene background color to green.
-                this.scene.clearColor = new BABYLON.Color3(1, 1, 1);
+                this.scene.clearColor = new BABYLON.Color3(151/255, 147/255, 198/255);
 
                 // This creates and positions a free camera
                 var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), this.scene);
@@ -106,4 +106,5 @@ class Renderer {
             });
         }
     }
+
 }

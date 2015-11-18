@@ -17,6 +17,42 @@ html {
 body {
   padding-top: 60px;
   margin-bottom: 75px;
+  color: rgba(255, 255, 255, 0.84);
+  background: #9793c6 !important;
+}
+
+.form-control {
+  background-color: #d1ceed;
+  border: 1px solid rgba(255, 255, 255, 0.56);
+}
+
+.navbar-default .navbar-brand {
+  color: #fff;
+}
+
+.navbar-default .navbar-nav > li > a {
+  color: #fff;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+  color: rgba(68, 45, 63, 0.40);
+}
+
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+  color: rgba(68, 45, 63, 0.5);
+}
+
+a:hover, a:focus {
+  color: rgba(68, 45, 63, 0.40);
+}
+
+a {
+  color: #fff;
+}
+
+.navbar-default {
+  background-color: rgba(255, 255, 255, 0.4);
 }
 
 footer {

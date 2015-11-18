@@ -39,7 +39,7 @@ var Renderer = (function () {
             this.engine = new BABYLON.Engine(canvas, true);
             var createScene = function () {
                 _this.scene = new BABYLON.Scene(_this.engine);
-                _this.scene.clearColor = new BABYLON.Color3(1, 1, 1);
+                _this.scene.clearColor = new BABYLON.Color3(151 / 255, 147 / 255, 198 / 255);
                 var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), _this.scene);
                 camera.setTarget(BABYLON.Vector3.Zero());
                 camera.attachControl(canvas, false);

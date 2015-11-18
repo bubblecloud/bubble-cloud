@@ -21,7 +21,9 @@ export class Quaternion {
  * Entity value object.
  */
 export class Entity {
-    _id: string;
+    id: number; // current ID
+    oid: number; // original ID
+    _id: string; // unique persistent ID
     position: Vector3 = new Vector3();
     rotationQuaternion: Quaternion = new Quaternion();
     scaling: Vector3 = new Vector3();
