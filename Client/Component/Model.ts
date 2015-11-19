@@ -10,15 +10,15 @@ class Model {
     lastTimeMillis: number = (new Date).getTime();
 
     interpolate() : void {
-        this.mobiles.forEach(entity => {
-            var maxInterpolateTimeMillis = 1000;
-            var timeMillis = (new Date).getTime();
-            var timeDeltaMillis : number = timeMillis - this.lastTimeMillis;
-            this.lastTimeMillis = timeMillis;
+        var maxInterpolateTimeMillis = 600;
+        var timeMillis = (new Date).getTime();
+        var timeDeltaMillis : number = timeMillis - this.lastTimeMillis;
+        this.lastTimeMillis = timeMillis;
+        if (timeDeltaMillis > maxInterpolateTimeMillis) {
+            timeDeltaMillis = maxInterpolateTimeMillis;
+        }
 
-            if (timeDeltaMillis > maxInterpolateTimeMillis) {
-                timeDeltaMillis = maxInterpolateTimeMillis;
-            }
+        this.mobiles.forEach(entity => {
 
             var position = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
             var deltaVector = position.subtract(entity.interpolatedPosition);
@@ -47,7 +47,7 @@ class Model {
             if (this.onUpdate) {
                 this.onUpdate(existingEntity);
             }
-            console.log(JSON.stringify(entity));
+            //console.log(JSON.stringify(entity));
         } else {
             entity.interpolatedPosition = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
             entity.interpolatedRotationQuaternion = new BABYLON.Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);

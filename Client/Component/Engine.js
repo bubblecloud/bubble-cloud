@@ -8,15 +8,16 @@ var Engine = (function () {
         this.api = getProxy('rpc', RpcApi);
         this.model = new Model();
         this.renderer = new Renderer(this.model);
+        this.startTimeMillis = new Date().getTime();
         this.avatar = new Entity();
     }
     Engine.prototype.start = function () {
         var _this = this;
         var timeMillis = (new Date).getTime();
         this.avatar.newId();
-        this.avatar.position.x = 3 * Math.cos(2 * Math.PI * (timeMillis / 10000));
-        this.avatar.position.z = 3 * Math.sin(2 * Math.PI * (timeMillis / 10000));
-        this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * (timeMillis / 10000), 0, 0);
+        this.avatar.position.x = 3 * Math.cos(2 * Math.PI * ((timeMillis - this.startTimeMillis) / 10000));
+        this.avatar.position.z = 3 * Math.sin(2 * Math.PI * ((timeMillis - this.startTimeMillis) / 10000));
+        this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * ((timeMillis - this.startTimeMillis) / 10000), 0, 0);
         this.ws = new WsClient('ws://127.0.0.1:3000/ws');
         this.ws.setOnReceiveObject(function (message) {
             _this.model.put(message);
@@ -37,9 +38,9 @@ var Engine = (function () {
     };
     Engine.prototype.loop = function () {
         var timeMillis = (new Date).getTime();
-        this.avatar.position.x = 3 * Math.cos(2 * Math.PI * (timeMillis / 10000));
-        this.avatar.position.z = 3 * Math.sin(2 * Math.PI * (timeMillis / 10000));
-        this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * (timeMillis / 10000), 0, 0);
+        this.avatar.position.x = 3 * Math.cos(2 * Math.PI * ((timeMillis - this.startTimeMillis) / 10000));
+        this.avatar.position.z = 3 * Math.sin(2 * Math.PI * ((timeMillis - this.startTimeMillis) / 10000));
+        this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * ((timeMillis - this.startTimeMillis) / 10000), 0, 0);
         this.ws.sendObject({ 'id': this.avatar.id, 'position': this.avatar.position, 'rotationQuaternion': this.avatar.rotationQuaternion });
         var timeDeltaMillis = timeMillis - this.lastLoopTimeMillis;
         this.lastLoopTimeMillis = timeMillis;

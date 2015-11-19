@@ -29,10 +29,10 @@ class Renderer {
     }
 
     onUpdate(entity: Entity) {
-        //console.log('update:' + JSON.stringify(entity));
         var shape = this.scene.getMeshByName(entity.id);
         shape.position = entity.interpolatedPosition
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion
+        //console.log('update:' + shape.name + " " + shape.position.x);
     }
 
     onRemove(entity: Entity) {

@@ -6,14 +6,14 @@ var Model = (function () {
     }
     Model.prototype.interpolate = function () {
         var _this = this;
+        var maxInterpolateTimeMillis = 600;
+        var timeMillis = (new Date).getTime();
+        var timeDeltaMillis = timeMillis - this.lastTimeMillis;
+        this.lastTimeMillis = timeMillis;
+        if (timeDeltaMillis > maxInterpolateTimeMillis) {
+            timeDeltaMillis = maxInterpolateTimeMillis;
+        }
         this.mobiles.forEach(function (entity) {
-            var maxInterpolateTimeMillis = 1000;
-            var timeMillis = (new Date).getTime();
-            var timeDeltaMillis = timeMillis - _this.lastTimeMillis;
-            _this.lastTimeMillis = timeMillis;
-            if (timeDeltaMillis > maxInterpolateTimeMillis) {
-                timeDeltaMillis = maxInterpolateTimeMillis;
-            }
             var position = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
             var deltaVector = position.subtract(entity.interpolatedPosition);
             var deltaUnitVector = deltaVector.normalize();
@@ -35,7 +35,6 @@ var Model = (function () {
             if (this.onUpdate) {
                 this.onUpdate(existingEntity);
             }
-            console.log(JSON.stringify(entity));
         }
         else {
             entity.interpolatedPosition = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);

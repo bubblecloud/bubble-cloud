@@ -11,15 +11,16 @@ class Engine {
     ws: WsClient;
     model: Model = new Model();
     renderer: Renderer = new Renderer(this.model);
+    startTimeMillis: number = new Date().getTime();
     lastLoopTimeMillis: number;
     avatar: Entity = new Entity();
 
     start() {
         var timeMillis = (new Date).getTime();
         this.avatar.newId();
-        this.avatar.position.x = 3 * Math.cos(2 * Math.PI * (timeMillis/10000));
-        this.avatar.position.z = 3 * Math.sin(2 * Math.PI * (timeMillis/10000));
-        this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * (timeMillis/10000), 0, 0);
+        this.avatar.position.x = 3 * Math.cos(2 * Math.PI * ((timeMillis - this.startTimeMillis)/10000));
+        this.avatar.position.z = 3 * Math.sin(2 * Math.PI * ((timeMillis - this.startTimeMillis)/10000));
+        this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * ((timeMillis - this.startTimeMillis)/10000), 0, 0);
         this.ws = new WsClient('ws://127.0.0.1:3000/ws');
 
         this.ws.setOnReceiveObject( (message: any) => {
@@ -46,9 +47,9 @@ class Engine {
 
     loop() {
         var timeMillis = (new Date).getTime();
-        this.avatar.position.x = 3 * Math.cos(2 * Math.PI * (timeMillis/10000));
-        this.avatar.position.z = 3 * Math.sin(2 * Math.PI * (timeMillis/10000));
-        this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * (timeMillis/10000), 0, 0);
+        this.avatar.position.x = 3 * Math.cos(2 * Math.PI * ((timeMillis - this.startTimeMillis)/10000));
+        this.avatar.position.z = 3 * Math.sin(2 * Math.PI * ((timeMillis - this.startTimeMillis)/10000));
+        this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * ((timeMillis - this.startTimeMillis)/10000), 0, 0);
         this.ws.sendObject({'id':this.avatar.id,'position':this.avatar.position, 'rotationQuaternion': this.avatar.rotationQuaternion});
 
         var timeDeltaMillis : number = timeMillis - this.lastLoopTimeMillis;
