@@ -17,6 +17,7 @@ var Quaternion = (function () {
     return Quaternion;
 })();
 exports.Quaternion = Quaternion;
+var entityIdCounter = 0;
 var Entity = (function () {
     function Entity() {
         this.position = new Vector3();
@@ -26,3 +27,9 @@ var Entity = (function () {
     return Entity;
 })();
 exports.Entity = Entity;
+function newId(entity) {
+    entityIdCounter++;
+    entity.oid = entity.id;
+    entity.id = '' + entityIdCounter;
+}
+exports.newId = newId;

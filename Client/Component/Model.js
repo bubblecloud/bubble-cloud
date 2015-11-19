@@ -5,7 +5,6 @@ var Model = (function () {
         this.lastTimeMillis = (new Date).getTime();
     }
     Model.prototype.interpolate = function () {
-        var _this = this;
         var maxInterpolateTimeMillis = 600;
         var timeMillis = (new Date).getTime();
         var timeDeltaMillis = timeMillis - this.lastTimeMillis;
@@ -13,18 +12,23 @@ var Model = (function () {
         if (timeDeltaMillis > maxInterpolateTimeMillis) {
             timeDeltaMillis = maxInterpolateTimeMillis;
         }
-        this.mobiles.forEach(function (entity) {
+        for (var _i = 0, _a = this.mobiles; _i < _a.length; _i++) {
+            var entity = _a[_i];
             var position = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
             var deltaVector = position.subtract(entity.interpolatedPosition);
-            var deltaUnitVector = deltaVector.normalize();
             var deltaLength = deltaVector.length();
-            var stepLength = deltaLength * timeDeltaMillis / maxInterpolateTimeMillis;
+            var deltaUnitVector = deltaVector.normalize();
+            var stepLength = timeDeltaMillis / maxInterpolateTimeMillis;
             var stepVector = deltaUnitVector.scale(stepLength);
             entity.interpolatedPosition = entity.interpolatedPosition.add(stepVector);
             var rotationQuaternion = new BABYLON.Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
             entity.interpolatedRotationQuaternion = BABYLON.Quaternion.Slerp(entity.interpolatedRotationQuaternion, rotationQuaternion, timeDeltaMillis / maxInterpolateTimeMillis);
-            _this.onUpdate(entity);
-        });
+            entity.interpolatedRotationQuaternion.normalize();
+            this.onUpdate(entity);
+            if (deltaLength < 0.1) {
+                this.mobiles.splice(this.mobiles.indexOf(entity), 1);
+            }
+        }
     };
     Model.prototype.put = function (entity) {
         var existingEntity = this.entities[entity.id];
@@ -35,11 +39,13 @@ var Model = (function () {
             if (this.onUpdate) {
                 this.onUpdate(existingEntity);
             }
+            if (this.mobiles.indexOf(existingEntity) < 0) {
+                this.mobiles.push(existingEntity);
+            }
         }
         else {
             entity.interpolatedPosition = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
             entity.interpolatedRotationQuaternion = new BABYLON.Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
-            this.mobiles.push(entity);
             this.entities[entity.id] = entity;
             if (this.onUpdate) {
                 this.onAdd(entity);
