@@ -3,7 +3,7 @@ var InConnection = (function () {
         this.entities = [];
         this.receive = function (entity) {
             this.receivedTime = new Date().getTime();
-            this.send(entity);
+            this.engine.model.put(entity);
         };
         this.disconnect = function () {
         };

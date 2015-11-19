@@ -253,7 +253,11 @@ app.ws('/ws', function(ws, req) {
     inConnection.email = req.user.email;
   }
   inConnection.send = function(entity) {
-    ws.send(JSON.stringify(entity));
+    try {
+      ws.send(JSON.stringify(entity));
+    } catch (error) {
+
+    }
   }
 
   engine.inConnections.push(inConnection);

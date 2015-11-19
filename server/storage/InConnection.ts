@@ -12,7 +12,8 @@ export class InConnection {
 
     receive: (entity: Entity) => void = function (entity: Entity): void {
         this.receivedTime = new Date().getTime();
-        this.send(entity);
+        //this.send(entity);
+        this.engine.model.put(entity);
     }
 
     disconnect: () => void = function (): void {
