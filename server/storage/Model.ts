@@ -1,3 +1,5 @@
+import {Entity} from "./Entity";
+
 export class Model {
 
     entities : {[key: string]: Entity} = {}

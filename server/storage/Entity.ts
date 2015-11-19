@@ -17,14 +17,22 @@ export class Quaternion {
     w:number = 1;
 }
 
+var entityIdCounter = 0;
+
 /**
  * Entity value object.
  */
 export class Entity {
-    id: number; // current ID
-    oid: number; // original ID
+    id: string; // current ID
+    oid: string; // original ID
     _id: string; // unique persistent ID
     position: Vector3 = new Vector3();
     rotationQuaternion: Quaternion = new Quaternion();
     scaling: Vector3 = new Vector3();
+}
+
+export function newId(entity: Entity) : void {
+    entityIdCounter++;
+    entity.oid = entity.id;
+    entity.id = '' + entityIdCounter;
 }

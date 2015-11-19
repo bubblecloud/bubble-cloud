@@ -1,5 +1,6 @@
 import {InConnection} from "./InConnection";
 import {Model} from "./Model";
+import {Entity} from "./Entity";
 
 export class Engine {
 

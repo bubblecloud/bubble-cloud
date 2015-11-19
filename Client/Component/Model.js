@@ -35,6 +35,7 @@ var Model = (function () {
             if (this.onUpdate) {
                 this.onUpdate(existingEntity);
             }
+            console.log(JSON.stringify(entity));
         }
         else {
             entity.interpolatedPosition = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);

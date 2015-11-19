@@ -47,6 +47,7 @@ class Model {
             if (this.onUpdate) {
                 this.onUpdate(existingEntity);
             }
+            console.log(JSON.stringify(entity));
         } else {
             entity.interpolatedPosition = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
             entity.interpolatedRotationQuaternion = new BABYLON.Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
