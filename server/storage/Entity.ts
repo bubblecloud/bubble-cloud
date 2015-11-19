@@ -26,6 +26,9 @@ export class Entity {
     id: string; // current ID
     oid: string; // original ID
     _id: string; // unique persistent ID
+
+    removed: boolean = false;
+
     position: Vector3 = new Vector3();
     rotationQuaternion: Quaternion = new Quaternion();
     scaling: Vector3 = new Vector3();

@@ -5,6 +5,7 @@ var Entity = (function () {
         this.position = new BABYLON.Vector3(0, 0, 0);
         this.rotationQuaternion = new BABYLON.Quaternion();
         this.scaling = new BABYLON.Vector3(0, 0, 0);
+        this.removed = false;
     }
     Entity.prototype.newId = function () {
         entityIdCounter++;

@@ -14,6 +14,8 @@ class Entity {
     interpolatedPosition: BABYLON.Vector3;
     interpolatedRotationQuaternion: BABYLON.Quaternion;
 
+    removed: boolean = false;
+
     newId() {
         entityIdCounter++;
         this.id = '' + entityIdCounter;

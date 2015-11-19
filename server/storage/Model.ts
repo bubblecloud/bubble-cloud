@@ -25,8 +25,8 @@ export class Model {
         }
     }
 
-    get(entity: Entity) : Entity {
-        return this.entities[entity.id];
+    get(id: string) : Entity {
+        return this.entities[id];
     }
 
     remove(entity: Entity) : void {

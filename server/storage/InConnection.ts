@@ -9,7 +9,6 @@ export class InConnection {
     key: string;
     email: string;
     receivedTime: number;
-    entities: Entity[] = [];
     idMap: {[key: string]:string} = {};
 
     send: (entity: Entity) => void;
@@ -29,7 +28,12 @@ export class InConnection {
     }
 
     disconnect: () => void = function (): void {
-
+        for (var oid in this.idMap) {
+            var id = this.idMap[oid];
+            var entity = this.engine.model.get(id);
+            entity.removed = true;
+            this.engine.model.remove(entity);
+        }
     }
 
 

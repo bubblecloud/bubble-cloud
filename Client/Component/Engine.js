@@ -19,8 +19,13 @@ var Engine = (function () {
         this.avatar.position.z = 3 * Math.sin(2 * Math.PI * ((timeMillis - this.startTimeMillis) / 10000));
         this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * ((timeMillis - this.startTimeMillis) / 10000), 0, 0);
         this.ws = new WsClient('ws://127.0.0.1:3000/ws');
-        this.ws.setOnReceiveObject(function (message) {
-            _this.model.put(message);
+        this.ws.setOnReceiveObject(function (entity) {
+            if (entity.removed) {
+                _this.model.remove(entity);
+            }
+            else {
+                _this.model.put(entity);
+            }
         });
         var wsClient = this.ws;
         this.ws.setOnOpen(function () {

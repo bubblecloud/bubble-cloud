@@ -20,6 +20,7 @@ exports.Quaternion = Quaternion;
 var entityIdCounter = 0;
 var Entity = (function () {
     function Entity() {
+        this.removed = false;
         this.position = new Vector3();
         this.rotationQuaternion = new Quaternion();
         this.scaling = new Vector3();

@@ -19,8 +19,8 @@ var Model = (function () {
             }
         }
     };
-    Model.prototype.get = function (entity) {
-        return this.entities[entity.id];
+    Model.prototype.get = function (id) {
+        return this.entities[id];
     };
     Model.prototype.remove = function (entity) {
         delete this.entities[entity.id];

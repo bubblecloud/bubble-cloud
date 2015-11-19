@@ -23,8 +23,12 @@ class Engine {
         this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * ((timeMillis - this.startTimeMillis)/10000), 0, 0);
         this.ws = new WsClient('ws://127.0.0.1:3000/ws');
 
-        this.ws.setOnReceiveObject( (message: any) => {
-            this.model.put(message);
+        this.ws.setOnReceiveObject( (entity: Entity) => {
+            if (entity.removed) {
+                this.model.remove(entity);
+            } else {
+                this.model.put(entity);
+            }
         });
         var wsClient = this.ws;
         this.ws.setOnOpen(() => {
