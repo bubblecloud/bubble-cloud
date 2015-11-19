@@ -36,7 +36,7 @@ class Model {
             this.onUpdate(entity);
 
             /*console.log(deltaLength);*/
-            if (deltaLength < 0.1 ) {
+            if (deltaLength < 0.1 && entity.interpolatedRotationQuaternion.normalize().subtract(rotationQuaternion.normalize()).length() < 0.1 ) {
                 this.mobiles.splice(this.mobiles.indexOf(entity), 1);
             }
 

@@ -25,7 +25,7 @@ var Model = (function () {
             entity.interpolatedRotationQuaternion = BABYLON.Quaternion.Slerp(entity.interpolatedRotationQuaternion, rotationQuaternion, timeDeltaMillis / maxInterpolateTimeMillis);
             entity.interpolatedRotationQuaternion.normalize();
             this.onUpdate(entity);
-            if (deltaLength < 0.1) {
+            if (deltaLength < 0.1 && entity.interpolatedRotationQuaternion.normalize().subtract(rotationQuaternion.normalize()).length() < 0.1) {
                 this.mobiles.splice(this.mobiles.indexOf(entity), 1);
             }
         }
