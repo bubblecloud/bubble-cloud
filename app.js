@@ -43,6 +43,8 @@ var passportConf = require('./Server/Legacy/Config/passport');
  * Create Express server.
  */
 var app = express();
+var eng = require('./Server/Storage/Engine');
+var ic = require('./Server/Storage/InConnection');
 
 var ws = require('express-ws')(app); //app = express app
 
@@ -225,6 +227,15 @@ app.listen(app.get('port'), function() {
 
 module.exports = app;
 
+var engine = new eng.Engine();
+function mainLoop() {
+  engine.loop();
+  setTimeout(mainLoop, 1000);
+}
+mainLoop();
+
+
+
 /**
  * MIME table extensions
  */
@@ -236,8 +247,19 @@ module.exports = app;
  * WebSockets End Point
  */
 app.ws('/ws', function(ws, req) {
+  var inConnection = new ic.InConnection();
+  inConnection.engine = engine;
+  if (req.user) {
+    inConnection.email = req.user.email;
+  }
+  inConnection.send = function(entity) {
+    ws.send(JSON.stringify(entity));
+  }
+
+  engine.inConnections.push(inConnection);
   ws.on('message', function(msg) {
-      ws.send(msg);
+    inConnection.receive(JSON.parse(msg));
+      //ws.send(msg);
       /*if (req.user) {
         ws.send(msg + ' (' + req.user.email + ')');
       } else {
@@ -302,3 +324,4 @@ app.post('/rpc', function(req, res) {
     }));
   }
 });
+
