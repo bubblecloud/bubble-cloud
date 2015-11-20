@@ -21,7 +21,7 @@ class Engine {
         this.avatar.position.x = 3 * Math.cos(2 * Math.PI * ((timeMillis - this.startTimeMillis)/10000));
         this.avatar.position.z = 3 * Math.sin(2 * Math.PI * ((timeMillis - this.startTimeMillis)/10000));
         this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * ((timeMillis - this.startTimeMillis)/10000), 0, 0);
-        this.ws = new WsClient('ws://127.0.0.1:3000/ws');
+        this.ws = new WsClient('ws://' + location.host + '/ws');
 
         this.ws.setOnReceiveObject( (entity: Entity) => {
             if (entity.removed) {

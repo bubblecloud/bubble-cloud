@@ -34,10 +34,11 @@ var rpcApi = require('./Server/ApplicationInterface/RpcApi');
 var rpcApiMethods = rpcApi.getRpcApiMethods();
 
 /**
- * API keys and Passport configuration.
+ * Configuration
  */
-var secrets = require('./Server/Legacy/Config/secrets');
-var passportConf = require('./Server/Legacy/Config/passport');
+var config = require('./config');
+var secrets = require('./secrets');
+var passportConf = require('./Server/Legacy/Controllers/passport');
 
 /**
  * Create Express server.
@@ -60,7 +61,7 @@ mongoose.connection.on('error', function() {
 /**
  * Express configuration.
  */
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || config.port);
 app.set('views', path.join(__dirname, 'Client/Views'));
 app.set('view engine', 'jade');
 app.use(compress());
