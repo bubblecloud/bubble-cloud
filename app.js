@@ -228,21 +228,15 @@ app.listen(app.get('port'), function() {
 
 module.exports = app;
 
-var engine = new eng.Engine();
+/**
+ * The server engine.
+ */
+var engine = new eng.Engine(config.remoteUrls);
 function mainLoop() {
   engine.loop();
   setTimeout(mainLoop, 1000);
 }
 mainLoop();
-
-
-
-/**
- * MIME table extensions
- */
- //app.mime.type['.fx'] = 'application/fx';
- //app.mime.type['.babylonjs'] = 'application/babylonjs';
- //app.mime.type['.babylonmeshdata'] = 'application/babylonmeshdata';
 
 /**
  * WebSockets End Point
@@ -264,12 +258,6 @@ app.ws('/ws', function(ws, req) {
   engine.inConnections.push(inConnection);
   ws.on('message', function(msg) {
     inConnection.receive(JSON.parse(msg));
-      //ws.send(msg);
-      /*if (req.user) {
-        ws.send(msg + ' (' + req.user.email + ')');
-      } else {
-        ws.send(msg + ' (anonymous)');
-      }*/
     });
 });
 
@@ -330,3 +318,9 @@ app.post('/rpc', function(req, res) {
   }
 });
 
+/**
+ * MIME table extensions
+ */
+//app.mime.type['.fx'] = 'application/fx';
+//app.mime.type['.babylonjs'] = 'application/babylonjs';
+//app.mime.type['.babylonmeshdata'] = 'application/babylonmeshdata';

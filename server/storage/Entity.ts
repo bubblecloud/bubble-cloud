@@ -29,6 +29,10 @@ export class Entity {
 
     removed: boolean = false;
 
+    external: boolean = false;
+
+    dynamic: boolean = false;
+
     position: Vector3 = new Vector3();
     rotationQuaternion: Quaternion = new Quaternion();
     scaling: Vector3 = new Vector3();
