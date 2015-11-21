@@ -2,6 +2,7 @@
 
 // Module imports
 import mongodb = require('mongodb');
+import configuration = require('../../Configuration');
 var MongoClient = mongodb.MongoClient;
 
 // Module initialization
@@ -18,7 +19,7 @@ export function getDatabase() : Promise<mongodb.Db> {
         if (database) {
             return resolve(database);
         } else {
-            MongoClient.connect('mongodb://127.0.0.1:27017/test', function(error, db) {
+            MongoClient.connect(configuration.getConfiguration()['databaseUrl'], function(error, db) {
                 if (error) {
                     return reject(error);
                 }

@@ -1,5 +1,6 @@
 /// <reference path="../../typings/mongodb/mongodb.d.ts" />
 var mongodb = require('mongodb');
+var configuration = require('../../Configuration');
 var MongoClient = mongodb.MongoClient;
 var database = null;
 function getDatabase() {
@@ -8,7 +9,7 @@ function getDatabase() {
             return resolve(database);
         }
         else {
-            MongoClient.connect('mongodb://127.0.0.1:27017/test', function (error, db) {
+            MongoClient.connect(configuration.getConfiguration()['databaseUrl'], function (error, db) {
                 if (error) {
                     return reject(error);
                 }

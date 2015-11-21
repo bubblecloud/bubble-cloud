@@ -36,7 +36,6 @@ var rpcApiMethods = rpcApi.getRpcApiMethods();
 /**
  * Configuration
  */
-var config = require('./config');
 var secrets = require('./secrets');
 var passportConf = require('./Server/Legacy/Controllers/passport');
 
@@ -45,6 +44,7 @@ var passportConf = require('./Server/Legacy/Controllers/passport');
  */
 var app = express();
 var eng = require('./Server/Component/ServerEngine');
+var configuration = require('./Configuration');
 var ic = require('./Server/Component/InConnection');
 
 var ws = require('express-ws')(app); //app = express app
@@ -54,7 +54,7 @@ var db = require('./Server/Component/Database');
 /**
  * Connect to MongoDB.
  */
-mongoose.connect(secrets.db);
+mongoose.connect(configuration.getConfiguration()['databaseUrl']);
 mongoose.connection.on('error', function() {
   console.log('MongoDB Connection Error. Please make sure that MongoDB is running.');
   process.exit(1);
@@ -63,7 +63,7 @@ mongoose.connection.on('error', function() {
 /**
  * Express configuration.
  */
-app.set('port', process.env.PORT || config.port);
+app.set('port', process.env.PORT || configuration.getConfiguration()['port']);
 app.set('views', path.join(__dirname, 'Client/Views'));
 app.set('view engine', 'jade');
 app.use(compress());
@@ -84,7 +84,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   secret: secrets.sessionSecret,
-  store: new MongoStore({ url: secrets.db, autoReconnect: true })
+  store: new MongoStore({ url: configuration.getConfiguration()['databaseUrl'], autoReconnect: true })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -233,7 +233,7 @@ module.exports = app;
 /**
  * The server engine.
  */
-var engine = new eng.ServerEngine(config.remoteServers);
+var engine = new eng.ServerEngine(configuration.getConfiguration()['remoteServers']);
 function mainLoop() {
   engine.loop();
   setTimeout(mainLoop, 1000);
