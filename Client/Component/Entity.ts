@@ -16,6 +16,10 @@ class Entity {
 
     removed: boolean = false;
 
+    external: boolean = false;
+
+    dynamic: boolean = false;
+
     newId() {
         entityIdCounter++;
         this.id = '' + entityIdCounter;

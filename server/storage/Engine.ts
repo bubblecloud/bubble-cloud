@@ -106,7 +106,7 @@ export class Engine {
             }
             outConnection.send(this.zeroEntity);
         }
-        console.log('in:' + this.inConnections.length + " out: " + this.outConnections.length);
+        //console.log('in:' + this.inConnections.length + " out: " + this.outConnections.length);
     }
 
 }

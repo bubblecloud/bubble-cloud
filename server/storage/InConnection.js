@@ -25,8 +25,10 @@ var InConnection = (function () {
             for (var oid in this.idMap) {
                 var id = this.idMap[oid];
                 var entity = this.engine.model.get(id);
-                entity.removed = true;
-                this.engine.model.remove(entity);
+                if (entity.dynamic) {
+                    entity.removed = true;
+                    this.engine.model.remove(entity);
+                }
             }
             console.log('disconnected: ' + this.remoteAddress + ':' + this.remotePort + " " + this.email);
         };

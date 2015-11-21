@@ -113,7 +113,6 @@ var Engine = (function () {
             }
             outConnection.send(this.zeroEntity);
         }
-        console.log('in:' + this.inConnections.length + " out: " + this.outConnections.length);
     };
     return Engine;
 })();
