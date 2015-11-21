@@ -1,14 +1,14 @@
-import {Entity} from "./Entity";
+import {ServerEntity} from "./ServerEntity";
 
-export class Model {
+export class ServerModel {
 
-    entities : {[key: string]: Entity} = {}
+    entities : {[key: string]: ServerEntity} = {}
 
-    onAdd : (entity: Entity) => void;
-    onUpdate : (entity: Entity) => void;
-    onRemove : (entity: Entity) => void;
+    onAdd : (entity: ServerEntity) => void;
+    onUpdate : (entity: ServerEntity) => void;
+    onRemove : (entity: ServerEntity) => void;
 
-    put(entity: Entity) : void {
+    put(entity: ServerEntity) : void {
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {
             Object.getOwnPropertyNames(entity).forEach(name => {
@@ -25,11 +25,11 @@ export class Model {
         }
     }
 
-    get(id: string) : Entity {
+    get(id: string) : ServerEntity {
         return this.entities[id];
     }
 
-    remove(entity: Entity) : void {
+    remove(entity: ServerEntity) : void {
         delete this.entities[entity.id];
         if (this.onRemove) {
             this.onRemove(entity);
@@ -40,15 +40,15 @@ export class Model {
         return Object.keys(this.entities);
     }
 
-    setOnAdd(onAdd : (entity: Entity) => void) : void {
+    setOnAdd(onAdd : (entity: ServerEntity) => void) : void {
         this.onAdd = onAdd;
     }
 
-    setOnUpdate(onUpdate : (entity: Entity) => void) : void {
+    setOnUpdate(onUpdate : (entity: ServerEntity) => void) : void {
         this.onUpdate = onUpdate;
     }
 
-    setOnRemove(onRemove : (entity: Entity) => void) : void {
+    setOnRemove(onRemove : (entity: ServerEntity) => void) : void {
         this.onRemove = onRemove;
     }
 }

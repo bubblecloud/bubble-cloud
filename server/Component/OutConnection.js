@@ -1,4 +1,4 @@
-var Entity_1 = require("./Entity");
+var ServerEntity_1 = require("./ServerEntity");
 var ServerWsClient_1 = require("./ServerWsClient");
 var OutConnection = (function () {
     function OutConnection(url, x, y, z, engine) {
@@ -24,7 +24,7 @@ var OutConnection = (function () {
             }
             this.receivedTime = new Date().getTime();
             if (!this.idMap[entity.id]) {
-                Entity_1.newId(entity);
+                ServerEntity_1.newId(entity);
                 this.idMap[entity.oid] = entity.id;
             }
             else {

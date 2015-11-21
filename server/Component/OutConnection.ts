@@ -1,7 +1,7 @@
-import {Entity} from "./Entity";
-import {newId} from "./Entity";
+import {ServerEntity} from "./ServerEntity";
+import {newId} from "./ServerEntity";
 import {ServerWsClient} from "./ServerWsClient";
-import {Engine} from "./Engine";
+import {ServerEngine} from "./ServerEngine";
 
 /**
  * Outgoing connection.
@@ -13,7 +13,7 @@ export class OutConnection {
     x: number;
     y: number;
     z: number;
-    engine: Engine;
+    engine: ServerEngine;
     key: string;
     connected: boolean;
 
@@ -21,7 +21,7 @@ export class OutConnection {
 
     idMap: {[key: string]:string} = {};
 
-    constructor(url: string, x: number, y: number, z: number, engine: Engine) {
+    constructor(url: string, x: number, y: number, z: number, engine: ServerEngine) {
         this.url = url;
         this.x = x;
         this.y = y;
@@ -29,7 +29,7 @@ export class OutConnection {
         this.engine = engine;
     }
 
-    send: (entity: Entity) => void = function (entity: Entity): void {
+    send: (entity: ServerEntity) => void = function (entity: ServerEntity): void {
         if (this.wsClient && this.connected) {
             entity.external = true;
             entity.position.x += this.x;
@@ -43,7 +43,7 @@ export class OutConnection {
         }
     }
 
-    receive: (entity: Entity) => void = function (entity: Entity): void {
+    receive: (entity: ServerEntity) => void = function (entity: ServerEntity): void {
         // TODO This could be done on server side.
         if (entity.external) { // Ignore external entities from remote server.
             return;
@@ -93,7 +93,7 @@ export class OutConnection {
                 }
             }
         });
-        this.wsClient.setOnReceiveObject((entity: Entity) => {
+        this.wsClient.setOnReceiveObject((entity: ServerEntity) => {
             this.receive(entity);
         });
     }

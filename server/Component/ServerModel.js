@@ -1,8 +1,8 @@
-var Model = (function () {
-    function Model() {
+var ServerModel = (function () {
+    function ServerModel() {
         this.entities = {};
     }
-    Model.prototype.put = function (entity) {
+    ServerModel.prototype.put = function (entity) {
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {
             Object.getOwnPropertyNames(entity).forEach(function (name) {
@@ -19,27 +19,27 @@ var Model = (function () {
             }
         }
     };
-    Model.prototype.get = function (id) {
+    ServerModel.prototype.get = function (id) {
         return this.entities[id];
     };
-    Model.prototype.remove = function (entity) {
+    ServerModel.prototype.remove = function (entity) {
         delete this.entities[entity.id];
         if (this.onRemove) {
             this.onRemove(entity);
         }
     };
-    Model.prototype.keys = function () {
+    ServerModel.prototype.keys = function () {
         return Object.keys(this.entities);
     };
-    Model.prototype.setOnAdd = function (onAdd) {
+    ServerModel.prototype.setOnAdd = function (onAdd) {
         this.onAdd = onAdd;
     };
-    Model.prototype.setOnUpdate = function (onUpdate) {
+    ServerModel.prototype.setOnUpdate = function (onUpdate) {
         this.onUpdate = onUpdate;
     };
-    Model.prototype.setOnRemove = function (onRemove) {
+    ServerModel.prototype.setOnRemove = function (onRemove) {
         this.onRemove = onRemove;
     };
-    return Model;
+    return ServerModel;
 })();
-exports.Model = Model;
+exports.ServerModel = ServerModel;

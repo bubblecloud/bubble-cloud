@@ -1,4 +1,4 @@
-var Entity_1 = require("./Entity");
+var ServerEntity_1 = require("./ServerEntity");
 var InConnection = (function () {
     function InConnection(remoteAddress, remotePort, email) {
         this.receivedTime = new Date().getTime();
@@ -6,7 +6,7 @@ var InConnection = (function () {
         this.receive = function (entity) {
             this.receivedTime = new Date().getTime();
             if (!this.idMap[entity.id]) {
-                Entity_1.newId(entity);
+                ServerEntity_1.newId(entity);
                 this.idMap[entity.oid] = entity.id;
             }
             else {

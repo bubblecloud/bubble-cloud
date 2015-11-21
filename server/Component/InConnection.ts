@@ -1,5 +1,5 @@
-import {Entity} from "./Entity";
-import {newId} from "./Entity";
+import {ServerEntity} from "./ServerEntity";
+import {newId} from "./ServerEntity";
 
 /**
  * Incoming connection.
@@ -23,9 +23,9 @@ export class InConnection {
         console.log('connected: ' + this.remoteAddress + ':' + this.remotePort + " " + this.email);
     }
 
-    send: (entity: Entity) => void;
+    send: (entity: ServerEntity) => void;
 
-    receive: (entity: Entity) => void = function (entity: Entity): void {
+    receive: (entity: ServerEntity) => void = function (entity: ServerEntity): void {
         this.receivedTime = new Date().getTime();
 
         if(!this.idMap[entity.id]) {

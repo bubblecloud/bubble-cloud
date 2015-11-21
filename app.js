@@ -44,12 +44,12 @@ var passportConf = require('./Server/Legacy/Controllers/passport');
  * Create Express server.
  */
 var app = express();
-var eng = require('./Server/Storage/Engine');
-var ic = require('./Server/Storage/InConnection');
+var eng = require('./Server/Component/ServerEngine');
+var ic = require('./Server/Component/InConnection');
 
 var ws = require('express-ws')(app); //app = express app
 
-var db = require('./Server/Storage/Database');
+var db = require('./Server/Component/Database');
 
 /**
  * Connect to MongoDB.
@@ -239,7 +239,7 @@ function mainLoop() {
     engine.loop();
   } else {
     if (db.getDatabaseConnection()) {
-      engine = new eng.Engine(config.remoteServers);
+      engine = new eng.ServerEngine(config.remoteServers);
     }
   }
   setTimeout(mainLoop, 1000);

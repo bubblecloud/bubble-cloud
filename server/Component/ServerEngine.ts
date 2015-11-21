@@ -1,23 +1,23 @@
 import {InConnection} from "./InConnection";
-import {Model} from "./Model";
-import {Entity} from "./Entity";
+import {ServerModel} from "./ServerModel";
+import {ServerEntity} from "./ServerEntity";
 import {OutConnection} from "./OutConnection";
-import dao = require('../Storage/EntityDao');
+import dao = require('./EntityDao');
 
-export class Engine {
+export class ServerEngine {
 
     remoteServers: {key: string, any}[];
     inConnections : InConnection[] = [];
     outConnections : OutConnection[] = [];
-    model: Model = new Model();
-    zeroEntity: Entity;
+    model: ServerModel = new ServerModel();
+    zeroEntity: ServerEntity;
 
     constructor(remoteServers: {key: string, any}[]) {
         this.remoteServers = remoteServers;
 
-        dao.getEntity('0').then((loadedEntity : Entity) => {
+        dao.getEntity('0').then((loadedEntity : ServerEntity) => {
             if (!loadedEntity) {
-                this.zeroEntity = new Entity();
+                this.zeroEntity = new ServerEntity();
                 this.zeroEntity.id = '' + 0;
                 this.zeroEntity.dynamic = true;
                 dao.insertEntity(this.zeroEntity);
@@ -33,7 +33,7 @@ export class Engine {
     }
 
     initialize() {
-        dao.getEntities().then((loadedEntities : Entity[]) => {
+        dao.getEntities().then((loadedEntities : ServerEntity[]) => {
             console.log("loaded " + loadedEntities.length + " from database.");
             for (var loadedEntity of loadedEntities) {
                 this.model.put(loadedEntity);
@@ -43,7 +43,7 @@ export class Engine {
                 this.outConnections.push(new OutConnection(remoteServer['url'], remoteServer['x'], remoteServer['y'], remoteServer['z'], this));
             }
 
-            this.model.onAdd = (entity: Entity) => {
+            this.model.onAdd = (entity: ServerEntity) => {
                 for (var inConnection of this.inConnections) {
                     inConnection.send(entity);
                 };
@@ -56,7 +56,7 @@ export class Engine {
                     dao.insertEntity(entity);
                 }
             }
-            this.model.onUpdate = (entity: Entity) => {
+            this.model.onUpdate = (entity: ServerEntity) => {
                 for (var inConnection of this.inConnections) {
                     inConnection.send(entity);
                 };
@@ -69,7 +69,7 @@ export class Engine {
                     dao.updateEntity(entity);
                 }
             }
-            this.model.onRemove = (entity: Entity) => {
+            this.model.onRemove = (entity: ServerEntity) => {
                 for (var inConnection of this.inConnections) {
                     inConnection.send(entity);
                 };

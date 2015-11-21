@@ -8,9 +8,9 @@ import chai = require('chai');
 
 var app = require('../../app.js');
 
-import db = require('../Storage/EntityDao');
-import model = require('../Storage/Entity');
-import Entity = model.Entity;
+import db = require('../Component/EntityDao');
+import model = require('../Component/ServerEntity');
+import Entity = model.ServerEntity;
 var User = require('../Legacy/Models/User');
 
 /**
@@ -27,7 +27,7 @@ describe('Entity Model Unit Tests:', () => {
 
     describe('test persistence', () => {
         var entity: Entity = new Entity();
-        entity.id = -1;
+        entity.id = '' + (-1);
         it('should insert entity', (done) => {
             db.insertEntity(entity).then(function(inserted: Entity) {
                 if (inserted == null) {

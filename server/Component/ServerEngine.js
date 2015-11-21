@@ -1,17 +1,17 @@
-var Model_1 = require("./Model");
-var Entity_1 = require("./Entity");
+var ServerModel_1 = require("./ServerModel");
+var ServerEntity_1 = require("./ServerEntity");
 var OutConnection_1 = require("./OutConnection");
-var dao = require('../Storage/EntityDao');
-var Engine = (function () {
-    function Engine(remoteServers) {
+var dao = require('./EntityDao');
+var ServerEngine = (function () {
+    function ServerEngine(remoteServers) {
         var _this = this;
         this.inConnections = [];
         this.outConnections = [];
-        this.model = new Model_1.Model();
+        this.model = new ServerModel_1.ServerModel();
         this.remoteServers = remoteServers;
         dao.getEntity('0').then(function (loadedEntity) {
             if (!loadedEntity) {
-                _this.zeroEntity = new Entity_1.Entity();
+                _this.zeroEntity = new ServerEntity_1.ServerEntity();
                 _this.zeroEntity.id = '' + 0;
                 _this.zeroEntity.dynamic = true;
                 dao.insertEntity(_this.zeroEntity);
@@ -24,7 +24,7 @@ var Engine = (function () {
             console.error(error);
         });
     }
-    Engine.prototype.initialize = function () {
+    ServerEngine.prototype.initialize = function () {
         var _this = this;
         dao.getEntities().then(function (loadedEntities) {
             console.log("loaded " + loadedEntities.length + " from database.");
@@ -91,7 +91,7 @@ var Engine = (function () {
             console.error(error);
         });
     };
-    Engine.prototype.loop = function () {
+    ServerEngine.prototype.loop = function () {
         var time = new Date().getTime();
         for (var _i = 0, _a = this.inConnections; _i < _a.length; _i++) {
             var inConnection = _a[_i];
@@ -114,6 +114,6 @@ var Engine = (function () {
             outConnection.send(this.zeroEntity);
         }
     };
-    return Engine;
+    return ServerEngine;
 })();
-exports.Engine = Engine;
+exports.ServerEngine = ServerEngine;

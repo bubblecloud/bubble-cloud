@@ -18,8 +18,8 @@ var Quaternion = (function () {
 })();
 exports.Quaternion = Quaternion;
 var entityIdCounter = 0;
-var Entity = (function () {
-    function Entity() {
+var ServerEntity = (function () {
+    function ServerEntity() {
         this.removed = false;
         this.external = false;
         this.dynamic = false;
@@ -27,9 +27,9 @@ var Entity = (function () {
         this.rotationQuaternion = new Quaternion();
         this.scaling = new Vector3();
     }
-    return Entity;
+    return ServerEntity;
 })();
-exports.Entity = Entity;
+exports.ServerEntity = ServerEntity;
 function newId(entity) {
     entityIdCounter++;
     entity.oid = entity.id;

@@ -2,16 +2,16 @@
 /// <reference path="../../typings/chai/chai.d.ts" />
 var chai = require('chai');
 var app = require('../../app.js');
-var db = require('../Storage/EntityDao');
-var model = require('../Storage/Entity');
-var Entity = model.Entity;
+var db = require('../Component/EntityDao');
+var model = require('../Component/ServerEntity');
+var Entity = model.ServerEntity;
 var User = require('../Legacy/Models/User');
 var should = chai.should();
 var expect = chai.expect;
 describe('Entity Model Unit Tests:', function () {
     describe('test persistence', function () {
         var entity = new Entity();
-        entity.id = -1;
+        entity.id = '' + (-1);
         it('should insert entity', function (done) {
             db.insertEntity(entity).then(function (inserted) {
                 if (inserted == null) {

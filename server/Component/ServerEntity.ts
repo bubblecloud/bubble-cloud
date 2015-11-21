@@ -22,7 +22,7 @@ var entityIdCounter = 0;
 /**
  * Entity value object.
  */
-export class Entity {
+export class ServerEntity {
     id: string; // current ID
     oid: string; // original ID
     _id: string; // unique persistent ID
@@ -38,7 +38,7 @@ export class Entity {
     scaling: Vector3 = new Vector3();
 }
 
-export function newId(entity: Entity) : void {
+export function newId(entity: ServerEntity) : void {
     entityIdCounter++;
     entity.oid = entity.id;
     entity.id = '' + entityIdCounter;

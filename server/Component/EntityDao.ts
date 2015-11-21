@@ -3,13 +3,13 @@
 // Module imports
 import {Promise} from 'es6-promise';
 import database = require('./Database');
-import model = require('./Entity');
-import Entity = model.Entity;
+import model = require('./ServerEntity');
+import Entity = model.ServerEntity;
 
 /**
  * Insert entity to database.
  * @param entity the entity
- * @returns {Promise<Entity>}
+ * @returns {Promise<ServerEntity>}
  */
 export function insertEntity(entity: Entity) : Promise<Entity> {
     console.log('entity db insert:' + entity.id);
@@ -36,7 +36,7 @@ export function insertEntity(entity: Entity) : Promise<Entity> {
 /**
  * Update entity to database.
  * @param entity the entity
- * @returns {Promise<Entity>}
+ * @returns {Promise<ServerEntity>}
  */
 export function updateEntity(entity: Entity) : Promise<Entity> {
     console.log('entity db update:' + entity.id);
@@ -57,7 +57,7 @@ export function updateEntity(entity: Entity) : Promise<Entity> {
 /**
  * Gets entity from database or null if no entity was found.
  * @param id the ID of the entity
- * @returns {Promise<Entity>}
+ * @returns {Promise<ServerEntity>}
  */
 export function getEntity(id: string) : Promise<Entity> {
     console.log('entity db get:' + id);
@@ -78,7 +78,7 @@ export function getEntity(id: string) : Promise<Entity> {
 
 /**
  * Gets all entities from database.
- * @returns {Promise<Entity[]>}
+ * @returns {Promise<ServerEntity[]>}
  */
 export function getEntities() : Promise<Entity[]> {
     return new Promise<Entity[]>( function (resolve, reject) {
@@ -97,7 +97,7 @@ export function getEntities() : Promise<Entity[]> {
 /**
  * Removes entity from database
  * @param id the ID of the entity
- * @returns {Promise<Entity>}
+ * @returns {Promise<ServerEntity>}
  */
 export function removeEntity(id: string) : Promise<Entity> {
     console.log('entity db delete:' + id);
