@@ -31,6 +31,7 @@ var OutConnection = (function () {
                 entity.oid = entity.id;
                 entity.id = this.idMap[entity.oid];
             }
+            entity.external = true;
             entity.position.x -= this.x;
             entity.position.y -= this.y;
             entity.position.z -= this.z;

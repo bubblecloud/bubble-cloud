@@ -6,23 +6,38 @@ import dao = require('../Storage/EntityDao');
 
 export class Engine {
 
+    remoteServers: {key: string, any}[];
     inConnections : InConnection[] = [];
     outConnections : OutConnection[] = [];
     model: Model = new Model();
     zeroEntity: Entity;
 
     constructor(remoteServers: {key: string, any}[]) {
-        this.zeroEntity = new Entity();
-        this.zeroEntity.id = '' + 0;
-        dao.insertEntity(this.zeroEntity);
+        this.remoteServers = remoteServers;
 
+        dao.getEntity('0').then((loadedEntity : Entity) => {
+            if (!loadedEntity) {
+                this.zeroEntity = new Entity();
+                this.zeroEntity.id = '' + 0;
+                this.zeroEntity.dynamic = true;
+                dao.insertEntity(this.zeroEntity);
+            }
+
+            this.initialize();
+        }).catch((error: Error) => {
+            console.error(error);
+        });
+
+    }
+
+    initialize() {
         dao.getEntities().then((loadedEntities : Entity[]) => {
             console.log("loaded " + loadedEntities.length + " from database.");
             for (var loadedEntity of loadedEntities) {
                 this.model.put(loadedEntity);
             }
 
-            for (var remoteServer of remoteServers) {
+            for (var remoteServer of this.remoteServers) {
                 this.outConnections.push(new OutConnection(remoteServer['url'], remoteServer['x'], remoteServer['y'], remoteServer['z'], this));
             }
 
@@ -68,7 +83,6 @@ export class Engine {
         }).catch((error: Error) => {
             console.error(error);
         });
-
     }
 
     loop() {

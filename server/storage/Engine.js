@@ -8,17 +8,29 @@ var Engine = (function () {
         this.inConnections = [];
         this.outConnections = [];
         this.model = new Model_1.Model();
-        this.zeroEntity = new Entity_1.Entity();
-        this.zeroEntity.id = '' + 0;
-        dao.insertEntity(this.zeroEntity);
+        this.remoteServers = remoteServers;
+        dao.getEntity('0').then(function (loadedEntity) {
+            if (!loadedEntity) {
+                _this.zeroEntity = new Entity_1.Entity();
+                _this.zeroEntity.id = '' + 0;
+                _this.zeroEntity.dynamic = true;
+                dao.insertEntity(_this.zeroEntity);
+            }
+            _this.initialize();
+        }).catch(function (error) {
+            console.error(error);
+        });
+    }
+    Engine.prototype.initialize = function () {
+        var _this = this;
         dao.getEntities().then(function (loadedEntities) {
             console.log("loaded " + loadedEntities.length + " from database.");
             for (var _i = 0; _i < loadedEntities.length; _i++) {
                 var loadedEntity = loadedEntities[_i];
                 _this.model.put(loadedEntity);
             }
-            for (var _a = 0; _a < remoteServers.length; _a++) {
-                var remoteServer = remoteServers[_a];
+            for (var _a = 0, _b = _this.remoteServers; _a < _b.length; _a++) {
+                var remoteServer = _b[_a];
                 _this.outConnections.push(new OutConnection_1.OutConnection(remoteServer['url'], remoteServer['x'], remoteServer['y'], remoteServer['z'], _this));
             }
             _this.model.onAdd = function (entity) {
@@ -75,7 +87,7 @@ var Engine = (function () {
         }).catch(function (error) {
             console.error(error);
         });
-    }
+    };
     Engine.prototype.loop = function () {
         var time = new Date().getTime();
         for (var _i = 0, _a = this.inConnections; _i < _a.length; _i++) {
