@@ -5,15 +5,17 @@ var app = require('../../app.js');
 var db = require('../Storage/EntityDao');
 var model = require('../Storage/Entity');
 var Entity = model.Entity;
+var User = require('../Legacy/Models/User');
 var should = chai.should();
 var expect = chai.expect;
 describe('Entity Model Unit Tests:', function () {
     describe('test persistence', function () {
         var entity = new Entity();
+        entity.id = -1;
         it('should insert entity', function (done) {
             db.insertEntity(entity).then(function (inserted) {
                 if (inserted == null) {
-                    done("No entity returned.");
+                    return done("No entity returned.");
                 }
                 done();
             }).catch(function (error) {
@@ -22,9 +24,9 @@ describe('Entity Model Unit Tests:', function () {
             });
         });
         it('should get entity', function (done) {
-            db.getEntity(entity._id).then(function (result) {
+            db.getEntity(entity.id).then(function (result) {
                 if (result == null) {
-                    done("No entity returned.");
+                    return done("No entity returned.");
                 }
                 done();
             }).catch(function (error) {
@@ -35,7 +37,7 @@ describe('Entity Model Unit Tests:', function () {
         it('should get entities', function (done) {
             db.getEntities().then(function (result) {
                 if (result.length == 0) {
-                    done("Entity not found.");
+                    return done("Entity not found.");
                 }
                 done();
             }).catch(function (error) {
@@ -44,9 +46,9 @@ describe('Entity Model Unit Tests:', function () {
             });
         });
         it('should delete entity', function (done) {
-            db.removeEntity(entity._id).then(function (result) {
+            db.removeEntity(entity.id).then(function (result) {
                 if (result == null) {
-                    done("No entity returned.");
+                    return done("No entity returned.");
                 }
                 done();
             }).catch(function (error) {
@@ -54,10 +56,10 @@ describe('Entity Model Unit Tests:', function () {
                 done(error);
             });
         });
-        it('should not get entities', function (done) {
-            db.getEntities().then(function (result) {
-                if (result.length != 0) {
-                    done("Entity still found.");
+        it('should not get entity', function (done) {
+            db.getEntity(entity.id).then(function (result) {
+                if (result != null) {
+                    return done("Entity still returned.");
                 }
                 done();
             }).catch(function (error) {

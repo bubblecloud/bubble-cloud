@@ -2,47 +2,73 @@ import {InConnection} from "./InConnection";
 import {Model} from "./Model";
 import {Entity} from "./Entity";
 import {OutConnection} from "./OutConnection";
+import dao = require('../Storage/EntityDao');
 
 export class Engine {
 
     inConnections : InConnection[] = [];
     outConnections : OutConnection[] = [];
     model: Model = new Model();
+    zeroEntity: Entity;
 
     constructor(remoteServers: {key: string, any}[]) {
-        for (var remoteServer of remoteServers) {
-            this.outConnections.push(new OutConnection(remoteServer['url'], remoteServer['x'], remoteServer['y'], remoteServer['z'], this));
-        }
-        this.model.onAdd = (entity: Entity) => {
-            for (var inConnection of this.inConnections) {
-                inConnection.send(entity);
-            };
-            for (var outConnection of this.outConnections) {
-                if (!entity.external) { // Send to other servers only objects which belong to this server
-                    outConnection.send(entity);
+        this.zeroEntity = new Entity();
+        this.zeroEntity.id = '' + 0;
+        dao.insertEntity(this.zeroEntity);
+
+        dao.getEntities().then((loadedEntities : Entity[]) => {
+            console.log("loaded " + loadedEntities.length + " from database.");
+            for (var loadedEntity of loadedEntities) {
+                this.model.put(loadedEntity);
+            }
+
+            for (var remoteServer of remoteServers) {
+                this.outConnections.push(new OutConnection(remoteServer['url'], remoteServer['x'], remoteServer['y'], remoteServer['z'], this));
+            }
+
+            this.model.onAdd = (entity: Entity) => {
+                for (var inConnection of this.inConnections) {
+                    inConnection.send(entity);
+                };
+                for (var outConnection of this.outConnections) {
+                    if (!entity.external) { // Send to other servers only objects which belong to this server
+                        outConnection.send(entity);
+                    }
+                };
+                if (!entity.external && !entity.dynamic) {
+                    dao.insertEntity(entity);
                 }
-            };
-        }
-        this.model.onUpdate = (entity: Entity) => {
-            for (var inConnection of this.inConnections) {
-                inConnection.send(entity);
-            };
-            for (var outConnection of this.outConnections) {
-                if (!entity.external) { // Send to other servers only objects which belong to this server
-                    outConnection.send(entity);
+            }
+            this.model.onUpdate = (entity: Entity) => {
+                for (var inConnection of this.inConnections) {
+                    inConnection.send(entity);
+                };
+                for (var outConnection of this.outConnections) {
+                    if (!entity.external) { // Send to other servers only objects which belong to this server
+                        outConnection.send(entity);
+                    }
+                };
+                if (!entity.external && !entity.dynamic) {
+                    dao.updateEntity(entity);
                 }
-            };
-        }
-        this.model.onRemove = (entity: Entity) => {
-            for (var inConnection of this.inConnections) {
-                inConnection.send(entity);
-            };
-            for (var outConnection of this.outConnections) {
-                if (!entity.external) { // Send to other servers only objects which belong to this server
-                    outConnection.send(entity);
+            }
+            this.model.onRemove = (entity: Entity) => {
+                for (var inConnection of this.inConnections) {
+                    inConnection.send(entity);
+                };
+                for (var outConnection of this.outConnections) {
+                    if (!entity.external) { // Send to other servers only objects which belong to this server
+                        outConnection.send(entity);
+                    }
+                };
+                if (!entity.external && !entity.dynamic) {
+                    dao.removeEntity(entity._id);
                 }
-            };
-        }
+            }
+        }).catch((error: Error) => {
+            console.error(error);
+        });
+
     }
 
     loop() {
@@ -52,6 +78,7 @@ export class Engine {
                 inConnection.disconnect();
                 this.inConnections.splice(this.inConnections.indexOf(inConnection), 1);
             }
+            inConnection.send(this.zeroEntity);
         }
         for (var outConnection of this.outConnections) {
             if (outConnection.disconnected()) {
@@ -61,6 +88,7 @@ export class Engine {
                     outConnection.disconnect();
                 }
             }
+            outConnection.send(this.zeroEntity);
         }
         console.log('in:' + this.inConnections.length + " out: " + this.outConnections.length);
     }

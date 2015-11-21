@@ -61,6 +61,13 @@ var OutConnection = (function () {
         this.wsClient.setOnOpen(function () {
             _this.connected = true;
             console.log('connected:' + _this.url);
+            for (var key in _this.engine.model.entities) {
+                var entity = _this.engine.model.entities[key];
+                console.log('sending entity to remote server: ' + entity.id);
+                if (!entity.external) {
+                    _this.send(entity);
+                }
+            }
         });
         this.wsClient.setOnReceiveObject(function (entity) {
             _this.receive(entity);

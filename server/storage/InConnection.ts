@@ -39,6 +39,13 @@ export class InConnection {
         this.engine.model.put(entity);
     }
 
+    connect: () => void = function (): void {
+        for (var key in this.engine.model.entities) {
+            var entity = this.engine.model.entities[key];
+            this.send(entity);
+        }
+    }
+
     disconnect: () => void = function (): void {
         for (var oid in this.idMap) {
             var id = this.idMap[oid];

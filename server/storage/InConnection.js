@@ -15,6 +15,12 @@ var InConnection = (function () {
             }
             this.engine.model.put(entity);
         };
+        this.connect = function () {
+            for (var key in this.engine.model.entities) {
+                var entity = this.engine.model.entities[key];
+                this.send(entity);
+            }
+        };
         this.disconnect = function () {
             for (var oid in this.idMap) {
                 var id = this.idMap[oid];

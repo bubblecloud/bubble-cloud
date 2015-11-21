@@ -49,6 +49,8 @@ var ic = require('./Server/Storage/InConnection');
 
 var ws = require('express-ws')(app); //app = express app
 
+var db = require('./Server/Storage/Database');
+
 /**
  * Connect to MongoDB.
  */
@@ -231,9 +233,15 @@ module.exports = app;
 /**
  * The server engine.
  */
-var engine = new eng.Engine(config.remoteServers);
+var engine;
 function mainLoop() {
-  engine.loop();
+  if (engine) {
+    engine.loop();
+  } else {
+    if (db.getDatabaseConnection()) {
+      engine = new eng.Engine(config.remoteServers);
+    }
+  }
   setTimeout(mainLoop, 1000);
 }
 mainLoop();
