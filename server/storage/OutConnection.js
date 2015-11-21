@@ -1,14 +1,20 @@
 var Entity_1 = require("./Entity");
 var ServerWsClient_1 = require("./ServerWsClient");
 var OutConnection = (function () {
-    function OutConnection(url, engine) {
+    function OutConnection(url, x, y, z, engine) {
         this.receivedTime = new Date().getTime();
         this.wsClient = null;
         this.idMap = {};
         this.send = function (entity) {
             if (this.wsClient && this.connected) {
                 entity.external = true;
+                entity.position.x += this.x;
+                entity.position.y += this.y;
+                entity.position.z += this.z;
                 this.wsClient.sendObject(entity);
+                entity.position.x -= this.x;
+                entity.position.y -= this.y;
+                entity.position.z -= this.z;
                 delete entity.external;
             }
         };
@@ -25,6 +31,9 @@ var OutConnection = (function () {
                 entity.oid = entity.id;
                 entity.id = this.idMap[entity.oid];
             }
+            entity.position.x -= this.x;
+            entity.position.y -= this.y;
+            entity.position.z -= this.z;
             this.engine.model.put(entity);
         };
         this.disconnect = function () {
@@ -39,6 +48,9 @@ var OutConnection = (function () {
             console.log('disconnected:' + this.url);
         };
         this.url = url;
+        this.x = x;
+        this.y = y;
+        this.z = z;
         this.engine = engine;
     }
     OutConnection.prototype.connect = function () {

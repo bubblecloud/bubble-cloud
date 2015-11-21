@@ -231,7 +231,7 @@ module.exports = app;
 /**
  * The server engine.
  */
-var engine = new eng.Engine(config.remoteUrls);
+var engine = new eng.Engine(config.remoteServers);
 function mainLoop() {
   engine.loop();
   setTimeout(mainLoop, 1000);

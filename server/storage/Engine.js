@@ -1,14 +1,14 @@
 var Model_1 = require("./Model");
 var OutConnection_1 = require("./OutConnection");
 var Engine = (function () {
-    function Engine(remoteUrls) {
+    function Engine(remoteServers) {
         var _this = this;
         this.inConnections = [];
         this.outConnections = [];
         this.model = new Model_1.Model();
-        for (var _i = 0; _i < remoteUrls.length; _i++) {
-            var remoteUrl = remoteUrls[_i];
-            this.outConnections.push(new OutConnection_1.OutConnection(remoteUrl, this));
+        for (var _i = 0; _i < remoteServers.length; _i++) {
+            var remoteServer = remoteServers[_i];
+            this.outConnections.push(new OutConnection_1.OutConnection(remoteServer['url'], remoteServer['x'], remoteServer['y'], remoteServer['z'], this));
         }
         this.model.onAdd = function (entity) {
             for (var _i = 0, _a = _this.inConnections; _i < _a.length; _i++) {

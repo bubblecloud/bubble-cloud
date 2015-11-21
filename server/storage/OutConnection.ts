@@ -10,6 +10,9 @@ export class OutConnection {
     receivedTime: number = new Date().getTime();
 
     url: string;
+    x: number;
+    y: number;
+    z: number;
     engine: Engine;
     key: string;
     connected: boolean;
@@ -18,15 +21,24 @@ export class OutConnection {
 
     idMap: {[key: string]:string} = {};
 
-    constructor(url: string, engine: Engine) {
+    constructor(url: string, x: number, y: number, z: number, engine: Engine) {
         this.url = url;
+        this.x = x;
+        this.y = y;
+        this.z = z;
         this.engine = engine;
     }
 
     send: (entity: Entity) => void = function (entity: Entity): void {
         if (this.wsClient && this.connected) {
             entity.external = true;
+            entity.position.x += this.x;
+            entity.position.y += this.y;
+            entity.position.z += this.z;
             this.wsClient.sendObject(entity);
+            entity.position.x -= this.x;
+            entity.position.y -= this.y;
+            entity.position.z -= this.z;
             delete entity.external;
         }
     }
@@ -45,6 +57,10 @@ export class OutConnection {
             entity.oid = entity.id;
             entity.id = this.idMap[entity.oid]
         }
+
+        entity.position.x -= this.x;
+        entity.position.y -= this.y;
+        entity.position.z -= this.z;
 
         this.engine.model.put(entity);
     }

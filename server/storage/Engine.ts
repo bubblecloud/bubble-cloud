@@ -9,9 +9,9 @@ export class Engine {
     outConnections : OutConnection[] = [];
     model: Model = new Model();
 
-    constructor(remoteUrls: string[]) {
-        for (var remoteUrl of remoteUrls) {
-            this.outConnections.push(new OutConnection(remoteUrl, this));
+    constructor(remoteServers: {key: string, any}[]) {
+        for (var remoteServer of remoteServers) {
+            this.outConnections.push(new OutConnection(remoteServer['url'], remoteServer['x'], remoteServer['y'], remoteServer['z'], this));
         }
         this.model.onAdd = (entity: Entity) => {
             for (var inConnection of this.inConnections) {
