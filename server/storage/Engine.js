@@ -16,6 +16,9 @@ var Engine = (function () {
                 _this.zeroEntity.dynamic = true;
                 dao.insertEntity(_this.zeroEntity);
             }
+            else {
+                _this.zeroEntity = loadedEntity;
+            }
             _this.initialize();
         }).catch(function (error) {
             console.error(error);

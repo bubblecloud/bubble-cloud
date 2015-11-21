@@ -21,6 +21,8 @@ export class Engine {
                 this.zeroEntity.id = '' + 0;
                 this.zeroEntity.dynamic = true;
                 dao.insertEntity(this.zeroEntity);
+            } else {
+                this.zeroEntity = loadedEntity;
             }
 
             this.initialize();
