@@ -1,6 +1,6 @@
 var Entity_1 = require("./Entity");
 var InConnection = (function () {
-    function InConnection() {
+    function InConnection(remoteAddress, remotePort, email) {
         this.receivedTime = new Date().getTime();
         this.idMap = {};
         this.receive = function (entity) {
@@ -22,7 +22,12 @@ var InConnection = (function () {
                 entity.removed = true;
                 this.engine.model.remove(entity);
             }
+            console.log('disconnected: ' + this.remoteAddress + ':' + this.remotePort + " " + this.email);
         };
+        this.remoteAddress = remoteAddress;
+        this.remotePort = remotePort;
+        this.email = email;
+        console.log('connected: ' + this.remoteAddress + ':' + this.remotePort + " " + this.email);
     }
     return InConnection;
 })();

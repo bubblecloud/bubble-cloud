@@ -242,11 +242,14 @@ mainLoop();
  * WebSockets End Point
  */
 app.ws('/ws', function(ws, req) {
-  var inConnection = new ic.InConnection();
-  inConnection.engine = engine;
+  var remoteAddress = req.client._peername.address;
+  var remotePort = req.client._peername.port;
+  var email;
   if (req.user) {
-    inConnection.email = req.user.email;
+    email = req.user.email;
   }
+  var inConnection = new ic.InConnection(remoteAddress, remotePort, email);
+  inConnection.engine = engine;
   inConnection.send = function(entity) {
     try {
       ws.send(JSON.stringify(entity));

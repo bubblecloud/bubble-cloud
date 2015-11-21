@@ -5,12 +5,23 @@ import {newId} from "./Entity";
  * Incoming connection.
  */
 export class InConnection {
+
     receivedTime: number = new Date().getTime();
 
-    engine: Engine;
-    key: string;
+    remoteAddress: string;
+    remotePort: number;
     email: string;
+
+    engine: Engine;
     idMap: {[key: string]:string} = {};
+
+    constructor(remoteAddress: string, remotePort: number, email: string) {
+        this.remoteAddress = remoteAddress;
+        this.remotePort = remotePort;
+        this.email = email;
+
+        console.log('connected: ' + this.remoteAddress + ':' + this.remotePort + " " + this.email);
+    }
 
     send: (entity: Entity) => void;
 
@@ -35,6 +46,7 @@ export class InConnection {
             entity.removed = true;
             this.engine.model.remove(entity);
         }
+        console.log('disconnected: ' + this.remoteAddress + ':' + this.remotePort + " " + this.email);
     }
 
 
