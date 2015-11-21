@@ -14,22 +14,24 @@ import Entity = model.ServerEntity;
 export function insertEntity(entity: Entity) : Promise<Entity> {
     console.log('entity db insert:' + entity.id);
     return new Promise<Entity>( function (resolve, reject) {
-        var db = database.getDatabaseConnection();
-        db.collection('entities', function (error, entities) {
-            if(error) {
-                console.error('entity insert error: ' + error.message);
-                return reject(error);
-            }
-
-            entities.insertOne(entity, function (error, inserted) {
-                if(error) {
+        database.getDatabase().then((db) => {
+            db.collection('entities', function (error, entities) {
+                if (error) {
                     console.error('entity insert error: ' + error.message);
                     return reject(error);
                 }
-                return resolve(inserted);
-            });
-        });
 
+                entities.insertOne(entity, function (error, inserted) {
+                    if (error) {
+                        console.error('entity insert error: ' + error.message);
+                        return reject(error);
+                    }
+                    return resolve(inserted);
+                });
+            });
+        }).catch((error) => {
+            return reject(error);
+        })
     });
 }
 
@@ -41,16 +43,18 @@ export function insertEntity(entity: Entity) : Promise<Entity> {
 export function updateEntity(entity: Entity) : Promise<Entity> {
     console.log('entity db update:' + entity.id);
     return new Promise<Entity>( function (resolve, reject) {
-        var db = database.getDatabaseConnection();
-        db.collection('entities', function (error, entities) {
-            if(error) { return reject(error); }
-
-            entities.updateOne({id: entity.id}, entity, function (error, inserted) {
+        database.getDatabase().then((db) => {
+            db.collection('entities', function (error, entities) {
                 if(error) { return reject(error); }
-                return resolve(inserted);
-            });
-        });
 
+                entities.updateOne({id: entity.id}, entity, function (error, inserted) {
+                    if(error) { return reject(error); }
+                    return resolve(inserted);
+                });
+            });
+        }).catch((error) => {
+            return reject(error);
+        })
     });
 }
 
@@ -63,16 +67,18 @@ export function getEntity(id: string) : Promise<Entity> {
     console.log('entity db get:' + id);
 
     return new Promise<Entity>( function (resolve, reject) {
-        var db = database.getDatabaseConnection();
-        db.collection('entities', function(error, entities) {
-            if(error) { return reject(error); }
-
-            entities.findOne({id: id}, function(error, foundEntity) {
+        database.getDatabase().then((db) => {
+            db.collection('entities', function(error, entities) {
                 if(error) { return reject(error); }
-                return resolve(foundEntity);
-            });
-        });
 
+                entities.findOne({id: id}, function(error, foundEntity) {
+                    if(error) { return reject(error); }
+                    return resolve(foundEntity);
+                });
+            });
+        }).catch((error) => {
+            return reject(error);
+        })
     });
 }
 
@@ -82,15 +88,18 @@ export function getEntity(id: string) : Promise<Entity> {
  */
 export function getEntities() : Promise<Entity[]> {
     return new Promise<Entity[]>( function (resolve, reject) {
-        var db = database.getDatabaseConnection();
-        db.collection('entities', function (error, entities) {
-            if(error) { return reject(error); }
-
-            entities.find().toArray(function (error, entities) {
+        database.getDatabase().then((db) => {
+            db.collection('entities', function (error, entities) {
                 if(error) { return reject(error); }
-                return resolve(entities);
+                entities.find().toArray(function (error, entities) {
+                    if(error) { return reject(error); }
+                    console.log('entity db get all:' + entities.length);
+                    return resolve(entities);
+                });
             });
-        });
+        }).catch((error) => {
+            return reject(error);
+        })
     });
 }
 
@@ -102,15 +111,18 @@ export function getEntities() : Promise<Entity[]> {
 export function removeEntity(id: string) : Promise<Entity> {
     console.log('entity db delete:' + id);
     return new Promise<Entity>( function (resolve, reject) {
-        var db = database.getDatabaseConnection();
-        db.collection('entities', function (error, entities) {
-            if(error) { return reject(error); }
-
-            entities.deleteOne({id: id}, function (error, deletedEntity) {
+        database.getDatabase().then((db) => {
+            db.collection('entities', function (error, entities) {
                 if(error) { return reject(error); }
 
-                resolve(deletedEntity);
+                entities.deleteOne({id: id}, function (error, deletedEntity) {
+                    if(error) { return reject(error); }
+
+                    resolve(deletedEntity);
+                });
             });
-        });
+        }).catch((error) => {
+            return reject(error);
+        })
     });
 }

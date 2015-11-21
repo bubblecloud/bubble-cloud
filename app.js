@@ -233,15 +233,9 @@ module.exports = app;
 /**
  * The server engine.
  */
-var engine;
+var engine = new eng.ServerEngine(config.remoteServers);
 function mainLoop() {
-  if (engine) {
-    engine.loop();
-  } else {
-    if (db.getDatabaseConnection()) {
-      engine = new eng.ServerEngine(config.remoteServers);
-    }
-  }
+  engine.loop();
   setTimeout(mainLoop, 1000);
 }
 mainLoop();
