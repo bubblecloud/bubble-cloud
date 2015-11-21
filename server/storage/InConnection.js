@@ -1,6 +1,7 @@
 var Entity_1 = require("./Entity");
 var InConnection = (function () {
     function InConnection() {
+        this.receivedTime = new Date().getTime();
         this.idMap = {};
         this.receive = function (entity) {
             this.receivedTime = new Date().getTime();

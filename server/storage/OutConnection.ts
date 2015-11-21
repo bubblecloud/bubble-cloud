@@ -7,19 +7,18 @@ import {Engine} from "./Engine";
  * Outgoing connection.
  */
 export class OutConnection {
+    receivedTime: number = new Date().getTime();
+
     url: string;
     engine: Engine;
     key: string;
     connected: boolean;
-
-    receivedTime: number;
 
     wsClient: ServerWsClient = null;
 
     idMap: {[key: string]:string} = {};
 
     constructor(url: string, engine: Engine) {
-        this.receivedTime = new Date().getTime();
         this.url = url;
         this.engine = engine;
     }

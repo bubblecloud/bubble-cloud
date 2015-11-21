@@ -5,10 +5,11 @@ import {newId} from "./Entity";
  * Incoming connection.
  */
 export class InConnection {
+    receivedTime: number = new Date().getTime();
+
     engine: Engine;
     key: string;
     email: string;
-    receivedTime: number;
     idMap: {[key: string]:string} = {};
 
     send: (entity: Entity) => void;
