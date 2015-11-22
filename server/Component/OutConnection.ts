@@ -15,7 +15,7 @@ export class OutConnection {
     z: number;
     engine: ServerEngine;
     key: string;
-    connected: boolean;
+    running: boolean = false;
 
     wsClient: ServerWsClient = null;
 
@@ -30,7 +30,8 @@ export class OutConnection {
     }
 
     send: (entity: ServerEntity) => void = function (entity: ServerEntity): void {
-        if (this.wsClient && this.connected) {
+        if (this.wsClient && this.running) {
+            console.log('sending entity to remote server: ' + entity.id)
             entity.external = true;
             entity.position.x += this.x;
             entity.position.y += this.y;
@@ -44,6 +45,7 @@ export class OutConnection {
     }
 
     receive: (entity: ServerEntity) => void = function (entity: ServerEntity): void {
+        console.log('received entity from remote server: rid=' + entity.id + ' external: ' + entity.external);
         // TODO This could be done on server side.
         if (entity.external) { // Ignore external entities from remote server.
             return;
@@ -77,7 +79,7 @@ export class OutConnection {
             this.engine.model.remove(entity);
         }
         this.wsClient = null;
-        this.connected = false;
+        this.running = false;
         console.log('disconnected:' + this.url);
     }
 
@@ -86,7 +88,7 @@ export class OutConnection {
         this.receivedTime = new Date().getTime();
         this.wsClient = new ServerWsClient(this.url + 'ws');
         this.wsClient.setOnOpen(()=> {
-            this.connected = true;
+            this.running = true;
             console.log('connected:' + this.url);
             for (var key in this.engine.model.entities) {
                 var entity = this.engine.model.entities[key];

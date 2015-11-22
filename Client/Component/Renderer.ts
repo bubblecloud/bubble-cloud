@@ -5,10 +5,15 @@
 class Renderer {
 
     model: Model;
+    keyboardReader: KeyboardReader;
+
     engine: BABYLON.Engine;
     scene: BABYLON.Scene;
-    constructor(model: Model) {
+    camera: BABYLON.FreeCamera;
+
+    constructor(model: Model, keyboardInputController: KeyboardReader) {
         this.model = model;
+        this.keyboardReader = keyboardInputController;
         this.model.setOnAdd((entity: Entity) => {
             this.onAdd(entity);
         });
@@ -41,7 +46,7 @@ class Renderer {
         this.scene.removeMesh(shape);
     }
 
-    start() {
+    startup() {
         // Get the canvas element from our HTML above
         var canvas: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("renderCanvas");
 
@@ -62,13 +67,13 @@ class Renderer {
                 this.scene.clearColor = new BABYLON.Color3(151/255, 147/255, 198/255);
 
                 // This creates and positions a free camera
-                var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), this.scene);
+                this.camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), this.scene);
 
                 // This targets the camera to scene origin
-                camera.setTarget(BABYLON.Vector3.Zero());
+                this.camera.setTarget(BABYLON.Vector3.Zero());
 
                 // This attaches the camera to the canvas
-                camera.attachControl(canvas, false);
+                this.camera.attachControl(canvas, false);
 
                 // This creates a light, aiming 0,1,0 - to the sky.
                 var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), this.scene);
@@ -97,6 +102,25 @@ class Renderer {
             this.engine.runRenderLoop(() => {
                 this.model.interpolate();
                 this.scene.render();
+
+                //Pressing W
+                var pressedKeys = this.keyboardReader.getPressedKeys();
+                if (pressedKeys.forward) {
+                    this.camera.cameraDirection = this.camera.cameraDirection.add(new BABYLON.Vector3(0, 0, 0.1));
+                }
+                //Pressing S
+                if (pressedKeys.back) {
+                    this.camera.cameraDirection = this.camera.cameraDirection.add(new BABYLON.Vector3(0, 0, -0.1));
+                }
+                //Pressing A
+                if (pressedKeys.left) {
+                    this.camera.cameraDirection = this.camera.cameraDirection.add(new BABYLON.Vector3(-0.1, 0, 0));
+                }
+                //Pressing D
+                if (pressedKeys.right) {
+                    this.camera.cameraDirection = this.camera.cameraDirection.add(new BABYLON.Vector3(0.1, 0, 0));
+                }
+
                 //console.log(this.engine.getFps().toFixed());
             });
 
@@ -105,6 +129,10 @@ class Renderer {
                 this.engine.resize();
             });
         }
+    }
+
+    shutdown() {
+        this.engine.stopRenderLoop();
     }
 
 }

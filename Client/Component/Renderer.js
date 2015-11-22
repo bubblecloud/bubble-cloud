@@ -2,9 +2,10 @@
 /// <reference path="../../typings/es6-promise/es6-promise.d.ts" />
 /// <reference path="../../typings/babylonjs/babylonjs.d.ts" />
 var Renderer = (function () {
-    function Renderer(model) {
+    function Renderer(model, keyboardInputController) {
         var _this = this;
         this.model = model;
+        this.keyboardReader = keyboardInputController;
         this.model.setOnAdd(function (entity) {
             _this.onAdd(entity);
         });
@@ -29,7 +30,7 @@ var Renderer = (function () {
         var shape = this.scene.getMeshByName(entity.id);
         this.scene.removeMesh(shape);
     };
-    Renderer.prototype.start = function () {
+    Renderer.prototype.startup = function () {
         var _this = this;
         var canvas = document.getElementById("renderCanvas");
         if (!canvas) {
@@ -40,9 +41,9 @@ var Renderer = (function () {
             var createScene = function () {
                 _this.scene = new BABYLON.Scene(_this.engine);
                 _this.scene.clearColor = new BABYLON.Color3(151 / 255, 147 / 255, 198 / 255);
-                var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), _this.scene);
-                camera.setTarget(BABYLON.Vector3.Zero());
-                camera.attachControl(canvas, false);
+                _this.camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), _this.scene);
+                _this.camera.setTarget(BABYLON.Vector3.Zero());
+                _this.camera.attachControl(canvas, false);
                 var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), _this.scene);
                 light.intensity = .5;
                 return _this.scene;
@@ -51,11 +52,27 @@ var Renderer = (function () {
             this.engine.runRenderLoop(function () {
                 _this.model.interpolate();
                 _this.scene.render();
+                var pressedKeys = _this.keyboardReader.getPressedKeys();
+                if (pressedKeys.forward) {
+                    _this.camera.cameraDirection = _this.camera.cameraDirection.add(new BABYLON.Vector3(0, 0, 0.1));
+                }
+                if (pressedKeys.back) {
+                    _this.camera.cameraDirection = _this.camera.cameraDirection.add(new BABYLON.Vector3(0, 0, -0.1));
+                }
+                if (pressedKeys.left) {
+                    _this.camera.cameraDirection = _this.camera.cameraDirection.add(new BABYLON.Vector3(-0.1, 0, 0));
+                }
+                if (pressedKeys.right) {
+                    _this.camera.cameraDirection = _this.camera.cameraDirection.add(new BABYLON.Vector3(0.1, 0, 0));
+                }
             });
             window.addEventListener("resize", function () {
                 _this.engine.resize();
             });
         }
+    };
+    Renderer.prototype.shutdown = function () {
+        this.engine.stopRenderLoop();
     };
     return Renderer;
 })();

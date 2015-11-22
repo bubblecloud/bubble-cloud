@@ -10,19 +10,20 @@ export class ServerEngine {
     inConnections : InConnection[] = [];
     outConnections : OutConnection[] = [];
     model: ServerModel = new ServerModel();
-    zeroEntity: ServerEntity;
+    coreEntity: ServerEntity;
 
     constructor(remoteServers: {key: string, any}[]) {
         this.remoteServers = remoteServers;
 
         dao.getEntity('0').then((loadedEntity : ServerEntity) => {
             if (!loadedEntity) {
-                this.zeroEntity = new ServerEntity();
-                this.zeroEntity.id = '' + 0;
-                this.zeroEntity.dynamic = true;
-                dao.insertEntity(this.zeroEntity);
+                this.coreEntity = new ServerEntity();
+                this.coreEntity.core = true;
+                this.coreEntity.id = '' + 0;
+                this.coreEntity.dynamic = false;
+                dao.insertEntity(this.coreEntity);
             } else {
-                this.zeroEntity = loadedEntity;
+                this.coreEntity = loadedEntity;
             }
 
             this.initialize();
@@ -94,7 +95,7 @@ export class ServerEngine {
                 inConnection.disconnect();
                 this.inConnections.splice(this.inConnections.indexOf(inConnection), 1);
             }
-            inConnection.send(this.zeroEntity);
+            inConnection.send(this.coreEntity);
         }
         for (var outConnection of this.outConnections) {
             if (outConnection.disconnected()) {
@@ -104,7 +105,7 @@ export class ServerEngine {
                     outConnection.disconnect();
                 }
             }
-            outConnection.send(this.zeroEntity);
+            outConnection.send(this.coreEntity);
         }
         //console.log('in:' + this.inConnections.length + " out: " + this.outConnections.length);
     }

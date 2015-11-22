@@ -27,6 +27,8 @@ export class ServerEntity {
     oid: string; // original ID
     _id: string; // unique persistent ID
 
+    core: boolean = false;
+
     removed: boolean = false;
 
     external: boolean = false;

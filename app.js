@@ -254,9 +254,11 @@ app.ws('/ws', function(ws, req) {
   inConnection.engine = engine;
   inConnection.send = function(entity) {
     try {
+      if (inConnection.remoteIsServer && entity.external) {
+        return; // Send external objects to server only.
+      }
       ws.send(JSON.stringify(entity));
     } catch (error) {
-
     }
   }
 

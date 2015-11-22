@@ -13056,7 +13056,7 @@ var BABYLON;
         Scene.prototype.stopAnimation = function (target) {
             var animatable = this.getAnimatableByTarget(target);
             if (animatable) {
-                animatable.stop();
+                animatable.shutdown();
             }
         };
         Scene.prototype._animate = function () {
@@ -28896,7 +28896,7 @@ var BABYLON;
         };
         StopSoundAction.prototype.execute = function () {
             if (this._sound !== undefined)
-                this._sound.stop();
+                this._sound.shutdown();
         };
         return StopSoundAction;
     })(BABYLON.Action);
@@ -30785,7 +30785,7 @@ var BABYLON;
                     this._soundSource.playbackRate.value = this._playbackRate;
                     this._startTime = startTime;
                     this._soundSource.onended = function () { _this._onended(); };
-                    this._soundSource.start(this._startTime, this.isPaused ? this._startOffset % this._soundSource.buffer.duration : 0);
+                    this._soundSource.startup(this._startTime, this.isPaused ? this._startOffset % this._soundSource.buffer.duration : 0);
                     this.isPlaying = true;
                     this.isPaused = false;
                 }
@@ -30807,7 +30807,7 @@ var BABYLON;
         Sound.prototype.stop = function (time) {
             if (this.isPlaying) {
                 var stopTime = time ? BABYLON.Engine.audioEngine.audioContext.currentTime + time : BABYLON.Engine.audioEngine.audioContext.currentTime;
-                this._soundSource.stop(stopTime);
+                this._soundSource.shutdown(stopTime);
                 this.isPlaying = false;
             }
         };
