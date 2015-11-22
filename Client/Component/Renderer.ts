@@ -9,7 +9,7 @@ class Renderer {
 
     engine: BABYLON.Engine;
     scene: BABYLON.Scene;
-    camera: BABYLON.FreeCamera;
+    camera: BABYLON.TargetCamera;
 
     constructor(model: Model, keyboardInputController: KeyboardReader) {
         this.model = model;
@@ -67,13 +67,16 @@ class Renderer {
                 this.scene.clearColor = new BABYLON.Color3(151/255, 147/255, 198/255);
 
                 // This creates and positions a free camera
-                this.camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), this.scene);
+                //this.camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), this.scene);
 
                 // This targets the camera to scene origin
-                this.camera.setTarget(BABYLON.Vector3.Zero());
+                //this.camera.setTarget(BABYLON.Vector3.Zero());
 
                 // This attaches the camera to the canvas
-                this.camera.attachControl(canvas, false);
+                //this.camera.attachControl(canvas, false);
+
+                this.camera = new BABYLON.TargetCamera("FollowCam", new BABYLON.Vector3(0, 5, -10), this.scene);
+                this.camera.setTarget(BABYLON.Vector3.Zero());
 
                 // This creates a light, aiming 0,1,0 - to the sky.
                 var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), this.scene);

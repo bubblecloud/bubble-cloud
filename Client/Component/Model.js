@@ -39,7 +39,7 @@ var Model = (function () {
             {
                 var deltaVector = position.subtract(entity.interpolatedPosition);
                 var deltaLength = deltaVector.length();
-                if (deltaLength < 0.005 && entity.interpolatedRotationQuaternion.normalize().subtract(rotationQuaternion.normalize()).length() < 0.1) {
+                if (deltaLength < 0.005 && entity.interpolatedRotationQuaternion.normalize().subtract(rotationQuaternion.normalize()).length() < 0.005) {
                     entity.interpolatorPosition = position;
                     entity.interpolatedPosition = position;
                     entity.interpolatorRotationQuaternion = rotationQuaternion;

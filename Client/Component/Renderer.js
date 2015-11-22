@@ -41,9 +41,8 @@ var Renderer = (function () {
             var createScene = function () {
                 _this.scene = new BABYLON.Scene(_this.engine);
                 _this.scene.clearColor = new BABYLON.Color3(151 / 255, 147 / 255, 198 / 255);
-                _this.camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), _this.scene);
+                _this.camera = new BABYLON.TargetCamera("FollowCam", new BABYLON.Vector3(0, 5, -10), _this.scene);
                 _this.camera.setTarget(BABYLON.Vector3.Zero());
-                _this.camera.attachControl(canvas, false);
                 var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), _this.scene);
                 light.intensity = .5;
                 return _this.scene;

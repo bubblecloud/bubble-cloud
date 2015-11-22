@@ -2,19 +2,45 @@ class MouseReader {
 
     engine: Engine;
 
+    mouseLook: boolean = false;
+    movementX: number = 0;
+    movementY: number = 0;
+
     constructor(engine: Engine) {
         this.engine = engine;
-        document.getElementById("renderCanvas").onmousedown = function(eventData) {
+        document.getElementById("renderCanvas").onmousedown = (eventData) => {
             if (eventData.button === 2) {
-                this.requestPointerLock();
+                document.getElementById("renderCanvas").requestPointerLock();
+                this.mouseLook = true;
             }
         }
 
-        document.getElementById("renderCanvas").onmouseup = function(eventData) {
+        document.getElementById("renderCanvas").onmouseup = (eventData) =>  {
             if (eventData.button === 2) {
                 document.exitPointerLock();
+                this.mouseLook = false;
             }
         }
+
+        document.getElementById("renderCanvas").onmousemove = (event) => {
+            if (this.mouseLook) {
+                console.log(event.movementX + ',' + event.movementY);
+                this.movementX += event.movementX;
+                this.movementY += event.movementY;
+            }
+        }
+    }
+
+    popMovementX() : number {
+        var x = this.movementX;
+        this.movementX = 0;
+        return x;
+    }
+
+    popMovementY() : number {
+        var y = this.movementY;
+        this.movementY = 0;
+        return y;
     }
 
 }
