@@ -102,25 +102,6 @@ class Renderer {
             this.engine.runRenderLoop(() => {
                 this.model.interpolate();
                 this.scene.render();
-
-                //Pressing W
-                var pressedKeys = this.keyboardReader.getPressedKeys();
-                if (pressedKeys.forward) {
-                    this.camera.cameraDirection = this.camera.cameraDirection.add(new BABYLON.Vector3(0, 0, 0.1));
-                }
-                //Pressing S
-                if (pressedKeys.back) {
-                    this.camera.cameraDirection = this.camera.cameraDirection.add(new BABYLON.Vector3(0, 0, -0.1));
-                }
-                //Pressing A
-                if (pressedKeys.left) {
-                    this.camera.cameraDirection = this.camera.cameraDirection.add(new BABYLON.Vector3(-0.1, 0, 0));
-                }
-                //Pressing D
-                if (pressedKeys.right) {
-                    this.camera.cameraDirection = this.camera.cameraDirection.add(new BABYLON.Vector3(0.1, 0, 0));
-                }
-
                 //console.log(this.engine.getFps().toFixed());
             });
 

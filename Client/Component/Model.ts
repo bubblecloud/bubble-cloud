@@ -10,7 +10,7 @@ class Model {
     lastTimeMillis: number = (new Date).getTime();
 
     interpolate() : void {
-        var maxInterpolateTimeMillis = 600;
+        var maxInterpolateTimeMillis = 300;
         var timeMillis = (new Date).getTime();
         var timeDeltaMillis : number = timeMillis - this.lastTimeMillis;
         this.lastTimeMillis = timeMillis;
@@ -20,27 +20,46 @@ class Model {
 
         for (var entity of this.mobiles) {
 
-            var position = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
-            var deltaVector = position.subtract(entity.interpolatedPosition);
-            var deltaLength = deltaVector.length() ;
-            var deltaUnitVector = deltaVector.normalize();
-            var stepLength = timeDeltaMillis / maxInterpolateTimeMillis;
-            var stepVector = deltaUnitVector.scale(stepLength);
-
-            entity.interpolatedPosition = entity.interpolatedPosition.add(stepVector);
-
             var rotationQuaternion = new BABYLON.Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
-            entity.interpolatedRotationQuaternion = BABYLON.Quaternion.Slerp(entity.interpolatedRotationQuaternion, rotationQuaternion, timeDeltaMillis / maxInterpolateTimeMillis);
+            entity.interpolatorRotationQuaternion = BABYLON.Quaternion.Slerp(entity.interpolatorRotationQuaternion, rotationQuaternion, timeDeltaMillis / maxInterpolateTimeMillis);
+            entity.interpolatorRotationQuaternion.normalize()
+            entity.interpolatedRotationQuaternion = BABYLON.Quaternion.Slerp(entity.interpolatedRotationQuaternion, entity.interpolatorRotationQuaternion, timeDeltaMillis / maxInterpolateTimeMillis);
             entity.interpolatedRotationQuaternion.normalize()
 
-            this.onUpdate(entity);
+            var position = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
 
-            /*console.log(deltaLength);*/
-            if (deltaLength < 0.1 && entity.interpolatedRotationQuaternion.normalize().subtract(rotationQuaternion.normalize()).length() < 0.1 ) {
-                this.mobiles.splice(this.mobiles.indexOf(entity), 1);
+            {
+                var deltaVector = position.subtract(entity.interpolatorPosition);
+                var deltaLength = deltaVector.length();
+                var deltaUnitVector = deltaVector.normalize();
+                var stepLength = deltaLength * timeDeltaMillis / maxInterpolateTimeMillis;
+                var stepVector = deltaUnitVector.scale(stepLength);
+                entity.interpolatorPosition = entity.interpolatorPosition.add(stepVector);
             }
 
+            {
+                var deltaVector = entity.interpolatorPosition.subtract(entity.interpolatedPosition);
+                var deltaLength = deltaVector.length();
+                var deltaUnitVector = deltaVector.normalize();
+                var stepLength = deltaLength * timeDeltaMillis / maxInterpolateTimeMillis;
+                var stepVector = deltaUnitVector.scale(stepLength);
+                entity.interpolatedPosition = entity.interpolatedPosition.add(stepVector);
+            }
 
+            {
+                var deltaVector = position.subtract(entity.interpolatedPosition);
+                var deltaLength = deltaVector.length();
+                if (deltaLength < 0.005 && entity.interpolatedRotationQuaternion.normalize().subtract(rotationQuaternion.normalize()).length() < 0.1) {
+                    entity.interpolatorPosition = position;
+                    entity.interpolatedPosition = position;
+                    entity.interpolatorRotationQuaternion = rotationQuaternion;
+                    entity.interpolatedRotationQuaternion = rotationQuaternion;
+                    this.mobiles.splice(this.mobiles.indexOf(entity), 1);
+                    return;
+                }
+            }
+
+            this.onUpdate(entity);
         }
     }
 
@@ -59,7 +78,9 @@ class Model {
             }
         } else {
             entity.interpolatedPosition = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
+            entity.interpolatorPosition = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
             entity.interpolatedRotationQuaternion = new BABYLON.Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
+            entity.interpolatorRotationQuaternion = new BABYLON.Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
             this.entities[entity.id] = entity;
             if (this.onUpdate) {
                 this.onAdd(entity);

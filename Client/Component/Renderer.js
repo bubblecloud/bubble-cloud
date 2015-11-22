@@ -52,19 +52,6 @@ var Renderer = (function () {
             this.engine.runRenderLoop(function () {
                 _this.model.interpolate();
                 _this.scene.render();
-                var pressedKeys = _this.keyboardReader.getPressedKeys();
-                if (pressedKeys.forward) {
-                    _this.camera.cameraDirection = _this.camera.cameraDirection.add(new BABYLON.Vector3(0, 0, 0.1));
-                }
-                if (pressedKeys.back) {
-                    _this.camera.cameraDirection = _this.camera.cameraDirection.add(new BABYLON.Vector3(0, 0, -0.1));
-                }
-                if (pressedKeys.left) {
-                    _this.camera.cameraDirection = _this.camera.cameraDirection.add(new BABYLON.Vector3(-0.1, 0, 0));
-                }
-                if (pressedKeys.right) {
-                    _this.camera.cameraDirection = _this.camera.cameraDirection.add(new BABYLON.Vector3(0.1, 0, 0));
-                }
             });
             window.addEventListener("resize", function () {
                 _this.engine.resize();

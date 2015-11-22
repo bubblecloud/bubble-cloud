@@ -12,6 +12,8 @@ class Entity {
     scaling: BABYLON.Vector3 = new BABYLON.Vector3(0,0,0);
 
     interpolatedPosition: BABYLON.Vector3;
+    interpolatorPosition: BABYLON.Vector3;
+    interpolatorRotationQuaternion: BABYLON.Quaternion;
     interpolatedRotationQuaternion: BABYLON.Quaternion;
 
     removed: boolean = false;

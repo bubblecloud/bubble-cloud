@@ -1,6 +1,7 @@
 var AvatarController = (function () {
     function AvatarController(engine) {
         this.running = false;
+        this.velocity = 2;
         this.engine = engine;
     }
     AvatarController.prototype.startup = function () {
@@ -8,9 +9,6 @@ var AvatarController = (function () {
         this.avatar = new Entity();
         this.avatar.newId();
         this.avatar.dynamic = true;
-        this.avatar.position.x = 3 * Math.cos(2 * Math.PI * 0);
-        this.avatar.position.z = 3 * Math.sin(2 * Math.PI * 0);
-        this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * 0, 0, 0);
         this.engine.ws.sendObject(this.avatar);
         this.running = true;
     };
@@ -19,9 +17,19 @@ var AvatarController = (function () {
     };
     AvatarController.prototype.loop = function (timeMillis, timeDeltaMillis) {
         if (this.running) {
-            this.avatar.position.x = 3 * Math.cos(2 * Math.PI * ((timeMillis - this.startTimeMillis) / 10000));
-            this.avatar.position.z = 3 * Math.sin(2 * Math.PI * ((timeMillis - this.startTimeMillis) / 10000));
-            this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * ((timeMillis - this.startTimeMillis) / 10000), 0, 0);
+            var pressedKeys = this.engine.keyboardReader.getPressedKeys();
+            if (pressedKeys.forward) {
+                this.avatar.position = this.avatar.position.add(new BABYLON.Vector3(0, 0, 1).scale(this.velocity * timeDeltaMillis / 1000.0));
+            }
+            if (pressedKeys.back) {
+                this.avatar.position = this.avatar.position.add(new BABYLON.Vector3(0, 0, -1).scale(this.velocity * timeDeltaMillis / 1000.0));
+            }
+            if (pressedKeys.left) {
+                this.avatar.position = this.avatar.position.add(new BABYLON.Vector3(-1, 0, 0).scale(this.velocity * timeDeltaMillis / 1000.0));
+            }
+            if (pressedKeys.right) {
+                this.avatar.position = this.avatar.position.add(new BABYLON.Vector3(1, 0, 0).scale(this.velocity * timeDeltaMillis / 1000.0));
+            }
             this.engine.ws.sendObject({
                 'id': this.avatar.id,
                 'position': this.avatar.position,
