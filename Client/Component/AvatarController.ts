@@ -4,6 +4,7 @@ class AvatarController {
     avatar: ClientEntity;
     startTimeMillis: number;
     velocity: number = 2;
+    cameraHeightOffset: number = 5;
 
     constructor(engine: ClientEngine) {
         this.engine = engine;
@@ -58,6 +59,7 @@ class AvatarController {
             if (pressedKeys.down) {
                 this.avatar.position = this.avatar.position.add(BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, -1, 0).scale(this.velocity * timeDeltaMillis / 1000.0), rotationMatrix));
             }
+
 
 
             var clientWidth = document.documentElement.clientWidth;

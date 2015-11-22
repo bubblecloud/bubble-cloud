@@ -21,13 +21,14 @@ var Renderer = (function () {
         var shape = BABYLON.Mesh.CreateBox(entity.id, 1, this.scene);
         shape.position = entity.interpolatedPosition;
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
+        if (entity.oid == this.clientEngine.avatarController.avatar.id) {
+            this.camera.target = shape;
+        }
     };
     Renderer.prototype.onUpdate = function (entity) {
         var shape = this.scene.getMeshByName(entity.id);
         shape.position = entity.interpolatedPosition;
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
-        if (entity.oid == this.clientEngine.avatarController.avatar.id) {
-        }
     };
     Renderer.prototype.onRemove = function (entity) {
         var shape = this.scene.getMeshByName(entity.id);
@@ -44,8 +45,10 @@ var Renderer = (function () {
             var createScene = function () {
                 _this.scene = new BABYLON.Scene(_this.engine);
                 _this.scene.clearColor = new BABYLON.Color3(151 / 255, 147 / 255, 198 / 255);
-                _this.camera = new BABYLON.TargetCamera("FollowCam", new BABYLON.Vector3(0, 5, -10), _this.scene);
-                _this.camera.setTarget(BABYLON.Vector3.Zero());
+                _this.camera = new BABYLON.FollowCamera("FollowCam", new BABYLON.Vector3(0, 0, 0), _this.scene);
+                _this.camera.heightOffset = 5;
+                _this.camera.radius = 10;
+                _this.camera.rotationOffset = 180;
                 var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), _this.scene);
                 light.intensity = .5;
                 return _this.scene;

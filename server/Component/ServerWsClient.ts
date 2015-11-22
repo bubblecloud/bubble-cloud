@@ -39,7 +39,11 @@ export class ServerWsClient {
      */
     setOnReceiveObject(onMessage:(message:any) => void) {
         this.wsSocket.onmessage = function (event: MessageEvent) {
-            onMessage(JSON.parse(event.data));
+            try {
+                onMessage(JSON.parse(event.data));
+            } catch (error) {
+                console.error(error.message);
+            }
         }
     }
 

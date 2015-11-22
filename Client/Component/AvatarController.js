@@ -2,6 +2,7 @@ var AvatarController = (function () {
     function AvatarController(engine) {
         this.running = false;
         this.velocity = 2;
+        this.cameraHeightOffset = 5;
         this.engine = engine;
     }
     AvatarController.prototype.startup = function () {

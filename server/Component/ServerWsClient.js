@@ -11,7 +11,12 @@ var ServerWsClient = (function () {
     };
     ServerWsClient.prototype.setOnReceiveObject = function (onMessage) {
         this.wsSocket.onmessage = function (event) {
-            onMessage(JSON.parse(event.data));
+            try {
+                onMessage(JSON.parse(event.data));
+            }
+            catch (error) {
+                console.error(error.message);
+            }
         };
     };
     return ServerWsClient;

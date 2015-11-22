@@ -10,7 +10,7 @@ class Renderer {
     clientEngine: ClientEngine;
     engine: BABYLON.Engine;
     scene: BABYLON.Scene;
-    camera: BABYLON.TargetCamera;
+    camera: BABYLON.FollowCamera;
 
     constructor(clientEngine: ClientEngine, model: ClientModel, keyboardInputController: KeyboardReader) {
         this.clientEngine = clientEngine;
@@ -33,16 +33,25 @@ class Renderer {
         var shape = BABYLON.Mesh.CreateBox(entity.id, 1, this.scene);
         shape.position = entity.interpolatedPosition
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion
+        if (entity.oid == this.clientEngine.avatarController.avatar.id) {
+            this.camera.target = shape;
+            /*var rotationMatrix = new BABYLON.Matrix();
+            entity.interpolatedRotationQuaternion.toRotationMatrix(rotationMatrix);
+            var relativeCameraPosition = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -10), rotationMatrix);
+            this.camera.heightOffset = 2 + relativeCameraPosition.y;*/
+        }
     }
 
     onUpdate(entity: ClientEntity) {
         var shape = this.scene.getMeshByName(entity.id);
-        shape.position = entity.interpolatedPosition
-        shape.rotationQuaternion = entity.interpolatedRotationQuaternion
-        if (entity.oid == this.clientEngine.avatarController.avatar.id) {
-            //this.camera.position = entity.position;
-        }
-        //console.log('update:' + shape.name + " " + shape.position.x);
+        shape.position = entity.interpolatedPosition;
+        shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
+        /*if (entity.oid == this.clientEngine.avatarController.avatar.id) {
+            var rotationMatrix = new BABYLON.Matrix();
+            entity.interpolatedRotationQuaternion.toRotationMatrix(rotationMatrix);
+            var relativeCameraPosition = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -10), rotationMatrix);
+            this.camera.heightOffset = 2 + relativeCameraPosition.y;
+        }*/
     }
 
     onRemove(entity: ClientEntity) {
@@ -80,8 +89,11 @@ class Renderer {
                 // This attaches the camera to the canvas
                 //this.camera.attachControl(canvas, false);
 
-                this.camera = new BABYLON.TargetCamera("FollowCam", new BABYLON.Vector3(0, 5, -10), this.scene);
-                this.camera.setTarget(BABYLON.Vector3.Zero());
+                this.camera = new BABYLON.FollowCamera("FollowCam", new BABYLON.Vector3(0, 0, 0), this.scene);
+                this.camera.heightOffset = 5;
+                this.camera.radius = 10;
+                this.camera.rotationOffset = 180;
+                //this.camera.setTarget(BABYLON.Vector3.Zero());
 
                 // This creates a light, aiming 0,1,0 - to the sky.
                 var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), this.scene);
