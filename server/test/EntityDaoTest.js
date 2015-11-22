@@ -5,7 +5,7 @@ var app = require('../../app.js');
 var db = require('../Component/EntityDao');
 var model = require('../Component/ServerEntity');
 var Entity = model.ServerEntity;
-var User = require('../Legacy/Models/User');
+var User = require('./Models/User');
 var should = chai.should();
 var expect = chai.expect;
 describe('Entity Model Unit Tests:', function () {

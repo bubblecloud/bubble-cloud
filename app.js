@@ -26,10 +26,10 @@ var sass = require('node-sass-middleware');
 /**
  * Controllers (route handlers).
  */
-var homeController = require('./Server/Legacy/Controllers/home');
-var userController = require('./Server/Legacy/Controllers/user');
-var apiController = require('./Server/Legacy/Controllers/api');
-var contactController = require('./Server/Legacy/Controllers/contact');
+var homeController = require('./Server/Web/Controllers/home');
+var userController = require('./Server/Web/Controllers/user');
+var apiController = require('./Server/Web/Controllers/api');
+var contactController = require('./Server/Web/Controllers/contact');
 var rpcApi = require('./Server/ApplicationInterface/RpcApi');
 var rpcApiMethods = rpcApi.getRpcApiMethods();
 
@@ -37,7 +37,7 @@ var rpcApiMethods = rpcApi.getRpcApiMethods();
  * Configuration
  */
 var secrets = require('./secrets');
-var passportConf = require('./Server/Legacy/Controllers/passport');
+var passportConf = require('./Server/Web/Controllers/passport');
 
 /**
  * Create Express server.
