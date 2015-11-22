@@ -1,11 +1,11 @@
-class Model {
+class ClientModel {
 
-    entities : {[key: string]: Entity} = {}
-    mobiles : Entity[] = [];
+    entities : {[key: string]: ClientEntity} = {}
+    mobiles : ClientEntity[] = [];
 
-    onAdd : (entity: Entity) => void;
-    onUpdate : (entity: Entity) => void;
-    onRemove : (entity: Entity) => void;
+    onAdd : (entity: ClientEntity) => void;
+    onUpdate : (entity: ClientEntity) => void;
+    onRemove : (entity: ClientEntity) => void;
 
     lastTimeMillis: number = (new Date).getTime();
 
@@ -63,7 +63,7 @@ class Model {
         }
     }
 
-    put(entity: Entity) : void {
+    put(entity: ClientEntity) : void {
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {
             Object.getOwnPropertyNames(entity).forEach(name => {
@@ -88,11 +88,11 @@ class Model {
         }
     }
 
-    get(entity: Entity) : Entity {
+    get(entity: ClientEntity) : ClientEntity {
         return this.entities[entity.id];
     }
 
-    remove(entity: Entity) : void {
+    remove(entity: ClientEntity) : void {
         delete this.entities[entity.id];
         if (this.onRemove) {
             this.onRemove(entity);
@@ -103,15 +103,15 @@ class Model {
         return Object.keys(this.entities);
     }
 
-    setOnAdd(onAdd : (entity: Entity) => void) : void {
+    setOnAdd(onAdd : (entity: ClientEntity) => void) : void {
         this.onAdd = onAdd;
     }
 
-    setOnUpdate(onUpdate : (entity: Entity) => void) : void {
+    setOnUpdate(onUpdate : (entity: ClientEntity) => void) : void {
         this.onUpdate = onUpdate;
     }
 
-    setOnRemove(onRemove : (entity: Entity) => void) : void {
+    setOnRemove(onRemove : (entity: ClientEntity) => void) : void {
         this.onRemove = onRemove;
     }
 }

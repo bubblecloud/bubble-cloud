@@ -4,28 +4,28 @@
 
 class Renderer {
 
-    model: Model;
+    model: ClientModel;
     keyboardReader: KeyboardReader;
 
     engine: BABYLON.Engine;
     scene: BABYLON.Scene;
     camera: BABYLON.TargetCamera;
 
-    constructor(model: Model, keyboardInputController: KeyboardReader) {
+    constructor(model: ClientModel, keyboardInputController: KeyboardReader) {
         this.model = model;
         this.keyboardReader = keyboardInputController;
-        this.model.setOnAdd((entity: Entity) => {
+        this.model.setOnAdd((entity: ClientEntity) => {
             this.onAdd(entity);
         });
-        this.model.setOnUpdate((entity: Entity) => {
+        this.model.setOnUpdate((entity: ClientEntity) => {
             this.onUpdate(entity);
         });
-        this.model.setOnRemove((entity: Entity) => {
+        this.model.setOnRemove((entity: ClientEntity) => {
             this.onRemove(entity);
         });
     }
 
-    onAdd(entity: Entity) {
+    onAdd(entity: ClientEntity) {
         //console.log('add:' + JSON.stringify(entity));
         // Let's try our built-in 'sphere' shape. Params: name, subdivisions, size, scene
         var shape = BABYLON.Mesh.CreateBox(entity.id, 1, this.scene);
@@ -33,14 +33,14 @@ class Renderer {
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion
     }
 
-    onUpdate(entity: Entity) {
+    onUpdate(entity: ClientEntity) {
         var shape = this.scene.getMeshByName(entity.id);
         shape.position = entity.interpolatedPosition
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion
         //console.log('update:' + shape.name + " " + shape.position.x);
     }
 
-    onRemove(entity: Entity) {
+    onRemove(entity: ClientEntity) {
         //console.log('remove:' + JSON.stringify(entity));
         var shape = this.scene.getMeshByName(entity.id);
         this.scene.removeMesh(shape);

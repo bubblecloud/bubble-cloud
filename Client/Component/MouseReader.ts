@@ -1,12 +1,12 @@
 class MouseReader {
 
-    engine: Engine;
+    engine: ClientEngine;
 
     mouseLook: boolean = false;
     movementX: number = 0;
     movementY: number = 0;
 
-    constructor(engine: Engine) {
+    constructor(engine: ClientEngine) {
         this.engine = engine;
         document.getElementById("renderCanvas").onmousedown = (eventData) => {
             if (eventData.button === 2) {

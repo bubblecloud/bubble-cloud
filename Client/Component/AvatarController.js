@@ -6,7 +6,7 @@ var AvatarController = (function () {
     }
     AvatarController.prototype.startup = function () {
         this.startTimeMillis = new Date().getTime();
-        this.avatar = new Entity();
+        this.avatar = new ClientEntity();
         this.avatar.newId();
         this.avatar.dynamic = true;
         this.engine.ws.sendObject(this.avatar);

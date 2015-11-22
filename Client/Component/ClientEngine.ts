@@ -1,13 +1,13 @@
 /// <reference path="../Utilities/WsClient.ts" />
 /// <reference path="../Utilities/RpcApi.ts" />
 
-class Engine {
+class ClientEngine {
     api: RpcApi = getProxy('rpc', RpcApi);
     ws: WsClient;
 
     running: boolean = false;
 
-    model: Model = new Model();
+    model: ClientModel = new ClientModel();
     avatarController: AvatarController = new AvatarController(this);
     keyboardReader: KeyboardReader = new KeyboardReader();
     mouseReader: MouseReader = new MouseReader(this);
@@ -24,7 +24,7 @@ class Engine {
             this.running = true;
         });
 
-        this.ws.setOnReceiveObject( (entity: Entity) => {
+        this.ws.setOnReceiveObject( (entity: ClientEntity) => {
             if (entity.removed) {
                 this.model.remove(entity);
             } else {

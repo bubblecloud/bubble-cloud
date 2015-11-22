@@ -1,17 +1,17 @@
 /// <reference path="../Utilities/WsClient.ts" />
 /// <reference path="../Utilities/RpcApi.ts" />
-var Engine = (function () {
-    function Engine() {
+var ClientEngine = (function () {
+    function ClientEngine() {
         this.api = getProxy('rpc', RpcApi);
         this.running = false;
-        this.model = new Model();
+        this.model = new ClientModel();
         this.avatarController = new AvatarController(this);
         this.keyboardReader = new KeyboardReader();
         this.mouseReader = new MouseReader(this);
         this.renderer = new Renderer(this.model, this.keyboardReader);
         this.startTimeMillis = new Date().getTime();
     }
-    Engine.prototype.startup = function () {
+    ClientEngine.prototype.startup = function () {
         var _this = this;
         this.ws = new WsClient('ws://' + location.host + '/ws');
         this.ws.setOnOpen(function () {
@@ -34,11 +34,11 @@ var Engine = (function () {
         this.renderer.startup();
         this.lastLoopTimeMillis = (new Date).getTime();
     };
-    Engine.prototype.shutdown = function () {
+    ClientEngine.prototype.shutdown = function () {
         this.renderer.shutdown();
         this.avatarController.shutdown();
     };
-    Engine.prototype.loop = function () {
+    ClientEngine.prototype.loop = function () {
         var timeMillis = (new Date).getTime();
         var timeDeltaMillis = timeMillis - this.lastLoopTimeMillis;
         if (this.running) {
@@ -46,5 +46,5 @@ var Engine = (function () {
         }
         this.lastLoopTimeMillis = timeMillis;
     };
-    return Engine;
+    return ClientEngine;
 })();

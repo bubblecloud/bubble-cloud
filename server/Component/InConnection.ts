@@ -14,7 +14,7 @@ export class InConnection {
 
     remoteIsServer: boolean;
 
-    engine: Engine;
+    engine: ClientEngine;
     idMap: {[key: string]:string} = {};
 
     constructor(remoteAddress: string, remotePort: number, email: string) {

@@ -1,10 +1,10 @@
-var Model = (function () {
-    function Model() {
+var ClientModel = (function () {
+    function ClientModel() {
         this.entities = {};
         this.mobiles = [];
         this.lastTimeMillis = (new Date).getTime();
     }
-    Model.prototype.interpolate = function () {
+    ClientModel.prototype.interpolate = function () {
         var maxInterpolateTimeMillis = 300;
         var timeMillis = (new Date).getTime();
         var timeDeltaMillis = timeMillis - this.lastTimeMillis;
@@ -51,7 +51,7 @@ var Model = (function () {
             this.onUpdate(entity);
         }
     };
-    Model.prototype.put = function (entity) {
+    ClientModel.prototype.put = function (entity) {
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {
             Object.getOwnPropertyNames(entity).forEach(function (name) {
@@ -75,26 +75,26 @@ var Model = (function () {
             }
         }
     };
-    Model.prototype.get = function (entity) {
+    ClientModel.prototype.get = function (entity) {
         return this.entities[entity.id];
     };
-    Model.prototype.remove = function (entity) {
+    ClientModel.prototype.remove = function (entity) {
         delete this.entities[entity.id];
         if (this.onRemove) {
             this.onRemove(entity);
         }
     };
-    Model.prototype.keys = function () {
+    ClientModel.prototype.keys = function () {
         return Object.keys(this.entities);
     };
-    Model.prototype.setOnAdd = function (onAdd) {
+    ClientModel.prototype.setOnAdd = function (onAdd) {
         this.onAdd = onAdd;
     };
-    Model.prototype.setOnUpdate = function (onUpdate) {
+    ClientModel.prototype.setOnUpdate = function (onUpdate) {
         this.onUpdate = onUpdate;
     };
-    Model.prototype.setOnRemove = function (onRemove) {
+    ClientModel.prototype.setOnRemove = function (onRemove) {
         this.onRemove = onRemove;
     };
-    return Model;
+    return ClientModel;
 })();

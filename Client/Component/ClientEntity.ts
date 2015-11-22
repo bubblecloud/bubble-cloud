@@ -5,7 +5,7 @@ var entityIdCounter = 0;
 /**
  * Entity value object.
  */
-class Entity {
+class ClientEntity {
     id: string;
     position: BABYLON.Vector3 = new BABYLON.Vector3(0,0,0);
     rotationQuaternion: BABYLON.Quaternion = new BABYLON.Quaternion();

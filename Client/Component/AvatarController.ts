@@ -1,17 +1,17 @@
 class AvatarController {
     running: boolean = false;
-    engine: Engine;
-    avatar: Entity;
+    engine: ClientEngine;
+    avatar: ClientEntity;
     startTimeMillis: number;
     velocity: number = 2;
 
-    constructor(engine: Engine) {
+    constructor(engine: ClientEngine) {
         this.engine = engine;
     }
 
     startup() {
         this.startTimeMillis = new Date().getTime();
-        this.avatar = new Entity();
+        this.avatar = new ClientEntity();
         this.avatar.newId();
         this.avatar.dynamic = true;
         /*this.avatar.position.x = 3 * Math.cos(2 * Math.PI * 0);

@@ -1,7 +1,7 @@
-/// <reference path="./Component/Engine.ts" />
+/// <reference path="./Component/ClientEngine.ts" />
 $(document).ready(function () {
     if (document.getElementById("renderCanvas")) {
-        var engine = new Engine();
+        var engine = new ClientEngine();
         engine.startup();
         setInterval(function () {
             engine.loop();
