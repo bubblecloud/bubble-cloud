@@ -11729,7 +11729,7 @@ a {
 }
 
 .navbar-default {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(68, 45, 63, 0.4);
 }
 
 footer {
@@ -11762,6 +11762,10 @@ footer p, footer ul {
 
 .fa {
   margin-right: 6px;
+}
+
+.spacer {
+  height: 50px;
 }
 
 #renderCanvas {

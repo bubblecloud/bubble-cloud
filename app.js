@@ -109,7 +109,8 @@ app.use(function(req, res, next) {
   next();
 });
 app.use(function(req, res, next) {
-  if (/api/i.test(req.path)) req.session.returnTo = req.path;
+  //TODO set allowed turn to pages
+  //if (!req.path) req.session.returnTo = req.path;
   next();
 });
 app.use(express.static(path.join(__dirname, 'Client'), { maxAge: 31557600000 }));

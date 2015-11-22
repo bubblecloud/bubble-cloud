@@ -10,13 +10,7 @@ html
   body
     include partials/header
 
-    .spacer
-
-    .container
-      include partials/flash
-      block content
-
-    include partials/footer
+    block content
 
     script(src='/Static/lib/jquery.min.js')
     script(src='/Static/lib/bootstrap.min.js')
