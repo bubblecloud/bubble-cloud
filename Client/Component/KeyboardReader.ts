@@ -3,6 +3,8 @@ class KeyboardInputKeys {
     right:number = 0;
     forward:number = 0;
     back:number = 0;
+    up:number = 0;
+    down:number = 0;
 }
 
 var keyboardKeysPressed = new KeyboardInputKeys();
@@ -24,6 +26,12 @@ function handleKeyDown(evt)
     if (evt.keyCode==83){//S
         keyboardKeysPressed.back=1;
     }
+    if (evt.keyCode==69){//E
+        keyboardKeysPressed.up=1;
+    }
+    if (evt.keyCode==81){//Q
+        keyboardKeysPressed.down=1;
+    }
 }
 
 function handleKeyUp(evt)
@@ -39,6 +47,12 @@ function handleKeyUp(evt)
     }
     if (evt.keyCode==83){
         keyboardKeysPressed.back=0;
+    }
+    if (evt.keyCode==69){//E
+        keyboardKeysPressed.up=0;
+    }
+    if (evt.keyCode==81){//Q
+        keyboardKeysPressed.down=0;
     }
 }
 

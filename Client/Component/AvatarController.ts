@@ -50,6 +50,15 @@ class AvatarController {
             if (pressedKeys.right) {
                 this.avatar.position = this.avatar.position.add(BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(1, 0, 0).scale(this.velocity * timeDeltaMillis / 1000.0), rotationMatrix));
             }
+            //Pressing E
+            if (pressedKeys.up) {
+                this.avatar.position = this.avatar.position.add(BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 1, 0).scale(this.velocity * timeDeltaMillis / 1000.0), rotationMatrix));
+            }
+            //Pressing Q
+            if (pressedKeys.down) {
+                this.avatar.position = this.avatar.position.add(BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, -1, 0).scale(this.velocity * timeDeltaMillis / 1000.0), rotationMatrix));
+            }
+
 
             var clientWidth = document.documentElement.clientWidth;
             var clientHeight = document.documentElement.clientHeight;

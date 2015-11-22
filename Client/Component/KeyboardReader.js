@@ -4,6 +4,8 @@ var KeyboardInputKeys = (function () {
         this.right = 0;
         this.forward = 0;
         this.back = 0;
+        this.up = 0;
+        this.down = 0;
     }
     return KeyboardInputKeys;
 })();
@@ -23,6 +25,12 @@ function handleKeyDown(evt) {
     if (evt.keyCode == 83) {
         keyboardKeysPressed.back = 1;
     }
+    if (evt.keyCode == 69) {
+        keyboardKeysPressed.up = 1;
+    }
+    if (evt.keyCode == 81) {
+        keyboardKeysPressed.down = 1;
+    }
 }
 function handleKeyUp(evt) {
     if (evt.keyCode == 65) {
@@ -36,6 +44,12 @@ function handleKeyUp(evt) {
     }
     if (evt.keyCode == 83) {
         keyboardKeysPressed.back = 0;
+    }
+    if (evt.keyCode == 69) {
+        keyboardKeysPressed.up = 0;
+    }
+    if (evt.keyCode == 81) {
+        keyboardKeysPressed.down = 0;
     }
 }
 var KeyboardReader = (function () {
