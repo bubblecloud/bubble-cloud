@@ -25,6 +25,9 @@ var OutConnection = (function () {
             this.receivedTime = new Date().getTime();
             if (!this.idMap[entity.id]) {
                 ServerEntity_1.newId(entity);
+                while (this.idMap[entity.id]) {
+                    ServerEntity_1.newId(entity);
+                }
                 this.idMap[entity.oid] = entity.id;
             }
             else {

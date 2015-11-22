@@ -30,6 +30,9 @@ export class InConnection {
 
         if(!this.idMap[entity.id]) {
             newId(entity);
+            while (this.idMap[entity.id]) { // Reallocate until free ID is found
+                newId(entity);
+            }
             this.idMap[entity.oid] = entity.id;
         } else {
             entity.oid = entity.id;
