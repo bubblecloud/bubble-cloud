@@ -8,7 +8,6 @@ var OutConnection = (function () {
         this.idMap = {};
         this.send = function (entity) {
             if (this.wsClient && this.running) {
-                console.log('sending entity to remote server: ' + entity.id);
                 entity.external = true;
                 entity.position.x += this.x;
                 entity.position.y += this.y;
@@ -21,7 +20,6 @@ var OutConnection = (function () {
             }
         };
         this.receive = function (entity) {
-            console.log('received entity from remote server: rid=' + entity.id + ' external: ' + entity.external);
             if (entity.external) {
                 return;
             }
