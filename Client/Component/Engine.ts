@@ -10,6 +10,7 @@ class Engine {
     model: Model = new Model();
     avatarController: AvatarController = new AvatarController(this);
     keyboardReader: KeyboardReader = new KeyboardReader();
+    mouseReader: MouseReader = new MouseReader(this);
     renderer: Renderer = new Renderer(this.model, this.keyboardReader);
 
     startTimeMillis: number = new Date().getTime();

@@ -7,6 +7,7 @@ var Engine = (function () {
         this.model = new Model();
         this.avatarController = new AvatarController(this);
         this.keyboardReader = new KeyboardReader();
+        this.mouseReader = new MouseReader(this);
         this.renderer = new Renderer(this.model, this.keyboardReader);
         this.startTimeMillis = new Date().getTime();
     }
