@@ -5,6 +5,9 @@ var InConnection = (function () {
         this.idMap = {};
         this.receive = function (entity) {
             this.receivedTime = new Date().getTime();
+            if (entity.id == '' + 0 && entity.core) {
+                this.remoteIsServer = true;
+            }
             if (!this.idMap[entity.id]) {
                 ServerEntity_1.newId(entity);
                 while (this.idMap[entity.id]) {
@@ -21,6 +24,9 @@ var InConnection = (function () {
         this.connect = function () {
             for (var key in this.engine.model.entities) {
                 var entity = this.engine.model.entities[key];
+                if (this.remoteIsServer && entity.external) {
+                    continue;
+                }
                 this.send(entity);
             }
         };

@@ -3,10 +3,12 @@ var ServerWsClient_1 = require("./ServerWsClient");
 var OutConnection = (function () {
     function OutConnection(url, x, y, z, engine) {
         this.receivedTime = new Date().getTime();
+        this.running = false;
         this.wsClient = null;
         this.idMap = {};
         this.send = function (entity) {
-            if (this.wsClient && this.connected) {
+            if (this.wsClient && this.running) {
+                console.log('sending entity to remote server: ' + entity.id);
                 entity.external = true;
                 entity.position.x += this.x;
                 entity.position.y += this.y;
@@ -19,6 +21,7 @@ var OutConnection = (function () {
             }
         };
         this.receive = function (entity) {
+            console.log('received entity from remote server: rid=' + entity.id + ' external: ' + entity.external);
             if (entity.external) {
                 return;
             }
@@ -48,7 +51,7 @@ var OutConnection = (function () {
                 this.engine.model.remove(entity);
             }
             this.wsClient = null;
-            this.connected = false;
+            this.running = false;
             console.log('disconnected:' + this.url);
         };
         this.url = url;
@@ -63,7 +66,7 @@ var OutConnection = (function () {
         this.receivedTime = new Date().getTime();
         this.wsClient = new ServerWsClient_1.ServerWsClient(this.url + 'ws');
         this.wsClient.setOnOpen(function () {
-            _this.connected = true;
+            _this.running = true;
             console.log('connected:' + _this.url);
             for (var key in _this.engine.model.entities) {
                 var entity = _this.engine.model.entities[key];

@@ -20,6 +20,7 @@ exports.Quaternion = Quaternion;
 var entityIdCounter = 0;
 var ServerEntity = (function () {
     function ServerEntity() {
+        this.core = false;
         this.removed = false;
         this.external = false;
         this.dynamic = false;

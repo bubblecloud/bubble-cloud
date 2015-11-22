@@ -11,13 +11,14 @@ var ServerEngine = (function () {
         this.remoteServers = remoteServers;
         dao.getEntity('0').then(function (loadedEntity) {
             if (!loadedEntity) {
-                _this.zeroEntity = new ServerEntity_1.ServerEntity();
-                _this.zeroEntity.id = '' + 0;
-                _this.zeroEntity.dynamic = true;
-                dao.insertEntity(_this.zeroEntity);
+                _this.coreEntity = new ServerEntity_1.ServerEntity();
+                _this.coreEntity.core = true;
+                _this.coreEntity.id = '' + 0;
+                _this.coreEntity.dynamic = false;
+                dao.insertEntity(_this.coreEntity);
             }
             else {
-                _this.zeroEntity = loadedEntity;
+                _this.coreEntity = loadedEntity;
             }
             _this.initialize();
         }).catch(function (error) {
@@ -99,7 +100,7 @@ var ServerEngine = (function () {
                 inConnection.disconnect();
                 this.inConnections.splice(this.inConnections.indexOf(inConnection), 1);
             }
-            inConnection.send(this.zeroEntity);
+            inConnection.send(this.coreEntity);
         }
         for (var _b = 0, _c = this.outConnections; _b < _c.length; _b++) {
             var outConnection = _c[_b];
@@ -111,7 +112,7 @@ var ServerEngine = (function () {
                     outConnection.disconnect();
                 }
             }
-            outConnection.send(this.zeroEntity);
+            outConnection.send(this.coreEntity);
         }
     };
     return ServerEngine;

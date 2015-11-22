@@ -12,6 +12,8 @@ export class InConnection {
     remotePort: number;
     email: string;
 
+    remoteIsServer: boolean;
+
     engine: Engine;
     idMap: {[key: string]:string} = {};
 
@@ -27,6 +29,10 @@ export class InConnection {
 
     receive: (entity: ServerEntity) => void = function (entity: ServerEntity): void {
         this.receivedTime = new Date().getTime();
+
+        if (entity.id == '' + 0 && entity.core) {
+            this.remoteIsServer = true;
+        }
 
         if(!this.idMap[entity.id]) {
             newId(entity);
@@ -45,6 +51,9 @@ export class InConnection {
     connect: () => void = function (): void {
         for (var key in this.engine.model.entities) {
             var entity = this.engine.model.entities[key];
+            if (this.remoteIsServer && entity.external) {
+                continue; // Send external entities to clients only.
+            }
             this.send(entity);
         }
     }
