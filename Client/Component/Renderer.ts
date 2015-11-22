@@ -7,11 +7,13 @@ class Renderer {
     model: ClientModel;
     keyboardReader: KeyboardReader;
 
+    clientEngine: ClientEngine;
     engine: BABYLON.Engine;
     scene: BABYLON.Scene;
     camera: BABYLON.TargetCamera;
 
-    constructor(model: ClientModel, keyboardInputController: KeyboardReader) {
+    constructor(clientEngine: ClientEngine, model: ClientModel, keyboardInputController: KeyboardReader) {
+        this.clientEngine = clientEngine;
         this.model = model;
         this.keyboardReader = keyboardInputController;
         this.model.setOnAdd((entity: ClientEntity) => {
@@ -37,6 +39,9 @@ class Renderer {
         var shape = this.scene.getMeshByName(entity.id);
         shape.position = entity.interpolatedPosition
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion
+        if (entity.oid == this.clientEngine.avatarController.avatar.id) {
+            //this.camera.position = entity.position;
+        }
         //console.log('update:' + shape.name + " " + shape.position.x);
     }
 

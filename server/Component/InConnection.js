@@ -2,22 +2,27 @@ var ServerEntity_1 = require("./ServerEntity");
 var InConnection = (function () {
     function InConnection(remoteAddress, remotePort, email) {
         this.receivedTime = new Date().getTime();
-        this.idMap = {};
+        this.oidIdMap = {};
+        this.idOIdMap = {};
         this.receive = function (entity) {
             this.receivedTime = new Date().getTime();
             if (entity.id == '' + 0 && entity.core) {
                 this.remoteIsServer = true;
             }
-            if (!this.idMap[entity.id]) {
+            if (!entity.external) {
+                entity.owner = this.email;
+            }
+            var oid = entity.id;
+            if (!this.oidIdMap[oid]) {
                 ServerEntity_1.newId(entity);
-                while (this.idMap[entity.id]) {
+                while (this.oidIdMap[entity.id]) {
                     ServerEntity_1.newId(entity);
                 }
-                this.idMap[entity.oid] = entity.id;
+                this.oidIdMap[oid] = entity.id;
+                this.idOIdMap[entity.id] = oid;
             }
             else {
-                entity.oid = entity.id;
-                entity.id = this.idMap[entity.oid];
+                entity.id = this.oidIdMap[oid];
             }
             this.engine.model.put(entity);
         };
@@ -31,8 +36,8 @@ var InConnection = (function () {
             }
         };
         this.disconnect = function () {
-            for (var oid in this.idMap) {
-                var id = this.idMap[oid];
+            for (var oid in this.oidIdMap) {
+                var id = this.oidIdMap[oid];
                 var entity = this.engine.model.get(id);
                 if (entity.dynamic) {
                     entity.removed = true;

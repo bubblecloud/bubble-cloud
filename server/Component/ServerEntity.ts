@@ -28,12 +28,11 @@ export class ServerEntity {
     _id: string; // unique persistent ID
 
     core: boolean = false;
-
     removed: boolean = false;
-
     external: boolean = false;
-
     dynamic: boolean = false;
+
+    owner: string;
 
     position: Vector3 = new Vector3();
     rotationQuaternion: Quaternion = new Quaternion();
@@ -42,6 +41,5 @@ export class ServerEntity {
 
 export function newId(entity: ServerEntity) : void {
     entityIdCounter++;
-    entity.oid = entity.id;
     entity.id = '' + entityIdCounter;
 }

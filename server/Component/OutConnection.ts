@@ -19,7 +19,7 @@ export class OutConnection {
 
     wsClient: ServerWsClient = null;
 
-    idMap: {[key: string]:string} = {};
+    oidIdMap: {[key: string]:string} = {};
 
     constructor(url: string, x: number, y: number, z: number, engine: ServerEngine) {
         this.url = url;
@@ -52,15 +52,15 @@ export class OutConnection {
         }
         this.receivedTime = new Date().getTime();
 
-        if(!this.idMap[entity.id]) {
+        var oid = entity.id;
+        if(!this.oidIdMap[oid]) {
             newId(entity);
-            while (this.idMap[entity.id]) { // Reallocate until free ID is found
+            while (this.oidIdMap[oid]) { // Reallocate until free ID is found
                 newId(entity);
             }
-            this.idMap[entity.oid] = entity.id;
+            this.oidIdMap[oid] = entity.id;
         } else {
-            entity.oid = entity.id;
-            entity.id = this.idMap[entity.oid]
+            entity.id = this.oidIdMap[oid]
         }
 
         entity.external = true;
@@ -72,8 +72,8 @@ export class OutConnection {
     }
 
     disconnect: () => void = function (): void {
-        for (var oid in this.idMap) {
-            var id = this.idMap[oid];
+        for (var oid in this.oidIdMap) {
+            var id = this.oidIdMap[oid];
             var entity = this.engine.model.get(id);
             entity.removed = true;
             this.engine.model.remove(entity);

@@ -19,7 +19,6 @@ var MouseReader = (function () {
         };
         document.getElementById("renderCanvas").onmousemove = function (event) {
             if (_this.mouseLook) {
-                console.log(event.movementX + ',' + event.movementY);
                 _this.movementX += event.movementX;
                 _this.movementY += event.movementY;
             }

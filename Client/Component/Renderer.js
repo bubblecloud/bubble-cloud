@@ -2,8 +2,9 @@
 /// <reference path="../../typings/es6-promise/es6-promise.d.ts" />
 /// <reference path="../../typings/babylonjs/babylonjs.d.ts" />
 var Renderer = (function () {
-    function Renderer(model, keyboardInputController) {
+    function Renderer(clientEngine, model, keyboardInputController) {
         var _this = this;
+        this.clientEngine = clientEngine;
         this.model = model;
         this.keyboardReader = keyboardInputController;
         this.model.setOnAdd(function (entity) {
@@ -25,6 +26,8 @@ var Renderer = (function () {
         var shape = this.scene.getMeshByName(entity.id);
         shape.position = entity.interpolatedPosition;
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
+        if (entity.oid == this.clientEngine.avatarController.avatar.id) {
+        }
     };
     Renderer.prototype.onRemove = function (entity) {
         var shape = this.scene.getMeshByName(entity.id);

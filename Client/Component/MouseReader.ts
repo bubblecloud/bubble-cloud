@@ -24,7 +24,6 @@ class MouseReader {
 
         document.getElementById("renderCanvas").onmousemove = (event) => {
             if (this.mouseLook) {
-                console.log(event.movementX + ',' + event.movementY);
                 this.movementX += event.movementX;
                 this.movementY += event.movementY;
             }

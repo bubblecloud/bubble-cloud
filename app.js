@@ -258,7 +258,9 @@ app.ws('/ws', function(ws, req) {
       if (inConnection.remoteIsServer && entity.external) {
         return; // Send external objects to server only.
       }
+      entity.oid = inConnection.idOIdMap[entity.id];
       ws.send(JSON.stringify(entity));
+      delete entity.oid;
     } catch (error) {
     }
   }

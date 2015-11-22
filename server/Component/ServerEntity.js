@@ -33,7 +33,6 @@ var ServerEntity = (function () {
 exports.ServerEntity = ServerEntity;
 function newId(entity) {
     entityIdCounter++;
-    entity.oid = entity.id;
     entity.id = '' + entityIdCounter;
 }
 exports.newId = newId;

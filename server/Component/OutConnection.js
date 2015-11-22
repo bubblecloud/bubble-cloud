@@ -5,7 +5,7 @@ var OutConnection = (function () {
         this.receivedTime = new Date().getTime();
         this.running = false;
         this.wsClient = null;
-        this.idMap = {};
+        this.oidIdMap = {};
         this.send = function (entity) {
             if (this.wsClient && this.running) {
                 entity.external = true;
@@ -24,16 +24,16 @@ var OutConnection = (function () {
                 return;
             }
             this.receivedTime = new Date().getTime();
-            if (!this.idMap[entity.id]) {
+            var oid = entity.id;
+            if (!this.oidIdMap[oid]) {
                 ServerEntity_1.newId(entity);
-                while (this.idMap[entity.id]) {
+                while (this.oidIdMap[oid]) {
                     ServerEntity_1.newId(entity);
                 }
-                this.idMap[entity.oid] = entity.id;
+                this.oidIdMap[oid] = entity.id;
             }
             else {
-                entity.oid = entity.id;
-                entity.id = this.idMap[entity.oid];
+                entity.id = this.oidIdMap[oid];
             }
             entity.external = true;
             entity.position.x -= this.x;
@@ -42,8 +42,8 @@ var OutConnection = (function () {
             this.engine.model.put(entity);
         };
         this.disconnect = function () {
-            for (var oid in this.idMap) {
-                var id = this.idMap[oid];
+            for (var oid in this.oidIdMap) {
+                var id = this.oidIdMap[oid];
                 var entity = this.engine.model.get(id);
                 entity.removed = true;
                 this.engine.model.remove(entity);
