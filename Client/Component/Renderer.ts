@@ -10,7 +10,7 @@ class Renderer {
     clientEngine: ClientEngine;
     engine: BABYLON.Engine;
     scene: BABYLON.Scene;
-    camera: BABYLON.FollowCamera;
+    camera: BABYLON.TargetCamera;
     avatarShape: BABYLON.Mesh;
 
     lastLoopTimeMillis: number = new Date().getTime();
@@ -38,7 +38,7 @@ class Renderer {
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
             this.avatarShape = BABYLON.Mesh.CreateBox(entity.id, 1, this.scene);
-            this.camera.target = this.avatarShape;
+            shape.visibility = false;
             /*var rotationMatrix = new BABYLON.Matrix();
             entity.interpolatedRotationQuaternion.toRotationMatrix(rotationMatrix);
             var relativeCameraPosition = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -10), rotationMatrix);
@@ -93,11 +93,8 @@ class Renderer {
                 // This attaches the camera to the canvas
                 //this.camera.attachControl(canvas, false);
 
-                this.camera = new BABYLON.FollowCamera("FollowCam", new BABYLON.Vector3(0, 0, 0), this.scene);
-                this.camera.heightOffset = 5;
-                this.camera.radius = 10;
-                this.camera.rotationOffset = 180;
-                //this.camera.setTarget(BABYLON.Vector3.Zero());
+                this.camera = new BABYLON.TargetCamera("AvatarCamera", new BABYLON.Vector3(0, 5, -10), this.scene);
+                this.camera.setTarget(BABYLON.Vector3.Zero());
 
                 // This creates a light, aiming 0,1,0 - to the sky.
                 var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), this.scene);
@@ -135,6 +132,12 @@ class Renderer {
                     if (this.avatarShape) {
                         this.avatarShape.position = this.clientEngine.avatarController.avatar.position;
                         this.avatarShape.rotationQuaternion = this.clientEngine.avatarController.avatar.rotationQuaternion;
+
+                        var rotationMatrix = new BABYLON.Matrix();
+                        this.avatarShape.rotationQuaternion.toRotationMatrix(rotationMatrix);
+                        var cameraDirection = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 5, -10), rotationMatrix)
+                        this.camera.position = cameraDirection.add(this.avatarShape.position);
+                        this.camera.setTarget(this.avatarShape.position);
                     }
                 }
 

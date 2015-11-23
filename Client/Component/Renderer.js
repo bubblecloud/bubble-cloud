@@ -24,7 +24,7 @@ var Renderer = (function () {
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
             this.avatarShape = BABYLON.Mesh.CreateBox(entity.id, 1, this.scene);
-            this.camera.target = this.avatarShape;
+            shape.visibility = false;
         }
     };
     Renderer.prototype.onUpdate = function (entity) {
@@ -47,10 +47,8 @@ var Renderer = (function () {
             var createScene = function () {
                 _this.scene = new BABYLON.Scene(_this.engine);
                 _this.scene.clearColor = new BABYLON.Color3(151 / 255, 147 / 255, 198 / 255);
-                _this.camera = new BABYLON.FollowCamera("FollowCam", new BABYLON.Vector3(0, 0, 0), _this.scene);
-                _this.camera.heightOffset = 5;
-                _this.camera.radius = 10;
-                _this.camera.rotationOffset = 180;
+                _this.camera = new BABYLON.TargetCamera("AvatarCamera", new BABYLON.Vector3(0, 5, -10), _this.scene);
+                _this.camera.setTarget(BABYLON.Vector3.Zero());
                 var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), _this.scene);
                 light.intensity = .5;
                 return _this.scene;
@@ -66,6 +64,11 @@ var Renderer = (function () {
                     if (_this.avatarShape) {
                         _this.avatarShape.position = _this.clientEngine.avatarController.avatar.position;
                         _this.avatarShape.rotationQuaternion = _this.clientEngine.avatarController.avatar.rotationQuaternion;
+                        var rotationMatrix = new BABYLON.Matrix();
+                        _this.avatarShape.rotationQuaternion.toRotationMatrix(rotationMatrix);
+                        var cameraDirection = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 5, -10), rotationMatrix);
+                        _this.camera.position = cameraDirection.add(_this.avatarShape.position);
+                        _this.camera.setTarget(_this.avatarShape.position);
                     }
                 }
                 _this.lastLoopTimeMillis = timeMillis;
