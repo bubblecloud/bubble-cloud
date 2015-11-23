@@ -38,7 +38,7 @@ class Renderer {
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
             this.avatarShape = BABYLON.Mesh.CreateBox(entity.id, 1, this.scene);
-            shape.visibility = false;
+            shape.visibility = 0;
             /*var rotationMatrix = new BABYLON.Matrix();
             entity.interpolatedRotationQuaternion.toRotationMatrix(rotationMatrix);
             var relativeCameraPosition = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -10), rotationMatrix);

@@ -24,7 +24,7 @@ var Renderer = (function () {
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
             this.avatarShape = BABYLON.Mesh.CreateBox(entity.id, 1, this.scene);
-            shape.visibility = false;
+            shape.visibility = 0;
         }
     };
     Renderer.prototype.onUpdate = function (entity) {
