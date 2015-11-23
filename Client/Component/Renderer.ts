@@ -11,6 +11,9 @@ class Renderer {
     engine: BABYLON.Engine;
     scene: BABYLON.Scene;
     camera: BABYLON.FollowCamera;
+    avatarShape: BABYLON.Mesh;
+
+    lastLoopTimeMillis: number = new Date().getTime();
 
     constructor(clientEngine: ClientEngine, model: ClientModel, keyboardInputController: KeyboardReader) {
         this.clientEngine = clientEngine;
@@ -31,10 +34,11 @@ class Renderer {
         //console.log('add:' + JSON.stringify(entity));
         // Let's try our built-in 'sphere' shape. Params: name, subdivisions, size, scene
         var shape = BABYLON.Mesh.CreateBox(entity.id, 1, this.scene);
-        shape.position = entity.interpolatedPosition
-        shape.rotationQuaternion = entity.interpolatedRotationQuaternion
+        shape.position = entity.interpolatedPosition;
+        shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
-            this.camera.target = shape;
+            this.avatarShape = BABYLON.Mesh.CreateBox(entity.id, 1, this.scene);
+            this.camera.target = this.avatarShape;
             /*var rotationMatrix = new BABYLON.Matrix();
             entity.interpolatedRotationQuaternion.toRotationMatrix(rotationMatrix);
             var relativeCameraPosition = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -10), rotationMatrix);
@@ -122,7 +126,20 @@ class Renderer {
             this.engine.runRenderLoop(() => {
                 this.model.interpolate();
                 this.scene.render();
-                //console.log(this.engine.getFps().toFixed());
+
+                var timeMillis = (new Date).getTime();
+                var timeDeltaMillis : number = timeMillis - this.lastLoopTimeMillis;
+
+                if (this.clientEngine.running) {
+                    this.clientEngine.avatarController.renderLoop(timeMillis, timeDeltaMillis);
+                    if (this.avatarShape) {
+                        this.avatarShape.position = this.clientEngine.avatarController.avatar.position;
+                        this.avatarShape.rotationQuaternion = this.clientEngine.avatarController.avatar.rotationQuaternion;
+                    }
+                }
+
+                this.lastLoopTimeMillis = timeMillis;
+
             });
 
             // Watch for browser/canvas resize events

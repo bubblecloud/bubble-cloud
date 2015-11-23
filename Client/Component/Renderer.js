@@ -4,6 +4,7 @@
 var Renderer = (function () {
     function Renderer(clientEngine, model, keyboardInputController) {
         var _this = this;
+        this.lastLoopTimeMillis = new Date().getTime();
         this.clientEngine = clientEngine;
         this.model = model;
         this.keyboardReader = keyboardInputController;
@@ -22,7 +23,8 @@ var Renderer = (function () {
         shape.position = entity.interpolatedPosition;
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
-            this.camera.target = shape;
+            this.avatarShape = BABYLON.Mesh.CreateBox(entity.id, 1, this.scene);
+            this.camera.target = this.avatarShape;
         }
     };
     Renderer.prototype.onUpdate = function (entity) {
@@ -57,6 +59,16 @@ var Renderer = (function () {
             this.engine.runRenderLoop(function () {
                 _this.model.interpolate();
                 _this.scene.render();
+                var timeMillis = (new Date).getTime();
+                var timeDeltaMillis = timeMillis - _this.lastLoopTimeMillis;
+                if (_this.clientEngine.running) {
+                    _this.clientEngine.avatarController.renderLoop(timeMillis, timeDeltaMillis);
+                    if (_this.avatarShape) {
+                        _this.avatarShape.position = _this.clientEngine.avatarController.avatar.position;
+                        _this.avatarShape.rotationQuaternion = _this.clientEngine.avatarController.avatar.rotationQuaternion;
+                    }
+                }
+                _this.lastLoopTimeMillis = timeMillis;
             });
             window.addEventListener("resize", function () {
                 _this.engine.resize();

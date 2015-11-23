@@ -18,6 +18,15 @@ var AvatarController = (function () {
     };
     AvatarController.prototype.loop = function (timeMillis, timeDeltaMillis) {
         if (this.running) {
+            this.engine.ws.sendObject({
+                'id': this.avatar.id,
+                'position': this.avatar.position,
+                'rotationQuaternion': this.avatar.rotationQuaternion
+            });
+        }
+    };
+    AvatarController.prototype.renderLoop = function (timeMillis, timeDeltaMillis) {
+        if (this.running) {
             var pressedKeys = this.engine.keyboardReader.getPressedKeys();
             var rotationMatrix = new BABYLON.Matrix();
             this.avatar.rotationQuaternion.toRotationMatrix(rotationMatrix);
@@ -48,11 +57,6 @@ var AvatarController = (function () {
             var yawRotation = BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(0, 1, 0), relativeX * Math.PI);
             var pitchRotation = BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(1, 0, 0), relativeY * Math.PI);
             this.avatar.rotationQuaternion = yawRotation.multiply(this.avatar.rotationQuaternion).multiply(pitchRotation);
-            this.engine.ws.sendObject({
-                'id': this.avatar.id,
-                'position': this.avatar.position,
-                'rotationQuaternion': this.avatar.rotationQuaternion
-            });
         }
     };
     return AvatarController;

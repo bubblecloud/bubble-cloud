@@ -31,6 +31,18 @@ class AvatarController {
             /*this.avatar.position.x = 3 * Math.cos(2 * Math.PI * ((timeMillis - this.startTimeMillis) / 10000));
             this.avatar.position.z = 3 * Math.sin(2 * Math.PI * ((timeMillis - this.startTimeMillis) / 10000));
             this.avatar.rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(2 * Math.PI * ((timeMillis - this.startTimeMillis) / 10000), 0, 0);*/
+
+            this.engine.ws.sendObject({
+                'id': this.avatar.id,
+                'position': this.avatar.position,
+                'rotationQuaternion': this.avatar.rotationQuaternion
+            });
+        }
+    }
+
+    renderLoop(timeMillis: number, timeDeltaMillis: number): void {
+        if (this.running) {
+
             var pressedKeys = this.engine.keyboardReader.getPressedKeys()
 
             var rotationMatrix = new BABYLON.Matrix();
@@ -61,7 +73,6 @@ class AvatarController {
             }
 
 
-
             var clientWidth = document.documentElement.clientWidth;
             var clientHeight = document.documentElement.clientHeight;
             var mouseMovementX = this.engine.mouseReader.popMovementX();
@@ -69,16 +80,10 @@ class AvatarController {
             var relativeX = mouseMovementX / ((1.0) * clientWidth);
             var relativeY = mouseMovementY / ((1.0) * clientHeight);
 
-            var yawRotation: BABYLON.Quaternion = BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(0, 1, 0), relativeX * Math.PI);
-            var pitchRotation: BABYLON.Quaternion = BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(1, 0, 0), relativeY * Math.PI);
+            var yawRotation:BABYLON.Quaternion = BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(0, 1, 0), relativeX * Math.PI);
+            var pitchRotation:BABYLON.Quaternion = BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(1, 0, 0), relativeY * Math.PI);
 
             this.avatar.rotationQuaternion = yawRotation.multiply(this.avatar.rotationQuaternion).multiply(pitchRotation);
-
-            this.engine.ws.sendObject({
-                'id': this.avatar.id,
-                'position': this.avatar.position,
-                'rotationQuaternion': this.avatar.rotationQuaternion
-            });
         }
     }
 }
