@@ -1,6 +1,9 @@
 extends home_layout
 
 block content
-  canvas#renderCanvas
+  .vrViewContainer
+    canvas#renderCanvas
+    .controlInterface
   form
     input(type='hidden', name='_csrf', value=_csrf)
+
