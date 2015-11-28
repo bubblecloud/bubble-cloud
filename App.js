@@ -37,7 +37,7 @@ mongoose.connection.on('error', function () {
     process.exit(1);
 });
 app.set('port', process.env.PORT || configuration.getConfiguration()['port']);
-app.set('views', path.join(__dirname, 'Client/Views'));
+app.set('views', path.join(__dirname, 'Client/src'));
 app.set('view engine', 'jade');
 app.use(compress());
 app.use(sass({
@@ -83,7 +83,7 @@ app.use(function (req, res, next) {
 app.use(function (req, res, next) {
     next();
 });
-app.use(express.static(path.join(__dirname, 'Client'), { maxAge: 31557600000 }));
+app.use(express.static(path.join(__dirname, 'Client'), { maxAge: 0 }));
 app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);

@@ -63,8 +63,10 @@ mongoose.connection.on('error', function() {
 /**
  * Express configuration.
  */
+//app.engine('.html', require('jade').renderFile);
+//app.disable('view cache');
 app.set('port', process.env.PORT || configuration.getConfiguration()['port']);
-app.set('views', path.join(__dirname, 'Client/Views'));
+app.set('views', path.join(__dirname, 'Client/src'));
 app.set('view engine', 'jade');
 app.use(compress());
 app.use(sass({
@@ -113,7 +115,7 @@ app.use(function(req, res, next) {
   //if (!req.path) req.session.returnTo = req.path;
   next();
 });
-app.use(express.static(path.join(__dirname, 'Client'), { maxAge: 31557600000 }));
+app.use(express.static(path.join(__dirname, 'Client'), { maxAge: 0 }));
 
 
 /**

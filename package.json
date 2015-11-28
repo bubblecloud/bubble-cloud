@@ -91,6 +91,7 @@
   "devDependencies": {
     "blessed": "^0.1.81",
     "chai": "^3.4.1",
+    "gulp": "^3.9.0",
     "jspm": "^0.16.15",
     "mocha": "^2.3.3",
     "multiline": "^1.0.2",
