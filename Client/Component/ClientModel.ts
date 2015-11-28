@@ -1,6 +1,9 @@
 import {ClientEntity} from "./ClientEntity";
-import Quaternion = BABYLON.Quaternion;
+
 import Vector3 = BABYLON.Vector3;
+import Matrix = BABYLON.Matrix;
+import Quaternion = BABYLON.Quaternion;
+
 export class ClientModel {
 
     entities : {[key: string]: ClientEntity} = {}

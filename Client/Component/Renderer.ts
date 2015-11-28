@@ -2,7 +2,7 @@ import {ClientModel} from "./ClientModel";
 import {KeyboardReader} from "./KeyboardReader";
 import {ClientEngine} from "./ClientEngine";
 import {ClientEntity} from "./ClientEntity";
-import 'babylonjs';
+
 import Engine = BABYLON.Engine;
 import Scene = BABYLON.Scene;
 import TargetCamera = BABYLON.TargetCamera;

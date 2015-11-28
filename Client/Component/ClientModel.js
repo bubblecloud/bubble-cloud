@@ -1,5 +1,5 @@
-var Quaternion = BABYLON.Quaternion;
 var Vector3 = BABYLON.Vector3;
+var Quaternion = BABYLON.Quaternion;
 var ClientModel = (function () {
     function ClientModel() {
         this.entities = {};

@@ -1,4 +1,3 @@
-require('babylonjs');
 var Engine = BABYLON.Engine;
 var Scene = BABYLON.Scene;
 var TargetCamera = BABYLON.TargetCamera;
