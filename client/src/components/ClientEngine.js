@@ -21,10 +21,12 @@ var ClientEngine = (function () {
     }
     ClientEngine.prototype.startup = function () {
         var _this = this;
+        this.consoleController.println('Client starting up...');
         this.ws = new WsClient_1.WsClient('ws://' + location.host + '/ws');
         this.ws.setOnOpen(function () {
             _this.avatarController.startup();
             _this.running = true;
+            _this.consoleController.println('Server connected.');
         });
         this.ws.setOnReceiveObject(function (entity) {
             if (entity.removed) {
@@ -41,6 +43,7 @@ var ClientEngine = (function () {
         });
         this.renderer.startup();
         this.lastLoopTimeMillis = (new Date).getTime();
+        this.consoleController.println('Client started.');
     };
     ClientEngine.prototype.shutdown = function () {
         this.renderer.shutdown();

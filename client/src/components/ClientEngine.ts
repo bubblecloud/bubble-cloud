@@ -26,11 +26,13 @@ export class ClientEngine {
     lastLoopTimeMillis: number;
 
     startup() {
+        this.consoleController.println('Client starting up...');
         this.ws = new WsClient('ws://' + location.host + '/ws');
 
         this.ws.setOnOpen(() => {
             this.avatarController.startup();
             this.running = true;
+            this.consoleController.println('Server connected.');
         });
 
         this.ws.setOnReceiveObject( (entity: ClientEntity) => {
@@ -50,6 +52,8 @@ export class ClientEngine {
 
         this.renderer.startup();
         this.lastLoopTimeMillis = (new Date).getTime();
+
+        this.consoleController.println('Client started.');
     }
 
     shutdown() {
