@@ -1,7 +1,7 @@
 var $ = require('jquery');
 require('bootstrap');
 require('babylonjs');
-var ClientEngine_1 = require("../Component/ClientEngine");
+var ClientEngine_1 = require("./Component/ClientEngine");
 $(document).ready(function () {
     if (document.getElementById("renderCanvas")) {
         var engine = new ClientEngine_1.ClientEngine();
