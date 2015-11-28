@@ -8,6 +8,7 @@ import {RpcApi} from "../Utilities/RpcApi";
 import {getProxy} from "../Utilities/RpcApi";
 import {WsClient} from "../Utilities/WsClient";
 import {ConsoleController} from "./ConsoleController";
+import {ClientState} from "./ClientState";
 
 export class ClientEngine {
     api: RpcApi = getProxy('rpc', RpcApi);
@@ -15,9 +16,10 @@ export class ClientEngine {
 
     running: boolean = false;
 
+    state: ClientState = new ClientState();
     model: ClientModel = new ClientModel();
     avatarController: AvatarController = new AvatarController(this);
-    keyboardReader: KeyboardReader = new KeyboardReader();
+    keyboardReader: KeyboardReader = new KeyboardReader(this);
     mouseReader: MouseReader = new MouseReader(this);
     renderer: Renderer = new Renderer(this, this.model, this.keyboardReader);
     consoleController: ConsoleController = new ConsoleController(this);

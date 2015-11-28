@@ -9,54 +9,63 @@ var KeyboardInputKeys = (function () {
     }
     return KeyboardInputKeys;
 })();
-var keyboardKeysPressed = new KeyboardInputKeys();
-window.addEventListener("keydown", handleKeyDown, false);
-window.addEventListener("keyup", handleKeyUp, false);
-function handleKeyDown(evt) {
-    if (evt.keyCode == 65) {
-        keyboardKeysPressed.left = 1;
-    }
-    if (evt.keyCode == 68) {
-        keyboardKeysPressed.right = 1;
-    }
-    if (evt.keyCode == 87) {
-        keyboardKeysPressed.forward = 1;
-    }
-    if (evt.keyCode == 83) {
-        keyboardKeysPressed.back = 1;
-    }
-    if (evt.keyCode == 69) {
-        keyboardKeysPressed.up = 1;
-    }
-    if (evt.keyCode == 81) {
-        keyboardKeysPressed.down = 1;
-    }
-}
-function handleKeyUp(evt) {
-    if (evt.keyCode == 65) {
-        keyboardKeysPressed.left = 0;
-    }
-    if (evt.keyCode == 68) {
-        keyboardKeysPressed.right = 0;
-    }
-    if (evt.keyCode == 87) {
-        keyboardKeysPressed.forward = 0;
-    }
-    if (evt.keyCode == 83) {
-        keyboardKeysPressed.back = 0;
-    }
-    if (evt.keyCode == 69) {
-        keyboardKeysPressed.up = 0;
-    }
-    if (evt.keyCode == 81) {
-        keyboardKeysPressed.down = 0;
-    }
-}
 var KeyboardReader = (function () {
-    function KeyboardReader() {
+    function KeyboardReader(engine) {
+        var _this = this;
+        this.keyboardKeysPressed = new KeyboardInputKeys();
+        this.engine = engine;
+        window.addEventListener("keydown", function (evt) {
+            _this.handleKeyDown(evt);
+        }, false);
+        window.addEventListener("keyup", function (evt) {
+            _this.handleKeyUp(evt);
+        }, false);
     }
     KeyboardReader.prototype.getPressedKeys = function () {
-        return keyboardKeysPressed;
+        return this.keyboardKeysPressed;
+    };
+    KeyboardReader.prototype.handleKeyDown = function (evt) {
+        if (evt.keyCode == 65) {
+            this.keyboardKeysPressed.left = 1;
+        }
+        if (evt.keyCode == 68) {
+            this.keyboardKeysPressed.right = 1;
+        }
+        if (evt.keyCode == 87) {
+            this.keyboardKeysPressed.forward = 1;
+        }
+        if (evt.keyCode == 83) {
+            this.keyboardKeysPressed.back = 1;
+        }
+        if (evt.keyCode == 69) {
+            this.keyboardKeysPressed.up = 1;
+        }
+        if (evt.keyCode == 81) {
+            this.keyboardKeysPressed.down = 1;
+        }
+    };
+    KeyboardReader.prototype.handleKeyUp = function (evt) {
+        if (evt.keyCode == 65) {
+            this.keyboardKeysPressed.left = 0;
+        }
+        if (evt.keyCode == 68) {
+            this.keyboardKeysPressed.right = 0;
+        }
+        if (evt.keyCode == 87) {
+            this.keyboardKeysPressed.forward = 0;
+        }
+        if (evt.keyCode == 83) {
+            this.keyboardKeysPressed.back = 0;
+        }
+        if (evt.keyCode == 69) {
+            this.keyboardKeysPressed.up = 0;
+        }
+        if (evt.keyCode == 81) {
+            this.keyboardKeysPressed.down = 0;
+        }
+        if (evt.keyCode == 27) {
+            this.engine.state.hudVisible = !this.engine.state.hudVisible;
+        }
     };
     return KeyboardReader;
 })();

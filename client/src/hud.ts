@@ -24,6 +24,11 @@ $(document).on('contextmenu', function(e) {
 });
 
 export class App {
+    engine: ClientEngine;
+    constructor() {
+        this.engine = getClientEngine();
+        console.log(this.engine.state);
+    }
 }
 
 export function getClientEngine(): ClientEngine {

@@ -18,6 +18,8 @@ $(document).on('contextmenu', function (e) {
 });
 var App = (function () {
     function App() {
+        this.engine = getClientEngine();
+        console.log(this.engine.state);
     }
     return App;
 })();
