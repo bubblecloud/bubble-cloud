@@ -11782,7 +11782,7 @@ footer p, footer ul {
   left: 0;
 }
 
-.controlInterface {
+.hud {
   width: 100%;
   height: 30vh;
   touch-action: none;
