@@ -7,6 +7,7 @@ import {ClientEntity} from "./ClientEntity";
 import {RpcApi} from "../Utilities/RpcApi";
 import {getProxy} from "../Utilities/RpcApi";
 import {WsClient} from "../Utilities/WsClient";
+import {ConsoleController} from "./ConsoleController";
 
 export class ClientEngine {
     api: RpcApi = getProxy('rpc', RpcApi);
@@ -19,6 +20,7 @@ export class ClientEngine {
     keyboardReader: KeyboardReader = new KeyboardReader();
     mouseReader: MouseReader = new MouseReader(this);
     renderer: Renderer = new Renderer(this, this.model, this.keyboardReader);
+    consoleController: ConsoleController = new ConsoleController(this);
 
     startTimeMillis: number = new Date().getTime();
     lastLoopTimeMillis: number;

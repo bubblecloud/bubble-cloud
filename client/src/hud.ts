@@ -4,13 +4,15 @@ import 'babylonjs';
 
 import {ClientEngine} from "./components/ClientEngine";
 
+var globalClientEngine: ClientEngine;
+
 $(document).ready(function() {
     if (document.getElementById("renderCanvas")) {
-        var engine: ClientEngine = new ClientEngine();
-        engine.startup();
+        globalClientEngine = new ClientEngine();
+        globalClientEngine.startup();
 
         setInterval(function() {
-            engine.loop();
+            globalClientEngine.loop();
         }, 300);
     }
 });
@@ -24,4 +26,7 @@ $(document).on('contextmenu', function(e) {
 export class App {
     message: string = 'Welcome to Aurelia!';
 
+    getClientEngine(): ClientEngine {
+        return globalClientEngine;
+    }
 }
