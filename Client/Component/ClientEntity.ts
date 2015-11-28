@@ -1,5 +1,5 @@
-/// <reference path="../../typings/babylonjs/babylonjs.d.ts" />
-
+import Vector3 = BABYLON.Vector3;
+import Quaternion = BABYLON.Quaternion;
 var entityIdCounter = 0;
 
 /**
@@ -10,14 +10,14 @@ export class ClientEntity {
     oid: string; // original ID
     _id: string; // unique persistent ID
 
-    position: BABYLON.Vector3 = new BABYLON.Vector3(0,0,0);
-    rotationQuaternion: BABYLON.Quaternion = new BABYLON.Quaternion();
-    scaling: BABYLON.Vector3 = new BABYLON.Vector3(0,0,0);
+    position: Vector3 = new Vector3(0,0,0);
+    rotationQuaternion: Quaternion = new Quaternion();
+    scaling: Vector3 = new Vector3(0,0,0);
 
-    interpolatedPosition: BABYLON.Vector3;
-    interpolatorPosition: BABYLON.Vector3;
-    interpolatorRotationQuaternion: BABYLON.Quaternion;
-    interpolatedRotationQuaternion: BABYLON.Quaternion;
+    interpolatedPosition: Vector3;
+    interpolatorPosition: Vector3;
+    interpolatorRotationQuaternion: Quaternion;
+    interpolatedRotationQuaternion: Quaternion;
 
     core: boolean = false;
     removed: boolean = false;

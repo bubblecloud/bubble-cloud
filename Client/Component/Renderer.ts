@@ -1,11 +1,16 @@
-/// <reference path="../../typings/jquery/jquery.d.ts" />
-/// <reference path="../../typings/es6-promise/es6-promise.d.ts" />
-/// <reference path="../../typings/babylonjs/babylonjs.d.ts" />
-
 import {ClientModel} from "./ClientModel";
 import {KeyboardReader} from "./KeyboardReader";
 import {ClientEngine} from "./ClientEngine";
 import {ClientEntity} from "./ClientEntity";
+import 'babylonjs';
+import Engine = BABYLON.Engine;
+import Scene = BABYLON.Scene;
+import TargetCamera = BABYLON.TargetCamera;
+import Mesh = BABYLON.Mesh;
+import Color3 = BABYLON.Color3;
+import Vector3 = BABYLON.Vector3;
+import HemisphericLight = BABYLON.HemisphericLight;
+import Matrix = BABYLON.Matrix;
 
 export class Renderer {
 
@@ -13,10 +18,10 @@ export class Renderer {
     keyboardReader: KeyboardReader;
 
     clientEngine: ClientEngine;
-    engine: BABYLON.Engine;
-    scene: BABYLON.Scene;
-    camera: BABYLON.TargetCamera;
-    avatarShape: BABYLON.Mesh;
+    engine: Engine;
+    scene: Scene;
+    camera: TargetCamera;
+    avatarShape: Mesh;
 
     lastLoopTimeMillis: number = new Date().getTime();
 
@@ -38,15 +43,15 @@ export class Renderer {
     onAdd(entity: ClientEntity) {
         //console.log('add:' + JSON.stringify(entity));
         // Let's try our built-in 'sphere' shape. Params: name, subdivisions, size, scene
-        var shape = BABYLON.Mesh.CreateBox(entity.id, 1, this.scene);
+        var shape = Mesh.CreateBox(entity.id, 1, this.scene);
         shape.position = entity.interpolatedPosition;
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
-            this.avatarShape = BABYLON.Mesh.CreateBox(entity.id, 1, this.scene);
+            this.avatarShape = Mesh.CreateBox(entity.id, 1, this.scene);
             shape.visibility = 0;
-            /*var rotationMatrix = new BABYLON.Matrix();
+            /*var rotationMatrix = new Matrix();
             entity.interpolatedRotationQuaternion.toRotationMatrix(rotationMatrix);
-            var relativeCameraPosition = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -10), rotationMatrix);
+            var relativeCameraPosition = Vector3.TransformCoordinates(new Vector3(0, 0, -10), rotationMatrix);
             this.camera.heightOffset = 2 + relativeCameraPosition.y;*/
         }
     }
@@ -56,9 +61,9 @@ export class Renderer {
         shape.position = entity.interpolatedPosition;
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
         /*if (entity.oid == this.clientEngine.avatarController.avatar.id) {
-            var rotationMatrix = new BABYLON.Matrix();
+            var rotationMatrix = new Matrix();
             entity.interpolatedRotationQuaternion.toRotationMatrix(rotationMatrix);
-            var relativeCameraPosition = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -10), rotationMatrix);
+            var relativeCameraPosition = Vector3.TransformCoordinates(new Vector3(0, 0, -10), rotationMatrix);
             this.camera.heightOffset = 2 + relativeCameraPosition.y;
         }*/
     }
@@ -77,44 +82,44 @@ export class Renderer {
             return;
         }
 
-        if (BABYLON.Engine.isSupported()) {
+        if (Engine.isSupported()) {
             // Load the BABYLON 3D engine
-            this.engine = new BABYLON.Engine(canvas, true);
+            this.engine = new Engine(canvas, true);
 
             // This begins the creation of a function that we will 'call' just after it's built
             var createScene = () => {
                 // Now create a basic Babylon Scene object
-                this.scene = new BABYLON.Scene(this.engine);
+                this.scene = new Scene(this.engine);
 
                 // Change the scene background color to green.
-                this.scene.clearColor = new BABYLON.Color3(151/255, 147/255, 198/255);
+                this.scene.clearColor = new Color3(151/255, 147/255, 198/255);
 
                 // This creates and positions a free camera
-                //this.camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), this.scene);
+                //this.camera = new FreeCamera("camera1", new Vector3(0, 5, -10), this.scene);
 
                 // This targets the camera to scene origin
-                //this.camera.setTarget(BABYLON.Vector3.Zero());
+                //this.camera.setTarget(Vector3.Zero());
 
                 // This attaches the camera to the canvas
                 //this.camera.attachControl(canvas, false);
 
-                this.camera = new BABYLON.TargetCamera("AvatarCamera", new BABYLON.Vector3(0, 5, -10), this.scene);
-                this.camera.setTarget(BABYLON.Vector3.Zero());
+                this.camera = new TargetCamera("AvatarCamera", new Vector3(0, 5, -10), this.scene);
+                this.camera.setTarget(Vector3.Zero());
 
                 // This creates a light, aiming 0,1,0 - to the sky.
-                var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), this.scene);
+                var light = new HemisphericLight("light1", new Vector3(0, 1, 0), this.scene);
 
                 // Dim the light a small amount
                 light.intensity = .5;
 
                 // Let's try our built-in 'sphere' shape. Params: name, subdivisions, size, scene
-                //var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, this.scene);
+                //var sphere = Mesh.CreateSphere("sphere1", 16, 2, this.scene);
 
                 // Move the sphere upward 1/2 its height
                 //sphere.position.y = 1;
 
                 // Let's try our built-in 'ground' shape.  Params: name, width, depth, subdivisions, scene
-                //var ground = BABYLON.Mesh.CreateGround("ground1", 6, 6, 2, this.scene);
+                //var ground = Mesh.CreateGround("ground1", 6, 6, 2, this.scene);
 
                 // Leave this function
                 return this.scene;
@@ -138,9 +143,9 @@ export class Renderer {
                         this.avatarShape.position = this.clientEngine.avatarController.avatar.position;
                         this.avatarShape.rotationQuaternion = this.clientEngine.avatarController.avatar.rotationQuaternion;
 
-                        var rotationMatrix = new BABYLON.Matrix();
+                        var rotationMatrix = new Matrix();
                         this.avatarShape.rotationQuaternion.toRotationMatrix(rotationMatrix);
-                        var cameraDirection = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 5, -10), rotationMatrix)
+                        var cameraDirection = Vector3.TransformCoordinates(new Vector3(0, 5, -10), rotationMatrix)
                         this.camera.position = cameraDirection.add(this.avatarShape.position);
                         this.camera.setTarget(this.avatarShape.position);
                     }

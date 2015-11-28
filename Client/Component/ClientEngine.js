@@ -1,5 +1,3 @@
-/// <reference path="../Utilities/WsClient.ts" />
-/// <reference path="../Utilities/RpcApi.ts" />
 var ClientModel_1 = require("./ClientModel");
 var AvatarController_1 = require("./AvatarController");
 var KeyboardReader_1 = require("./KeyboardReader");

@@ -1,4 +1,3 @@
-/// <reference path="./RpcClient.ts" />
 var RpcClient_1 = require("./RpcClient");
 var RpcApi = (function () {
     function RpcApi() {

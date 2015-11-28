@@ -1,4 +1,6 @@
 import {ClientEntity} from "./ClientEntity";
+import Quaternion = BABYLON.Quaternion;
+import Vector3 = BABYLON.Vector3;
 export class ClientModel {
 
     entities : {[key: string]: ClientEntity} = {}
@@ -21,13 +23,13 @@ export class ClientModel {
 
         for (var entity of this.mobiles) {
 
-            var rotationQuaternion = new BABYLON.Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
-            entity.interpolatorRotationQuaternion = BABYLON.Quaternion.Slerp(entity.interpolatorRotationQuaternion, rotationQuaternion, timeDeltaMillis / maxInterpolateTimeMillis);
+            var rotationQuaternion = new Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
+            entity.interpolatorRotationQuaternion = Quaternion.Slerp(entity.interpolatorRotationQuaternion, rotationQuaternion, timeDeltaMillis / maxInterpolateTimeMillis);
             entity.interpolatorRotationQuaternion.normalize()
-            entity.interpolatedRotationQuaternion = BABYLON.Quaternion.Slerp(entity.interpolatedRotationQuaternion, entity.interpolatorRotationQuaternion, timeDeltaMillis / maxInterpolateTimeMillis);
+            entity.interpolatedRotationQuaternion = Quaternion.Slerp(entity.interpolatedRotationQuaternion, entity.interpolatorRotationQuaternion, timeDeltaMillis / maxInterpolateTimeMillis);
             entity.interpolatedRotationQuaternion.normalize()
 
-            var position = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
+            var position = new Vector3(entity.position.x, entity.position.y, entity.position.z);
 
             {
                 var deltaVector = position.subtract(entity.interpolatorPosition);
@@ -78,10 +80,10 @@ export class ClientModel {
                 this.mobiles.push(existingEntity);
             }
         } else {
-            entity.interpolatedPosition = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
-            entity.interpolatorPosition = new BABYLON.Vector3(entity.position.x, entity.position.y, entity.position.z);
-            entity.interpolatedRotationQuaternion = new BABYLON.Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
-            entity.interpolatorRotationQuaternion = new BABYLON.Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
+            entity.interpolatedPosition = new Vector3(entity.position.x, entity.position.y, entity.position.z);
+            entity.interpolatorPosition = new Vector3(entity.position.x, entity.position.y, entity.position.z);
+            entity.interpolatedRotationQuaternion = new Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
+            entity.interpolatorRotationQuaternion = new Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
             this.entities[entity.id] = entity;
             if (this.onUpdate) {
                 this.onAdd(entity);

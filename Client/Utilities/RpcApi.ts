@@ -1,4 +1,3 @@
-/// <reference path="./RpcClient.ts" />
 import {RpcClient} from "./RpcClient";
 export class RpcApi {
     subtract(x: number, y: number): Promise<number> { return null };

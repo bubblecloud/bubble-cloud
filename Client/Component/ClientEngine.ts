@@ -1,6 +1,3 @@
-/// <reference path="../Utilities/WsClient.ts" />
-/// <reference path="../Utilities/RpcApi.ts" />
-
 import {ClientModel} from "./ClientModel";
 import {AvatarController} from "./AvatarController";
 import {KeyboardReader} from "./KeyboardReader";

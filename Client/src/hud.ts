@@ -1,5 +1,7 @@
 import * as $ from 'jquery';
 import 'bootstrap';
+import 'babylonjs';
+
 import {ClientEngine} from "../Component/ClientEngine";
 
 $(document).ready(function() {
