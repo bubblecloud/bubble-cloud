@@ -124,25 +124,22 @@ export class Renderer {
 
                 // Leave this function
 
-                // The box creation
-                //var skybox = BABYLON.Mesh.CreateBox("skyBox", 500.0, scene);
+                // The sky
                 var skybox = BABYLON.Mesh.CreateSphere("skyBox", 10.0, 1000.0, this.scene);
-
-                // The sky creation
                 BABYLON.Effect.ShadersStore.gradientVertexShader = "precision mediump float;attribute vec3 position;attribute vec3 normal;attribute vec2 uv;uniform mat4 worldViewProjection;varying vec4 vPosition;varying vec3 vNormal;void main(){vec4 p = vec4(position,1.);vPosition = p;vNormal = normal;gl_Position = worldViewProjection * p;}";
                 BABYLON.Effect.ShadersStore.gradientPixelShader = "precision mediump float;uniform mat4 worldView;varying vec4 vPosition;varying vec3 vNormal;uniform float offset;uniform vec3 topColor;uniform vec3 bottomColor;void main(void){float h = normalize(vPosition+offset).y;gl_FragColor = vec4(mix(bottomColor,topColor,max(pow(max(h,0.0),0.6),0.0)),1.0);}";
-
                 var shader = new BABYLON.ShaderMaterial("gradient", this.scene, "gradient", {});
                 shader.setFloat("offset", 10);
                 shader.setColor3("topColor", BABYLON.Color3.FromInts(0,119,255));
                 shader.setColor3("bottomColor", BABYLON.Color3.FromInts(240,240, 255));
-
                 shader.backFaceCulling = false;
-
-                // box + sky = skybox !
                 skybox.material = shader;
 
-
+                // The terrain
+                var groundMaterial = new BABYLON.StandardMaterial("ground", this.scene);
+                groundMaterial.diffuseTexture = new BABYLON.Texture("images/height-maps/stewart-island.png", this.scene);
+                var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "images/height-maps/stewart-island.png", 200, 200, 250, 0, 10, this.scene, false);
+                ground.material = groundMaterial;
 
                 return this.scene;
 

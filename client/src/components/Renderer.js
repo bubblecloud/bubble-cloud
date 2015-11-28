@@ -64,6 +64,10 @@ var Renderer = (function () {
                 shader.setColor3("bottomColor", BABYLON.Color3.FromInts(240, 240, 255));
                 shader.backFaceCulling = false;
                 skybox.material = shader;
+                var groundMaterial = new BABYLON.StandardMaterial("ground", _this.scene);
+                groundMaterial.diffuseTexture = new BABYLON.Texture("images/height-maps/stewart-island.png", _this.scene);
+                var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "images/height-maps/stewart-island.png", 200, 200, 250, 0, 10, _this.scene, false);
+                ground.material = groundMaterial;
                 return _this.scene;
             };
             this.scene = createScene();
