@@ -1,7 +1,7 @@
 /**
  * WebSocket client which can send and receive objects encoded in JSON format.
  */
-class WsClient {
+export class WsClient {
     /**
      * The WebSocket socket.
      */

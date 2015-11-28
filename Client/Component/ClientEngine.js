@@ -1,19 +1,27 @@
 /// <reference path="../Utilities/WsClient.ts" />
 /// <reference path="../Utilities/RpcApi.ts" />
+var ClientModel_1 = require("./ClientModel");
+var AvatarController_1 = require("./AvatarController");
+var KeyboardReader_1 = require("./KeyboardReader");
+var MouseReader_1 = require("./MouseReader");
+var Renderer_1 = require("./Renderer");
+var RpcApi_1 = require("../Utilities/RpcApi");
+var RpcApi_2 = require("../Utilities/RpcApi");
+var WsClient_1 = require("../Utilities/WsClient");
 var ClientEngine = (function () {
     function ClientEngine() {
-        this.api = getProxy('rpc', RpcApi);
+        this.api = RpcApi_2.getProxy('rpc', RpcApi_1.RpcApi);
         this.running = false;
-        this.model = new ClientModel();
-        this.avatarController = new AvatarController(this);
-        this.keyboardReader = new KeyboardReader();
-        this.mouseReader = new MouseReader(this);
-        this.renderer = new Renderer(this, this.model, this.keyboardReader);
+        this.model = new ClientModel_1.ClientModel();
+        this.avatarController = new AvatarController_1.AvatarController(this);
+        this.keyboardReader = new KeyboardReader_1.KeyboardReader();
+        this.mouseReader = new MouseReader_1.MouseReader(this);
+        this.renderer = new Renderer_1.Renderer(this, this.model, this.keyboardReader);
         this.startTimeMillis = new Date().getTime();
     }
     ClientEngine.prototype.startup = function () {
         var _this = this;
-        this.ws = new WsClient('ws://' + location.host + '/ws');
+        this.ws = new WsClient_1.WsClient('ws://' + location.host + '/ws');
         this.ws.setOnOpen(function () {
             _this.avatarController.startup();
             _this.running = true;
@@ -48,3 +56,4 @@ var ClientEngine = (function () {
     };
     return ClientEngine;
 })();
+exports.ClientEngine = ClientEngine;

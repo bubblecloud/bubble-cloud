@@ -2,7 +2,12 @@
 /// <reference path="../../typings/es6-promise/es6-promise.d.ts" />
 /// <reference path="../../typings/babylonjs/babylonjs.d.ts" />
 
-class Renderer {
+import {ClientModel} from "./ClientModel";
+import {KeyboardReader} from "./KeyboardReader";
+import {ClientEngine} from "./ClientEngine";
+import {ClientEntity} from "./ClientEntity";
+
+export class Renderer {
 
     model: ClientModel;
     keyboardReader: KeyboardReader;

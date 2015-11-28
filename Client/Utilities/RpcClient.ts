@@ -1,7 +1,7 @@
 /// <reference path="../../typings/jquery/jquery.d.ts" />
 /// <reference path="../../typings/es6-promise/es6-promise.d.ts" />
 
-class RpcClient {
+export class RpcClient {
     url : string;
 
     constructor(url: string) {

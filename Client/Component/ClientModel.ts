@@ -1,4 +1,5 @@
-class ClientModel {
+import {ClientEntity} from "./ClientEntity";
+export class ClientModel {
 
     entities : {[key: string]: ClientEntity} = {}
     mobiles : ClientEntity[] = [];

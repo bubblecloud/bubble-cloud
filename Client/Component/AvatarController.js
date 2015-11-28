@@ -1,3 +1,4 @@
+var ClientEntity_1 = require("./ClientEntity");
 var AvatarController = (function () {
     function AvatarController(engine) {
         this.running = false;
@@ -7,7 +8,7 @@ var AvatarController = (function () {
     }
     AvatarController.prototype.startup = function () {
         this.startTimeMillis = new Date().getTime();
-        this.avatar = new ClientEntity();
+        this.avatar = new ClientEntity_1.ClientEntity();
         this.avatar.newId();
         this.avatar.dynamic = true;
         this.engine.ws.sendObject(this.avatar);
@@ -61,3 +62,4 @@ var AvatarController = (function () {
     };
     return AvatarController;
 })();
+exports.AvatarController = AvatarController;

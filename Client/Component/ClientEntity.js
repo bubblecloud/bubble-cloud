@@ -16,3 +16,4 @@ var ClientEntity = (function () {
     };
     return ClientEntity;
 })();
+exports.ClientEntity = ClientEntity;

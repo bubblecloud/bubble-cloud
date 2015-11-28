@@ -24,3 +24,4 @@ var RpcClient = (function () {
     };
     return RpcClient;
 })();
+exports.RpcClient = RpcClient;

@@ -1,7 +1,6 @@
-/// <reference path="../Component/ClientEngine.ts" />
-
 import * as $ from 'jquery';
 import 'bootstrap';
+import {ClientEngine} from "../Component/ClientEngine";
 
 $(document).ready(function() {
     if (document.getElementById("renderCanvas")) {

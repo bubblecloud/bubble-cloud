@@ -5,7 +5,7 @@ var entityIdCounter = 0;
 /**
  * Entity value object.
  */
-class ClientEntity {
+export class ClientEntity {
     id: string;
     oid: string; // original ID
     _id: string; // unique persistent ID

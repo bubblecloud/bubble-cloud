@@ -56,7 +56,7 @@ function handleKeyUp(evt)
     }
 }
 
-class KeyboardReader {
+export class KeyboardReader {
     getPressedKeys() : KeyboardInputKeys {
         return keyboardKeysPressed;
     }

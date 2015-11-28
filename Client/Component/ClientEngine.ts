@@ -1,7 +1,17 @@
 /// <reference path="../Utilities/WsClient.ts" />
 /// <reference path="../Utilities/RpcApi.ts" />
 
-class ClientEngine {
+import {ClientModel} from "./ClientModel";
+import {AvatarController} from "./AvatarController";
+import {KeyboardReader} from "./KeyboardReader";
+import {MouseReader} from "./MouseReader";
+import {Renderer} from "./Renderer";
+import {ClientEntity} from "./ClientEntity";
+import {RpcApi} from "../Utilities/RpcApi";
+import {getProxy} from "../Utilities/RpcApi";
+import {WsClient} from "../Utilities/WsClient";
+
+export class ClientEngine {
     api: RpcApi = getProxy('rpc', RpcApi);
     ws: WsClient;
 

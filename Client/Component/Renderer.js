@@ -83,3 +83,4 @@ var Renderer = (function () {
     };
     return Renderer;
 })();
+exports.Renderer = Renderer;

@@ -60,3 +60,4 @@ var KeyboardReader = (function () {
     };
     return KeyboardReader;
 })();
+exports.KeyboardReader = KeyboardReader;

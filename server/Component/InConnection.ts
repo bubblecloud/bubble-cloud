@@ -1,5 +1,6 @@
 import {ServerEntity} from "./ServerEntity";
 import {newId} from "./ServerEntity";
+import {ServerEngine} from "./ServerEngine";
 
 /**
  * Incoming connection.
@@ -14,7 +15,7 @@ export class InConnection {
 
     remoteIsServer: boolean;
 
-    engine: ClientEngine;
+    engine: ServerEngine;
     oidIdMap: {[key: string]:string} = {};
     idOIdMap: {[key: string]:string} = {};
 

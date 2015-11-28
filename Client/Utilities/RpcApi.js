@@ -1,4 +1,5 @@
 /// <reference path="./RpcClient.ts" />
+var RpcClient_1 = require("./RpcClient");
 var RpcApi = (function () {
     function RpcApi() {
     }
@@ -6,9 +7,10 @@ var RpcApi = (function () {
     ;
     return RpcApi;
 })();
+exports.RpcApi = RpcApi;
 function getProxy(url, proxyClass) {
     var proxy = new Object();
-    var rpcClient = new RpcClient(url);
+    var rpcClient = new RpcClient_1.RpcClient(url);
     Object.getOwnPropertyNames(proxyClass.prototype).forEach(function (name) {
         proxy[name] = function prototype() {
             var args = [];
@@ -26,3 +28,4 @@ function getProxy(url, proxyClass) {
     });
     return proxy;
 }
+exports.getProxy = getProxy;

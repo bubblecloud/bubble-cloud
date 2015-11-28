@@ -15,3 +15,4 @@ var WsClient = (function () {
     };
     return WsClient;
 })();
+exports.WsClient = WsClient;

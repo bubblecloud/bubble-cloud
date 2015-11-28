@@ -36,3 +36,4 @@ var MouseReader = (function () {
     };
     return MouseReader;
 })();
+exports.MouseReader = MouseReader;

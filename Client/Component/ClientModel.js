@@ -98,3 +98,4 @@ var ClientModel = (function () {
     };
     return ClientModel;
 })();
+exports.ClientModel = ClientModel;

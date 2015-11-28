@@ -1,9 +1,9 @@
-/// <reference path="../Component/ClientEngine.ts" />
 var $ = require('jquery');
 require('bootstrap');
+var ClientEngine_1 = require("../Component/ClientEngine");
 $(document).ready(function () {
     if (document.getElementById("renderCanvas")) {
-        var engine = new ClientEngine();
+        var engine = new ClientEngine_1.ClientEngine();
         engine.startup();
         setInterval(function () {
             engine.loop();

@@ -1,4 +1,6 @@
-class AvatarController {
+import {ClientEngine} from "./ClientEngine";
+import {ClientEntity} from "./ClientEntity";
+export class AvatarController {
     running: boolean = false;
     engine: ClientEngine;
     avatar: ClientEntity;

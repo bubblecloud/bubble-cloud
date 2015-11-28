@@ -1,4 +1,6 @@
-class MouseReader {
+import {ClientEngine} from "./ClientEngine";
+
+export class MouseReader {
 
     engine: ClientEngine;
 

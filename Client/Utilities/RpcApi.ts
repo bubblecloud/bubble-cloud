@@ -1,9 +1,10 @@
 /// <reference path="./RpcClient.ts" />
-class RpcApi {
+import {RpcClient} from "./RpcClient";
+export class RpcApi {
     subtract(x: number, y: number): Promise<number> { return null };
 }
 
-function getProxy(url: string, proxyClass: any): any {
+export function getProxy(url: string, proxyClass: any): any {
     var proxy = new Object();
     var rpcClient = new RpcClient(url);
     Object.getOwnPropertyNames(proxyClass.prototype).forEach(name => {
