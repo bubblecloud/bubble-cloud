@@ -18,11 +18,11 @@ $(document).on('contextmenu', function (e) {
 });
 var App = (function () {
     function App() {
-        this.message = 'Welcome to Aurelia!';
     }
-    App.prototype.getClientEngine = function () {
-        return globalClientEngine;
-    };
     return App;
 })();
 exports.App = App;
+function getClientEngine() {
+    return globalClientEngine;
+}
+exports.getClientEngine = getClientEngine;

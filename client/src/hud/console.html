@@ -1,6 +1,13 @@
 <template>
-    <input value.bind="firstName">
-    <input value.bind="lastName">
+    <!--<button click.trigger="sayHello()">Say Hello</button>-->
 
-    <button click.trigger="sayHello()">Say Hello</button>
+    <div class="console-lines" mousedown.trigger="onMouseDown()" mouseup.trigger="onMouseUp()">
+        <div repeat.for="line of consoleController.outputLines" mousedown.trigger="onMouseDown()" mouseup.trigger="onMouseUp()">
+            <span>${line}</span>
+        </div>
+    </div>
+
+    <form role="form" submit.delegate="onSubmit()">
+        <input class="console-input form-control" value.bind="outputLine">
+     </form>
 </template>

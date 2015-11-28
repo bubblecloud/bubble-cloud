@@ -24,9 +24,8 @@ $(document).on('contextmenu', function(e) {
 });
 
 export class App {
-    message: string = 'Welcome to Aurelia!';
+}
 
-    getClientEngine(): ClientEngine {
-        return globalClientEngine;
-    }
+export function getClientEngine(): ClientEngine {
+    return globalClientEngine;
 }
