@@ -11696,7 +11696,7 @@ body {
   padding-top: 0px;
   margin-bottom: 0px;
   color: rgba(255, 255, 255, 0.84);
-  background: linear-gradient(to bottom, #D9E4FF, #FBFBFB, rgba(0, 115, 40, 0.55)) !important;
+  background: linear-gradient(to bottom, #0077ff, #f0f0ff, #f0f0ff) !important;
 }
 
 .form-control {
@@ -11787,7 +11787,7 @@ footer p, footer ul {
   height: 30vh;
   touch-action: none;
   margin-bottom: -5px;
-  background-color: rgba(108, 150, 218, 0.52);
+  background-color: rgba(12, 58, 97, 0.77);
   position: absolute;
   top: 70vh;
   left: 0;

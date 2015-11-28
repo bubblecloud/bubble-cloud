@@ -55,6 +55,15 @@ var Renderer = (function () {
                 _this.camera.setTarget(Vector3.Zero());
                 var light = new HemisphericLight("light1", new Vector3(0, 1, 0), _this.scene);
                 light.intensity = .5;
+                var skybox = BABYLON.Mesh.CreateSphere("skyBox", 10.0, 1000.0, _this.scene);
+                BABYLON.Effect.ShadersStore.gradientVertexShader = "precision mediump float;attribute vec3 position;attribute vec3 normal;attribute vec2 uv;uniform mat4 worldViewProjection;varying vec4 vPosition;varying vec3 vNormal;void main(){vec4 p = vec4(position,1.);vPosition = p;vNormal = normal;gl_Position = worldViewProjection * p;}";
+                BABYLON.Effect.ShadersStore.gradientPixelShader = "precision mediump float;uniform mat4 worldView;varying vec4 vPosition;varying vec3 vNormal;uniform float offset;uniform vec3 topColor;uniform vec3 bottomColor;void main(void){float h = normalize(vPosition+offset).y;gl_FragColor = vec4(mix(bottomColor,topColor,max(pow(max(h,0.0),0.6),0.0)),1.0);}";
+                var shader = new BABYLON.ShaderMaterial("gradient", _this.scene, "gradient", {});
+                shader.setFloat("offset", 10);
+                shader.setColor3("topColor", BABYLON.Color3.FromInts(0, 119, 255));
+                shader.setColor3("bottomColor", BABYLON.Color3.FromInts(240, 240, 255));
+                shader.backFaceCulling = false;
+                skybox.material = shader;
                 return _this.scene;
             };
             this.scene = createScene();
@@ -70,7 +79,7 @@ var Renderer = (function () {
                         _this.avatarShape.rotationQuaternion = _this.clientEngine.avatarController.avatar.rotationQuaternion;
                         var rotationMatrix = new Matrix();
                         _this.avatarShape.rotationQuaternion.toRotationMatrix(rotationMatrix);
-                        var cameraDirection = Vector3.TransformCoordinates(new Vector3(0, 5, -10), rotationMatrix);
+                        var cameraDirection = Vector3.TransformCoordinates(new Vector3(0, 2, -10), rotationMatrix);
                         _this.camera.position = cameraDirection.add(_this.avatarShape.position);
                         _this.camera.setTarget(_this.avatarShape.position);
                     }
