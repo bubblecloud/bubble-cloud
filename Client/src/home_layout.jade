@@ -6,15 +6,15 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(name='csrf-token', content=_csrf)
     title #{title} - Bubble Cloud
-    link(rel='stylesheet', href='/Static/css/main.css')
+    link(rel='stylesheet', href='/css/main.css')
   body
     include partials/header
 
     block content
 
-    script(src='/Static/lib/babylon.js')
-    script(src='/Static/lib/hand.js')
-    script(src='/Static/lib/Oimo.js')
+    script(src='/lib/babylon.js')
+    script(src='/lib/hand.js')
+    script(src='/lib/Oimo.js')
 
     script(src='/jspm_packages/system.js')
     script(src='/config.js')
