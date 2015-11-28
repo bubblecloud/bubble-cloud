@@ -2,7 +2,6 @@ var Engine = BABYLON.Engine;
 var Scene = BABYLON.Scene;
 var TargetCamera = BABYLON.TargetCamera;
 var Mesh = BABYLON.Mesh;
-var Color3 = BABYLON.Color3;
 var Vector3 = BABYLON.Vector3;
 var HemisphericLight = BABYLON.HemisphericLight;
 var Matrix = BABYLON.Matrix;
@@ -51,7 +50,7 @@ var Renderer = (function () {
             this.engine = new Engine(canvas, true);
             var createScene = function () {
                 _this.scene = new Scene(_this.engine);
-                _this.scene.clearColor = new Color3(151 / 255, 147 / 255, 198 / 255);
+                _this.scene.autoClear = false;
                 _this.camera = new TargetCamera("AvatarCamera", new Vector3(0, 5, -10), _this.scene);
                 _this.camera.setTarget(Vector3.Zero());
                 var light = new HemisphericLight("light1", new Vector3(0, 1, 0), _this.scene);

@@ -8,6 +8,7 @@ var ConsoleController = (function () {
         this.outputLines.push(line);
     };
     ConsoleController.prototype.execute = function (line) {
+        this.println(' > ' + line);
         if (line === 'help') {
             this.println("Commands:");
             this.println("help - This help.");

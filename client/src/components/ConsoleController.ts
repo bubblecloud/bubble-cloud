@@ -16,6 +16,7 @@ export class ConsoleController {
     }
 
     execute(line: string): void {
+        this.println(' > ' + line);
         if (line === 'help') {
             this.println("Commands:");
             this.println("help - This help.");

@@ -92,7 +92,8 @@ export class Renderer {
                 this.scene = new Scene(this.engine);
 
                 // Change the scene background color to green.
-                this.scene.clearColor = new Color3(151/255, 147/255, 198/255);
+                //this.scene.clearColor = new Color3(151/255, 147/255, 198/255);
+                this.scene.autoClear = false;
 
                 // This creates and positions a free camera
                 //this.camera = new FreeCamera("camera1", new Vector3(0, 5, -10), this.scene);
