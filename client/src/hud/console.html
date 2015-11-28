@@ -1,13 +1,13 @@
 <template>
     <!--<button click.trigger="sayHello()">Say Hello</button>-->
 
-    <div class="console-lines" mousedown.trigger="onMouseDown()" mouseup.trigger="onMouseUp()">
+    <div class="console-lines" mousedown.trigger="onMouseDown()" mouseup.trigger="onMouseUp()" mouseleave.trigger="onMouseUp()">
         <div repeat.for="line of consoleController.outputLines" mousedown.trigger="onMouseDown()" mouseup.trigger="onMouseUp()">
             <span>${line}</span>
         </div>
     </div>
 
-    <form role="form" submit.delegate="onSubmit()">
+    <form role="form" submit.trigger="onSubmit()">
         <input class="console-input form-control" value.bind="inputLine">
      </form>
 </template>
