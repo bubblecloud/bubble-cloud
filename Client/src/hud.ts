@@ -2,7 +2,7 @@ import * as $ from 'jquery';
 import 'bootstrap';
 import 'babylonjs';
 
-import {ClientEngine} from "./Component/ClientEngine";
+import {ClientEngine} from "./components/ClientEngine";
 
 $(document).ready(function() {
     if (document.getElementById("renderCanvas")) {
