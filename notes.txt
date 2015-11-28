@@ -3,3 +3,5 @@ Installing type script definitions:
 npm install tsd -g
 tsd install express -ros
 
+Installing jspm browser package manager:
+npm install jspm -g
