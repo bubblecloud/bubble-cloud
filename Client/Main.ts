@@ -1,6 +1,6 @@
 /// <reference path="./Component/ClientEngine.ts" />
 
-$(document).ready(function() {
+/*$(document).ready(function() {
     if (document.getElementById("renderCanvas")) {
         var engine: ClientEngine = new ClientEngine();
         engine.startup();
@@ -15,4 +15,4 @@ $(document).on('contextmenu', function(e) {
     if ($(e.target).is("#renderCanvas"))
         return false;
 
-});
+});*/
