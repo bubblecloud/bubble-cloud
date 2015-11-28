@@ -2,7 +2,7 @@ var hud_1 = require("../hud");
 var Console = (function () {
     function Console() {
         var _this = this;
-        this.outputLine = '';
+        this.inputLine = '';
         this.consoleOutputLinesCount = 0;
         this.mouseDown = false;
         this.consoleController = hud_1.getClientEngine().consoleController;
@@ -12,8 +12,8 @@ var Console = (function () {
         }, 200);
     }
     Console.prototype.onSubmit = function () {
-        this.consoleController.outputLines.push(this.outputLine);
-        this.outputLine = '';
+        this.consoleController.execute(this.inputLine);
+        this.inputLine = '';
     };
     Console.prototype.onMouseDown = function () {
         this.mouseDown = true;

@@ -2,7 +2,7 @@ import {ConsoleController} from "../components/ConsoleController";
 import {getClientEngine} from "../hud";
 export class Console {
     consoleController: ConsoleController;
-    outputLine: string = '';
+    inputLine: string = '';
     consoleOutputLinesCount = 0;
     mouseDown: boolean = false;
 
@@ -15,8 +15,8 @@ export class Console {
     }
 
     onSubmit() {
-        this.consoleController.outputLines.push(this.outputLine);
-        this.outputLine = '';
+        this.consoleController.execute(this.inputLine);
+        this.inputLine = '';
     }
 
     onMouseDown() {
