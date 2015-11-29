@@ -46,12 +46,19 @@ export class InConnection {
 
         var oid = entity.id;
         if(!this.oidIdMap[oid]) {
-            newId(entity);
-            while (this.oidIdMap[entity.id]) { // Reallocate until free ID is found
+            if (!this.remoteIsServer && entity.oid) {
+                console.log('Client attempting to write to entity it did not add in this session ' + entity.oid);
+                entity.id = entity.oid;
+                this.oidIdMap[oid] = entity.id;
+                this.idOIdMap[entity.id] = oid;
+            } else {
                 newId(entity);
+                while (this.oidIdMap[entity.id]) { // Reallocate until free ID is found
+                    newId(entity);
+                }
+                this.oidIdMap[oid] = entity.id;
+                this.idOIdMap[entity.id] = oid;
             }
-            this.oidIdMap[oid] = entity.id;
-            this.idOIdMap[entity.id] = oid;
         } else {
             entity.id = this.oidIdMap[oid]
         }

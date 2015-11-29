@@ -24,7 +24,7 @@ var entityIdCounter = 1;
  */
 export class ServerEntity {
     id: string; // current ID
-    oid: string; // original ID
+    oid: string; // original ID received from remote peer
     _id: string; // unique persistent ID
 
     type: string; // The entity type

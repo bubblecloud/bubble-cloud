@@ -17,12 +17,17 @@ var ConsoleController = (function () {
             this.listUsers();
             return;
         }
+        if (line.indexOf('grant') === 0) {
+            this.grant(line);
+            return;
+        }
         this.println('Unknown command. You can use command "help" to list available commands.');
     };
     ConsoleController.prototype.help = function () {
         this.println("Commands:");
         this.println("help - This help.");
         this.println("list users - List of system users.");
+        this.println("grant <role={admin, member}> <email> - Grant role to a user.");
     };
     ConsoleController.prototype.listUsers = function () {
         var _this = this;
@@ -32,7 +37,56 @@ var ConsoleController = (function () {
                 _this.println('id: ' + id + ' email:' + idEmailMap[id]);
             }
         }).catch(function (error) {
-            console.log('Error listing users: ' + error);
+            _this.println('Error listing users: ' + error);
+        });
+    };
+    ConsoleController.prototype.grant = function (line) {
+        var _this = this;
+        var parts = line.split(' ');
+        if (parts.length != 3) {
+            this.println("Invalid syntax: " + line);
+            return;
+        }
+        var role = parts[1];
+        if (role !== 'admin' && role !== 'member') {
+            this.println('Error: ' + role + ' is not supported role.');
+            return;
+        }
+        var email = parts[2];
+        this.clientEngine.api.listUsers().then(function (idEmailMap) {
+            var matchCount = 0;
+            var userIdMatch;
+            var userEmailMatch;
+            for (var userId in idEmailMap) {
+                if (idEmailMap[userId] === email) {
+                    userIdMatch = userId;
+                    userEmailMatch = idEmailMap[userId];
+                    matchCount++;
+                    _this.println('Matching user id: ' + userId + ' email:' + userEmailMatch);
+                }
+            }
+            if (matchCount != 1) {
+                _this.println('Error: Number of matching users was not 1.');
+                return;
+            }
+            var core = _this.clientEngine.getCore();
+            if (!core) {
+                _this.println('Error: server core not available.');
+                return;
+            }
+            if (!core.hasRole(role, userIdMatch)) {
+                core.grantRole(role, userIdMatch);
+                _this.clientEngine.ws.sendObject(core);
+                _this.println('Success: granted ' + userEmailMatch + ' ' + role + ' role.');
+                return;
+            }
+            else {
+                _this.println('Error: user already has role.');
+                return;
+            }
+        }).catch(function (error) {
+            _this.println('Error listing users: ' + error);
+            return;
         });
     };
     return ConsoleController;

@@ -17,12 +17,20 @@ var InConnection = (function () {
             }
             var oid = entity.id;
             if (!this.oidIdMap[oid]) {
-                ServerEntity_1.newId(entity);
-                while (this.oidIdMap[entity.id]) {
-                    ServerEntity_1.newId(entity);
+                if (!this.remoteIsServer && entity.oid) {
+                    console.log('Client attempting to write to entity it did not add in this session ' + entity.oid);
+                    entity.id = entity.oid;
+                    this.oidIdMap[oid] = entity.id;
+                    this.idOIdMap[entity.id] = oid;
                 }
-                this.oidIdMap[oid] = entity.id;
-                this.idOIdMap[entity.id] = oid;
+                else {
+                    ServerEntity_1.newId(entity);
+                    while (this.oidIdMap[entity.id]) {
+                        ServerEntity_1.newId(entity);
+                    }
+                    this.oidIdMap[oid] = entity.id;
+                    this.idOIdMap[entity.id] = oid;
+                }
             }
             else {
                 entity.id = this.oidIdMap[oid];

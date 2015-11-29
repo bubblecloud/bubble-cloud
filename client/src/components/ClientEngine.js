@@ -9,12 +9,14 @@ var WsClient_1 = require("../Utilities/WsClient");
 var ConsoleController_1 = require("./ConsoleController");
 var ClientState_1 = require("./ClientState");
 var ActuatorRegister_1 = require("./ActuatorRegister");
+var ClientEntity_1 = require("./ClientEntity");
 var ClientEngine = (function () {
     function ClientEngine() {
         this.api = RpcApi_2.getProxy('rpc', RpcApi_1.RpcApi);
         this.running = false;
         this.state = new ClientState_1.ClientState();
         this.model = new ClientModel_1.ClientModel();
+        this.core = new ClientEntity_1.CoreEntity();
         this.avatarController = new AvatarController_1.AvatarController(this);
         this.keyboardReader = new KeyboardReader_1.KeyboardReader(this);
         this.mouseReader = new MouseReader_1.MouseReader(this);
@@ -60,6 +62,20 @@ var ClientEngine = (function () {
             this.avatarController.loop(timeMillis, timeDeltaMillis);
         }
         this.lastLoopTimeMillis = timeMillis;
+    };
+    ClientEngine.prototype.getCore = function () {
+        if (!this.core) {
+            this.core = this.model.copy('0', new ClientEntity_1.CoreEntity());
+            this.core.oid = '0';
+            this.core.newId();
+        }
+        else {
+            var id = this.core.id;
+            this.model.copy('0', this.core);
+            this.core.oid = '0';
+            this.core.id = id;
+        }
+        return this.core;
     };
     return ClientEngine;
 })();

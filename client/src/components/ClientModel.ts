@@ -69,6 +69,27 @@ export class ClientModel {
         }
     }
 
+    /**
+     * Copies properties from identified entity to the target entity.
+     * @param sourceEntityId the source entity id
+     * @param targetEntity the target entity
+     */
+    copy(sourceEntityId: string, targetEntity:ClientEntity): ClientEntity {
+        var sourceEntity = this.entities[sourceEntityId];
+        if (sourceEntity) {
+            Object.getOwnPropertyNames(sourceEntity).forEach(name => {
+                // Skipping client side parameters.
+                if (name.indexOf('interp') == 0) {
+                    return;
+                }
+                targetEntity[name] = sourceEntity[name];
+            });
+            return targetEntity;
+        } else {
+            return null;
+        }
+    }
+
     put(entity: ClientEntity) : void {
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {

@@ -53,6 +53,21 @@ var ClientModel = (function () {
             this.onUpdate(entity);
         }
     };
+    ClientModel.prototype.copy = function (sourceEntityId, targetEntity) {
+        var sourceEntity = this.entities[sourceEntityId];
+        if (sourceEntity) {
+            Object.getOwnPropertyNames(sourceEntity).forEach(function (name) {
+                if (name.indexOf('interp') == 0) {
+                    return;
+                }
+                targetEntity[name] = sourceEntity[name];
+            });
+            return targetEntity;
+        }
+        else {
+            return null;
+        }
+    };
     ClientModel.prototype.put = function (entity) {
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {

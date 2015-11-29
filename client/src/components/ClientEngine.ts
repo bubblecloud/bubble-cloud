@@ -10,6 +10,7 @@ import {WsClient} from "../Utilities/WsClient";
 import {ConsoleController} from "./ConsoleController";
 import {ClientState} from "./ClientState";
 import {ActuatorRegister} from "./ActuatorRegister";
+import {CoreEntity} from "./ClientEntity";
 
 export class ClientEngine {
     api: RpcApi = getProxy('rpc', RpcApi);
@@ -19,6 +20,8 @@ export class ClientEngine {
 
     state: ClientState = new ClientState();
     model: ClientModel = new ClientModel();
+    private core: CoreEntity = new CoreEntity();
+
     avatarController: AvatarController = new AvatarController(this);
     keyboardReader: KeyboardReader = new KeyboardReader(this);
     mouseReader: MouseReader = new MouseReader(this);
@@ -74,6 +77,20 @@ export class ClientEngine {
         }
 
         this.lastLoopTimeMillis = timeMillis;
+    }
+
+    getCore(): CoreEntity {
+        if (!this.core) {
+            this.core = <CoreEntity> this.model.copy('0', new CoreEntity());
+            this.core.oid = '0';
+            this.core.newId();
+        } else {
+            var id = this.core.id;
+            this.model.copy('0', this.core);
+            this.core.oid = '0';
+            this.core.id = id;
+        }
+        return this.core;
     }
 
 }
