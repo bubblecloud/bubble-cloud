@@ -252,10 +252,12 @@ app.ws('/ws', function(ws, req) {
   var remoteAddress = req.client._peername.address;
   var remotePort = req.client._peername.port;
   var email;
+  var userId;
   if (req.user) {
     email = req.user.email;
+    userId = req.user._id;
   }
-  var inConnection: InConnection = new ic.InConnection(remoteAddress, remotePort, email);
+  var inConnection: InConnection = new ic.InConnection(remoteAddress, remotePort, email, userId);
   inConnection.engine = engine;
   inConnection.send = function(entity) {
     try {

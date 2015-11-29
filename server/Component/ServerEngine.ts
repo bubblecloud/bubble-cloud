@@ -118,4 +118,39 @@ export class ServerEngine {
         //console.log('in:' + this.inConnections.length + " out: " + this.outConnections.length);
     }
 
+    hasRole(role: string, userId: string): boolean {
+        var core: ServerEntity = this.model.entities[0];
+        if (!userId) {
+            return false;
+        }
+        if (!core || !core.core) {
+            console.log('Error. Role check failed due to core not available. Role: ' + role + ' User ID: ' + userId);
+            return false;
+        }
+        if (role == 'admin') {
+            if (!core.roleMembers['admin']) {
+                console.log('Server not secure as no admins defined. User ID granted temporary admin role: ' + userId);
+                return true;
+            }
+            for (var candidateUserId of core.roleMembers['admin']) {
+                if (candidateUserId == userId) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if (role == 'member') {
+            if (!core.roleMembers['member']) {
+                return false;
+            }
+            for (var candidateUserId of core.roleMembers['member']) {
+                if (candidateUserId == userId) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
+    }
+
 }

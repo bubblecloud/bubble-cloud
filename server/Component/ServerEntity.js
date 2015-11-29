@@ -27,6 +27,7 @@ var ServerEntity = (function () {
         this.position = new Vector3();
         this.rotationQuaternion = new Quaternion();
         this.scaling = new Vector3();
+        this.roleMembers = {};
     }
     return ServerEntity;
 })();

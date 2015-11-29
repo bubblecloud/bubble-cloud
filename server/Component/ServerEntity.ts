@@ -40,6 +40,8 @@ export class ServerEntity {
     position: Vector3 = new Vector3();
     rotationQuaternion: Quaternion = new Quaternion();
     scaling: Vector3 = new Vector3();
+
+    roleMembers: {[key: string]: string[]} = {};
 }
 
 export function newId(entity: ServerEntity) : void {

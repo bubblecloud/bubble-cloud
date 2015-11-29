@@ -123,6 +123,42 @@ var ServerEngine = (function () {
             outConnection.send(this.coreEntity);
         }
     };
+    ServerEngine.prototype.hasRole = function (role, userId) {
+        var core = this.model.entities[0];
+        if (!userId) {
+            return false;
+        }
+        if (!core || !core.core) {
+            console.log('Error. Role check failed due to core not available. Role: ' + role + ' User ID: ' + userId);
+            return false;
+        }
+        if (role == 'admin') {
+            if (!core.roleMembers['admin']) {
+                console.log('Server not secure as no admins defined. User ID granted temporary admin role: ' + userId);
+                return true;
+            }
+            for (var _i = 0, _a = core.roleMembers['admin']; _i < _a.length; _i++) {
+                var candidateUserId = _a[_i];
+                if (candidateUserId == userId) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if (role == 'member') {
+            if (!core.roleMembers['member']) {
+                return false;
+            }
+            for (var _b = 0, _c = core.roleMembers['member']; _b < _c.length; _b++) {
+                var candidateUserId = _c[_b];
+                if (candidateUserId == userId) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
+    };
     return ServerEngine;
 })();
 exports.ServerEngine = ServerEngine;
