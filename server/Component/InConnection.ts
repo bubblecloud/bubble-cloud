@@ -74,7 +74,7 @@ export class InConnection {
         for (var oid in this.oidIdMap) {
             var id = this.oidIdMap[oid];
             var entity = this.engine.model.get(id);
-            if (entity.dynamic) {
+            if (entity && (entity.dynamic || entity.external)) {
                 entity.removed = true;
                 this.engine.model.remove(entity);
             }
