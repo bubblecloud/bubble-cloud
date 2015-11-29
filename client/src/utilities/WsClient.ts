@@ -28,7 +28,12 @@ export class WsClient {
      * @param message the object to send
      */
     sendObject(message:any) {
-        this.wsSocket.send(JSON.stringify(message));
+        try {
+            this.wsSocket.send(JSON.stringify(message));
+        }
+        catch (error) {
+            console.error('WS: Error sending object: ' + error.message);
+        }
     }
 
     /**

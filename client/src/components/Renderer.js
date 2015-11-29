@@ -25,6 +25,7 @@ var Renderer = (function () {
         var actuator = this.clientEngine.actuatorRegister.get(entity.repo, entity.type);
         if (actuator) {
             actuator.add(this.clientEngine, entity);
+            console.log("entity: " + entity.id + " - Added entity type " + entity.repo + "/" + entity.type);
         }
         else {
             var newShape = Mesh.CreateBox(entity.id, 1, this.scene);
@@ -34,12 +35,18 @@ var Renderer = (function () {
         }
         var shape = this.scene.getMeshByName(entity.id);
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
-            this.avatarShape = Mesh.CreateBox(entity.id, 1, this.scene);
-            shape.visibility = 0;
+            this.avatarShape = shape;
         }
     };
     Renderer.prototype.onUpdate = function (entity) {
+        if (entity.oid == this.clientEngine.avatarController.avatar.id) {
+            return;
+        }
         var shape = this.scene.getMeshByName(entity.id);
+        if (!shape) {
+            console.log("entity: " + entity.id + " - Updated entity not added yet: " + entity.repo + "/" + entity.type);
+            return;
+        }
         shape.position = entity.interpolatedPosition;
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
         var actuator = this.clientEngine.actuatorRegister.get(entity.repo, entity.type);
@@ -51,6 +58,7 @@ var Renderer = (function () {
         var actuator = this.clientEngine.actuatorRegister.get(entity.repo, entity.type);
         if (actuator) {
             actuator.remove(this.clientEngine, entity);
+            console.log("entity: " + entity.id + " - Removed entity type " + entity.repo + "/" + entity.type);
         }
         else {
             var shape = this.scene.getMeshByName(entity.id);

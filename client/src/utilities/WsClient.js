@@ -6,7 +6,12 @@ var WsClient = (function () {
         this.wsSocket.onopen = onOpen;
     };
     WsClient.prototype.sendObject = function (message) {
-        this.wsSocket.send(JSON.stringify(message));
+        try {
+            this.wsSocket.send(JSON.stringify(message));
+        }
+        catch (error) {
+            console.error('WS: Error sending object: ' + error.message);
+        }
     };
     WsClient.prototype.setOnReceiveObject = function (onMessage) {
         this.wsSocket.onmessage = function (event) {

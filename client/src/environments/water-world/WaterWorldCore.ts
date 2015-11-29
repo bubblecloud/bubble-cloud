@@ -9,8 +9,8 @@ export class WaterWorldCore implements Actuator {
 
     add(engine: ClientEngine, entity: ClientEntity): void {
         var scene: Scene = engine.renderer.scene;
+        var mesh = BABYLON.Mesh.CreateSphere(entity.id, 32, 5, scene);
         var material = new BABYLON.StandardMaterial("kosh", scene);
-        var mesh = BABYLON.Mesh.CreateSphere("Sphere1", 32, 5, scene);
         material.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/TropicalSunnyDay", scene);
         material.diffuseColor = new BABYLON.Color3(0, 0, 0);
         material.emissiveColor = new BABYLON.Color3(0.5, 0.5, 0.5);

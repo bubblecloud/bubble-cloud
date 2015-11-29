@@ -5,8 +5,8 @@ var WaterWorldCore = (function () {
     }
     WaterWorldCore.prototype.add = function (engine, entity) {
         var scene = engine.renderer.scene;
+        var mesh = BABYLON.Mesh.CreateSphere(entity.id, 32, 5, scene);
         var material = new BABYLON.StandardMaterial("kosh", scene);
-        var mesh = BABYLON.Mesh.CreateSphere("Sphere1", 32, 5, scene);
         material.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/TropicalSunnyDay", scene);
         material.diffuseColor = new BABYLON.Color3(0, 0, 0);
         material.emissiveColor = new BABYLON.Color3(0.5, 0.5, 0.5);

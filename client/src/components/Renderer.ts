@@ -12,6 +12,7 @@ import Vector3 = BABYLON.Vector3;
 import HemisphericLight = BABYLON.HemisphericLight;
 import Matrix = BABYLON.Matrix;
 import {Actuator} from "./Actuator";
+import AbstractMesh = BABYLON.AbstractMesh;
 
 export class Renderer {
 
@@ -22,7 +23,7 @@ export class Renderer {
     engine: Engine;
     scene: Scene;
     camera: TargetCamera;
-    avatarShape: Mesh;
+    avatarShape: AbstractMesh;
 
     lastLoopTimeMillis: number = new Date().getTime();
 
@@ -46,7 +47,7 @@ export class Renderer {
 
         if (actuator) {
             actuator.add(this.clientEngine, entity);
-            //console.log("entity: " + entity.id + " - Actuated entity type " + entity.repo + "/" + entity.type);
+            console.log("entity: " + entity.id + " - Added entity type " + entity.repo + "/" + entity.type);
         } else {
             var newShape = Mesh.CreateBox(entity.id, 1, this.scene);
             newShape.position = entity.interpolatedPosition;
@@ -56,13 +57,23 @@ export class Renderer {
 
         var shape = this.scene.getMeshByName(entity.id);
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
-            this.avatarShape = Mesh.CreateBox(entity.id, 1, this.scene);
-            shape.visibility = 0;
+            this.avatarShape = shape; // Mesh.CreateBox(entity.id, 1, this.scene);
+            //shape.visibility = 0;
         }
     }
 
     onUpdate(entity: ClientEntity) {
+        // Update others than avatar which is locally controlled in render loop to eliminate lag
+        if (entity.oid == this.clientEngine.avatarController.avatar.id) {
+            return;
+        }
+
         var shape = this.scene.getMeshByName(entity.id);
+        if (!shape) {
+            console.log("entity: " + entity.id + " - Updated entity not added yet: " + entity.repo + "/" + entity.type);
+            return;
+        }
+
         shape.position = entity.interpolatedPosition;
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
 
@@ -76,6 +87,7 @@ export class Renderer {
         var actuator:Actuator = this.clientEngine.actuatorRegister.get(entity.repo, entity.type);
         if (actuator) {
             actuator.remove(this.clientEngine, entity);
+            console.log("entity: " + entity.id + " - Removed entity type " + entity.repo + "/" + entity.type);
         } else {
             var shape = this.scene.getMeshByName(entity.id);
             if (shape) {
@@ -98,39 +110,11 @@ export class Renderer {
 
             // This begins the creation of a function that we will 'call' just after it's built
             var createScene = () => {
-                // Now create a basic Babylon Scene object
                 this.scene = new Scene(this.engine);
-
-                // Change the scene background color to green.
-                //this.scene.clearColor = new Color3(151/255, 147/255, 198/255);
                 this.scene.autoClear = false;
-
-                // This creates and positions a free camera
-                //this.camera = new FreeCamera("camera1", new Vector3(0, 5, -10), this.scene);
-
-                // This targets the camera to scene origin
-                //this.camera.setTarget(Vector3.Zero());
-
-                // This attaches the camera to the canvas
-                //this.camera.attachControl(canvas, false);
 
                 this.camera = new TargetCamera("AvatarCamera", new Vector3(0, 5, -10), this.scene);
                 this.camera.setTarget(Vector3.Zero());
-
-                // This creates a light, aiming 0,1,0 - to the sky.
-                //var light = new HemisphericLight("light1", new Vector3(0, 1, 0), this.scene);
-                //light.intensity = .5;
-
-                // Let's try our built-in 'sphere' shape. Params: name, subdivisions, size, scene
-                //var sphere = Mesh.CreateSphere("sphere1", 16, 2, this.scene);
-
-                // Move the sphere upward 1/2 its height
-                //sphere.position.y = 1;
-
-                // Let's try our built-in 'ground' shape.  Params: name, width, depth, subdivisions, scene
-                //var ground = Mesh.CreateGround("ground1", 6, 6, 2, this.scene);
-
-                // Leave this function
 
                 // The sky
                 /*
@@ -151,55 +135,6 @@ export class Renderer {
                 ground.material = groundMaterial;
                 */
 
-                /*
-                var material = new BABYLON.StandardMaterial("kosh", this.scene);
-                var sphere1 = BABYLON.Mesh.CreateSphere("Sphere1", 32, 5, this.scene);
-
-                material.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/TropicalSunnyDay", this.scene);
-                material.diffuseColor = new BABYLON.Color3(0, 0, 0);
-                material.emissiveColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-                material.alpha = 0;
-                material.specularPower = 16;
-
-                // Fresnel
-                material.reflectionFresnelParameters = new BABYLON.FresnelParameters();
-                material.reflectionFresnelParameters.bias = 0.1;
-
-                material.emissiveFresnelParameters = new BABYLON.FresnelParameters();
-                material.emissiveFresnelParameters.bias = 0.6;
-                material.emissiveFresnelParameters.power = 4;
-                material.emissiveFresnelParameters.leftColor = BABYLON.Color3.White();
-                material.emissiveFresnelParameters.rightColor = BABYLON.Color3.Black();
-
-                material.opacityFresnelParameters = new BABYLON.FresnelParameters();
-                material.opacityFresnelParameters.leftColor = BABYLON.Color3.White();
-                material.opacityFresnelParameters.rightColor = BABYLON.Color3.Black();
-                //material.backFaceCulling = false;
-
-                sphere1.material = material;
-
-                // Skybox
-                var skybox = BABYLON.Mesh.CreateBox("skyBox", 100.0, this.scene);
-                var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", this.scene);
-                skyboxMaterial.backFaceCulling = false;
-                skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/TropicalSunnyDay", this.scene);
-                skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-                skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-                skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-                //skyboxMaterial.disableLighting = false;
-                skybox.material = skyboxMaterial;
-
-                // Sun
-                var light = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(-17.6, 18.8, -49.9), this.scene);
-
-                var lensFlareSystem = new BABYLON.LensFlareSystem("lensFlareSystem", light, this.scene);
-                var flare00 = new BABYLON.LensFlare(0.2, 0, new BABYLON.Color3(1, 1, 1), "images/effects/Flare.png", lensFlareSystem);
-                var flare01 = new BABYLON.LensFlare(0.5, 0.2, new BABYLON.Color3(0.5, 0.5, 1), "images/effects/Flare.png", lensFlareSystem);
-                var flare02 = new BABYLON.LensFlare(0.2, 1.0, new BABYLON.Color3(1, 1, 1), "images/effects/Flare.png", lensFlareSystem);
-                var flare03 = new BABYLON.LensFlare(0.4, 0.4, new BABYLON.Color3(1, 0.5, 1), "images/effects/Flare.png", lensFlareSystem);
-                var flare04 = new BABYLON.LensFlare(0.1, 0.6, new BABYLON.Color3(1, 1, 1), "images/effects/Flare.png", lensFlareSystem);
-                var flare05 = new BABYLON.LensFlare(0.3, 0.8, new BABYLON.Color3(1, 1, 1), "images/effects/Flare.png", lensFlareSystem);
-                */
                 return this.scene;
 
             };  // End of createScene function
