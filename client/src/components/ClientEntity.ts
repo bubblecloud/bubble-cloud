@@ -44,10 +44,18 @@ export class CoreEntity extends ClientEntity {
     }
 
     hasRole(role: string, userId: string): boolean {
+        if (role == 'admin' && !this.roleMembers['admin']) {
+            return true;
+        }
         if (!this.roleMembers[role]) {
             return false;
         }
-        return this.roleMembers[role].indexOf(userId) >= 0;
+        for (var userIdCandidate of this.roleMembers[role]) {
+            if (userIdCandidate == userId) {
+                return true;
+            }
+        }
+        return false;
     }
 
     revokeRole(role: string, userId: string): void {

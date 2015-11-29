@@ -22,8 +22,8 @@ var InConnection = (function () {
                         console.log('Access denied: Client attempted to write to dynamic entity it did not add in this session.');
                         return;
                     }
-                    if (!this.engine.model[entity.oid]) {
-                        console.log('Access denied: Client attempted to update non existent persistent entity it did not add in this session.');
+                    if (!this.engine.model.entities[entity.oid]) {
+                        console.log('Access denied: Client attempted to update non existent persistent entity it did not add in this session: ' + entity.oid);
                         return;
                     }
                     console.log('Client updating persistent entity: ' + entity.oid);

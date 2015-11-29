@@ -36,10 +36,19 @@ var CoreEntity = (function (_super) {
         this.roleMembers[role].push(userId);
     };
     CoreEntity.prototype.hasRole = function (role, userId) {
+        if (role == 'admin' && !this.roleMembers['admin']) {
+            return true;
+        }
         if (!this.roleMembers[role]) {
             return false;
         }
-        return this.roleMembers[role].indexOf(userId) >= 0;
+        for (var _i = 0, _a = this.roleMembers[role]; _i < _a.length; _i++) {
+            var userIdCandidate = _a[_i];
+            if (userIdCandidate == userId) {
+                return true;
+            }
+        }
+        return false;
     };
     CoreEntity.prototype.revokeRole = function (role, userId) {
         if (!this.roleMembers[role]) {
