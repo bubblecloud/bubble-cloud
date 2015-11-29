@@ -50,6 +50,11 @@ export class OutConnection {
         if (entity.external) { // Ignore external entities from remote server.
             return;
         }
+
+        if (entity._id) {
+            delete entity._id;
+        }
+
         this.receivedTime = new Date().getTime();
 
         var oid = entity.id;

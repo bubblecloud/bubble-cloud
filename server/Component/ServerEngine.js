@@ -58,7 +58,7 @@ var ServerEngine = (function () {
                     }
                 }
                 ;
-                if (!entity.external && !entity.dynamic) {
+                if (!entity.external && entity.dynamic === false) {
                     dao.insertEntity(entity);
                 }
             };
@@ -75,7 +75,7 @@ var ServerEngine = (function () {
                     }
                 }
                 ;
-                if (!entity.external && !entity.dynamic) {
+                if (!entity.external && entity.dynamic === false) {
                     dao.updateEntity(entity);
                 }
             };
@@ -92,8 +92,8 @@ var ServerEngine = (function () {
                     }
                 }
                 ;
-                if (!entity.external && !entity.dynamic) {
-                    dao.removeEntity(entity._id);
+                if (!entity.external && entity.dynamic === false) {
+                    dao.removeEntity(entity.id);
                 }
             };
         }).catch(function (error) {

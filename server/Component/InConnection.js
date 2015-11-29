@@ -6,6 +6,9 @@ var InConnection = (function () {
         this.idOIdMap = {};
         this.receive = function (entity) {
             this.receivedTime = new Date().getTime();
+            if (entity._id) {
+                delete entity._id;
+            }
             if (entity.id == '' + 0 && entity.core) {
                 this.remoteIsServer = true;
             }

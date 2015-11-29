@@ -32,6 +32,10 @@ export class InConnection {
     receive: (entity: ServerEntity) => void = function (entity: ServerEntity): void {
         this.receivedTime = new Date().getTime();
 
+        if (entity._id) {
+            delete entity._id;
+        }
+
         if (entity.id == '' + 0 && entity.core) {
             this.remoteIsServer = true;
         }

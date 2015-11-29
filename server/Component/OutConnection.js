@@ -23,6 +23,9 @@ var OutConnection = (function () {
             if (entity.external) {
                 return;
             }
+            if (entity._id) {
+                delete entity._id;
+            }
             this.receivedTime = new Date().getTime();
             var oid = entity.id;
             if (!this.oidIdMap[oid]) {
@@ -45,10 +48,8 @@ var OutConnection = (function () {
             for (var oid in this.oidIdMap) {
                 var id = this.oidIdMap[oid];
                 var entity = this.engine.model.get(id);
-                if (entity) {
-                    entity.removed = true;
-                    this.engine.model.remove(entity);
-                }
+                entity.removed = true;
+                this.engine.model.remove(entity);
             }
             this.wsClient = null;
             this.running = false;
