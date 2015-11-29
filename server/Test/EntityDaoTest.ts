@@ -11,7 +11,6 @@ var app = require('../../app.js');
 import db = require('../Component/EntityDao');
 import model = require('../Component/ServerEntity');
 import Entity = model.ServerEntity;
-var User = require('./Models/User');
 
 /**
  * Globals

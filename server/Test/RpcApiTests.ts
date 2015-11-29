@@ -8,7 +8,7 @@ import chai = require('chai');
 
 var request = require('supertest');
 var app = require('../../app.js');
-var User = require('./User');
+var User = require('../Web/Controllers/User');
 
 import model = require('../Component/ServerEntity');
 import Entity = model.ServerEntity;

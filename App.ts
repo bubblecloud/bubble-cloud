@@ -1,4 +1,5 @@
 import {InConnection} from "./server/Component/InConnection";
+import {ServerRpcApi} from "./server/ApplicationInterface/RpcApi";
 /**
  * Module dependencies.
  */
@@ -31,8 +32,8 @@ var homeController = require('./Server/Web/Controllers/home');
 var userController = require('./Server/Web/Controllers/user');
 var apiController = require('./Server/Web/Controllers/api');
 var contactController = require('./Server/Web/Controllers/contact');
-var rpcApi = require('./Server/ApplicationInterface/RpcApi');
-var rpcApiMethods = rpcApi.getRpcApiMethods();
+//var rpcApi = require('./Server/ApplicationInterface/RpcApi');
+
 
 /**
  * Configuration
@@ -275,6 +276,10 @@ app.ws('/ws', function(ws, req) {
     });
 });
 
+var rpcApi: ServerRpcApi = new ServerRpcApi(engine);
+var rpcApiMethods = rpcApi.getRpcApiMethods();
+
+
 /**
  * JSON RPC End Point
  */
@@ -303,11 +308,12 @@ app.post('/rpc', function(req, res) {
     rpcMethod.apply(null, data.params).then(function(result) {
         res.status(200).send(JSON.stringify({
           jsonrpc: '2.0',
-          result: result,
+          result: JSON.stringify(result),
           error : null,
           id: data.id
         }));
       }).catch(function(error) {
+        console.log('RPC error: ' + JSON.stringify(error));
         onError({
           code: -32603,
           message: 'Failed',
@@ -315,9 +321,10 @@ app.post('/rpc', function(req, res) {
         }, 500);
       });
   } catch (e) {
+    console.log('RPC error: ' + JSON.stringify(e));
     onError({
       code: -32603,
-      message: 'Excaption at method call',
+      message: 'Exception at method call',
       data: e
     }, 500);
   }
@@ -326,7 +333,7 @@ app.post('/rpc', function(req, res) {
   function onError(err, statusCode) {
     res.status(statusCode).send(JSON.stringify({
       jsonrpc: '2.0',
-      error: err,
+      error: JSON.stringify(err),
       id: data.id
     }));
   }

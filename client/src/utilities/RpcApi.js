@@ -4,6 +4,8 @@ var RpcApi = (function () {
     }
     RpcApi.prototype.subtract = function (x, y) { return null; };
     ;
+    RpcApi.prototype.listUsers = function () { return null; };
+    ;
     return RpcApi;
 })();
 exports.RpcApi = RpcApi;

@@ -1,3 +1,8 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var Vector3 = BABYLON.Vector3;
 var Quaternion = BABYLON.Quaternion;
 var entityIdCounter = 0;
@@ -18,3 +23,30 @@ var ClientEntity = (function () {
     return ClientEntity;
 })();
 exports.ClientEntity = ClientEntity;
+var CoreEntity = (function (_super) {
+    __extends(CoreEntity, _super);
+    function CoreEntity() {
+        _super.apply(this, arguments);
+        this.roleMembers = {};
+    }
+    CoreEntity.prototype.grantRole = function (role, userId) {
+        if (!this.roleMembers[role]) {
+            this.roleMembers[role] = [];
+        }
+        this.roleMembers[role].push(userId);
+    };
+    CoreEntity.prototype.hasRole = function (role, userId) {
+        if (!this.roleMembers[role]) {
+            return false;
+        }
+        return this.roleMembers[role].indexOf(userId) >= 0;
+    };
+    CoreEntity.prototype.revokeRole = function (role, userId) {
+        if (!this.roleMembers[role]) {
+            return;
+        }
+        this.roleMembers[role].splice(this.roleMembers[role].indexOf(userId), 1);
+    };
+    return CoreEntity;
+})(ClientEntity);
+exports.CoreEntity = CoreEntity;

@@ -62,4 +62,5 @@ userSchema.methods.gravatar = function(size) {
   return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
 };
 
+console.log('Instantiating user model.');
 module.exports = mongoose.model('User', userSchema);

@@ -32,3 +32,29 @@ export class ClientEntity {
         this.id = '' + entityIdCounter;
     }
 }
+
+export class CoreEntity extends ClientEntity {
+    private roleMembers: {[key: string]: string[]} = {};
+
+    grantRole(role : string, userId: string): void {
+        if (!this.roleMembers[role]) {
+            this.roleMembers[role] = [];
+        }
+        this.roleMembers[role].push(userId);
+    }
+
+    hasRole(role: string, userId: string): boolean {
+        if (!this.roleMembers[role]) {
+            return false;
+        }
+        return this.roleMembers[role].indexOf(userId) >= 0;
+    }
+
+    revokeRole(role: string, userId: string): void {
+        if (!this.roleMembers[role]) {
+            return;
+        }
+        this.roleMembers[role].splice(this.roleMembers[role].indexOf(userId), 1);
+    }
+
+}

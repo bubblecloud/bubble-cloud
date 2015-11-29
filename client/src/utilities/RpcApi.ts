@@ -1,6 +1,7 @@
 import {RpcClient} from "./RpcClient";
 export class RpcApi {
     subtract(x: number, y: number): Promise<number> { return null };
+    listUsers(): Promise<{[key: string]: string}> { return null };
 }
 
 export function getProxy(url: string, proxyClass: any): any {

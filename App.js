@@ -1,3 +1,4 @@
+var RpcApi_1 = require("./server/ApplicationInterface/RpcApi");
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var compress = require('compression');
@@ -21,8 +22,6 @@ var homeController = require('./Server/Web/Controllers/home');
 var userController = require('./Server/Web/Controllers/user');
 var apiController = require('./Server/Web/Controllers/api');
 var contactController = require('./Server/Web/Controllers/contact');
-var rpcApi = require('./Server/ApplicationInterface/RpcApi');
-var rpcApiMethods = rpcApi.getRpcApiMethods();
 var secrets = require('./secrets');
 var passportConf = require('./Server/Web/Controllers/passport');
 var app = express();
@@ -206,6 +205,8 @@ app.ws('/ws', function (ws, req) {
         inConnection.receive(JSON.parse(msg));
     });
 });
+var rpcApi = new RpcApi_1.ServerRpcApi(engine);
+var rpcApiMethods = rpcApi.getRpcApiMethods();
 app.post('/rpc', function (req, res) {
     res.header('Content-Type', 'application/json');
     var data = req.body, err = null, rpcMethod;
@@ -228,11 +229,12 @@ app.post('/rpc', function (req, res) {
         rpcMethod.apply(null, data.params).then(function (result) {
             res.status(200).send(JSON.stringify({
                 jsonrpc: '2.0',
-                result: result,
+                result: JSON.stringify(result),
                 error: null,
                 id: data.id
             }));
         }).catch(function (error) {
+            console.log('RPC error: ' + JSON.stringify(error));
             onError({
                 code: -32603,
                 message: 'Failed',
@@ -241,9 +243,10 @@ app.post('/rpc', function (req, res) {
         });
     }
     catch (e) {
+        console.log('RPC error: ' + JSON.stringify(e));
         onError({
             code: -32603,
-            message: 'Excaption at method call',
+            message: 'Exception at method call',
             data: e
         }, 500);
     }
@@ -251,7 +254,7 @@ app.post('/rpc', function (req, res) {
     function onError(err, statusCode) {
         res.status(statusCode).send(JSON.stringify({
             jsonrpc: '2.0',
-            error: err,
+            error: JSON.stringify(err),
             id: data.id
         }));
     }

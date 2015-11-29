@@ -12,6 +12,7 @@ var RpcClient = (function () {
                 'headers': { 'x-csrf-token': $('input[name=_csrf]').val() },
                 'dataType': 'json',
                 'success': function (response) {
+                    console.log('rpc result: ' + response);
                     resolve(JSON.parse(response.result));
                 },
                 'error': function (xhr, ajaxOptions, thrownError) {
