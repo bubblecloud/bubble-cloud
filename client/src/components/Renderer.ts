@@ -47,7 +47,7 @@ export class Renderer {
 
         if (actuator) {
             actuator.add(this.clientEngine, entity);
-            console.log("entity: " + entity.id + " - Added entity type " + entity.repo + "/" + entity.type);
+            console.log("entity: " + entity.id + " - Added entity type " + entity.repo + "/" + entity.type + " dyn: " + entity.dynamic + " ext: " + entity.external);
         } else {
             var newShape = Mesh.CreateBox(entity.id, 1, this.scene);
             newShape.position = entity.interpolatedPosition;

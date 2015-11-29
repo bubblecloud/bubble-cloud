@@ -4,6 +4,9 @@ var WaterWorldSky = (function () {
         this.type = "water-world-sky";
     }
     WaterWorldSky.prototype.add = function (engine, entity) {
+        if (entity.external) {
+            return;
+        }
         var scene = engine.renderer.scene;
         var skybox = BABYLON.Mesh.CreateBox(entity.id, 100.0, scene);
         var skyboxMaterial = new BABYLON.StandardMaterial(entity.id + "skybox-material", scene);

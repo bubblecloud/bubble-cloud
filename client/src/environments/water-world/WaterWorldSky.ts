@@ -13,6 +13,10 @@ export class WaterWorldSky implements Actuator {
     type: string = "water-world-sky";
 
     add(engine: ClientEngine, entity: ClientEntity): void {
+        // Do not render sky of other servers.
+        if (entity.external) {
+            return;
+        }
         var scene: Scene = engine.renderer.scene;
 
         // Add sky.
