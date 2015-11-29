@@ -23,7 +23,9 @@ export class Renderer {
     engine: Engine;
     scene: Scene;
     camera: TargetCamera;
+
     avatarShape: AbstractMesh;
+    avatarAttachments: ClientEntity[] = [];
 
     lastLoopTimeMillis: number = new Date().getTime();
 
@@ -65,6 +67,11 @@ export class Renderer {
     onUpdate(entity: ClientEntity) {
         // Update others than avatar which is locally controlled in render loop to eliminate lag
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
+            return;
+        }
+
+        // Do not update avatar attachments
+        if (this.avatarAttachments.indexOf(entity) >= 0) {
             return;
         }
 
@@ -161,6 +168,11 @@ export class Renderer {
                         var cameraDirection = Vector3.TransformCoordinates(new Vector3(0, 2, -10), rotationMatrix)
                         this.camera.position = cameraDirection.add(this.avatarShape.position);
                         this.camera.setTarget(this.avatarShape.position);
+
+                        for (var avatarAttachment of this.avatarAttachments) {
+                            var actuator: Actuator = this.clientEngine.actuatorRegister.get(avatarAttachment.repo, avatarAttachment.type);
+                            actuator.update(this.clientEngine, avatarAttachment);
+                        }
                     }
                 }
 

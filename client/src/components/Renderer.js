@@ -7,6 +7,7 @@ var Matrix = BABYLON.Matrix;
 var Renderer = (function () {
     function Renderer(clientEngine, model, keyboardInputController) {
         var _this = this;
+        this.avatarAttachments = [];
         this.lastLoopTimeMillis = new Date().getTime();
         this.clientEngine = clientEngine;
         this.model = model;
@@ -40,6 +41,9 @@ var Renderer = (function () {
     };
     Renderer.prototype.onUpdate = function (entity) {
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
+            return;
+        }
+        if (this.avatarAttachments.indexOf(entity) >= 0) {
             return;
         }
         var shape = this.scene.getMeshByName(entity.id);
@@ -98,6 +102,11 @@ var Renderer = (function () {
                         var cameraDirection = Vector3.TransformCoordinates(new Vector3(0, 2, -10), rotationMatrix);
                         _this.camera.position = cameraDirection.add(_this.avatarShape.position);
                         _this.camera.setTarget(_this.avatarShape.position);
+                        for (var _i = 0, _a = _this.avatarAttachments; _i < _a.length; _i++) {
+                            var avatarAttachment = _a[_i];
+                            var actuator = _this.clientEngine.actuatorRegister.get(avatarAttachment.repo, avatarAttachment.type);
+                            actuator.update(_this.clientEngine, avatarAttachment);
+                        }
                     }
                 }
                 _this.lastLoopTimeMillis = timeMillis;
