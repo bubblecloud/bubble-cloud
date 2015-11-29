@@ -45,8 +45,10 @@ var OutConnection = (function () {
             for (var oid in this.oidIdMap) {
                 var id = this.oidIdMap[oid];
                 var entity = this.engine.model.get(id);
-                entity.removed = true;
-                this.engine.model.remove(entity);
+                if (entity) {
+                    entity.removed = true;
+                    this.engine.model.remove(entity);
+                }
             }
             this.wsClient = null;
             this.running = false;
