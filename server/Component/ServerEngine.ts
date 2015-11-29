@@ -21,11 +21,19 @@ export class ServerEngine {
                 this.coreEntity.core = true;
                 this.coreEntity.id = '' + 0;
                 this.coreEntity.dynamic = false;
+                this.coreEntity.repo = 'default';
+                this.coreEntity.type = 'water-world-core';
                 dao.insertEntity(this.coreEntity);
+
+                var skyEntity = new ServerEntity();
+                skyEntity.id = '' + 1;
+                skyEntity.dynamic = false;
+                skyEntity.repo = 'default';
+                skyEntity.type = 'water-world-sky';
+                dao.insertEntity(skyEntity);
             } else {
                 this.coreEntity = loadedEntity;
             }
-
             this.initialize();
         }).catch((error: Error) => {
             console.error(error);

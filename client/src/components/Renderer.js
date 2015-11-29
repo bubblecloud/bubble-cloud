@@ -22,9 +22,17 @@ var Renderer = (function () {
         });
     }
     Renderer.prototype.onAdd = function (entity) {
-        var shape = Mesh.CreateBox(entity.id, 1, this.scene);
-        shape.position = entity.interpolatedPosition;
-        shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
+        var actuator = this.clientEngine.actuatorRegister.get(entity.repo, entity.type);
+        if (actuator) {
+            actuator.add(this.clientEngine, entity);
+        }
+        else {
+            var newShape = Mesh.CreateBox(entity.id, 1, this.scene);
+            newShape.position = entity.interpolatedPosition;
+            newShape.rotationQuaternion = entity.interpolatedRotationQuaternion;
+            console.log("entity: " + entity.id + " - Unknown entity type " + entity.repo + "/" + entity.type);
+        }
+        var shape = this.scene.getMeshByName(entity.id);
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
             this.avatarShape = Mesh.CreateBox(entity.id, 1, this.scene);
             shape.visibility = 0;
@@ -34,10 +42,22 @@ var Renderer = (function () {
         var shape = this.scene.getMeshByName(entity.id);
         shape.position = entity.interpolatedPosition;
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
+        var actuator = this.clientEngine.actuatorRegister.get(entity.repo, entity.type);
+        if (actuator) {
+            actuator.update(this.clientEngine, entity);
+        }
     };
     Renderer.prototype.onRemove = function (entity) {
-        var shape = this.scene.getMeshByName(entity.id);
-        this.scene.removeMesh(shape);
+        var actuator = this.clientEngine.actuatorRegister.get(entity.repo, entity.type);
+        if (actuator) {
+            actuator.remove(this.clientEngine, entity);
+        }
+        else {
+            var shape = this.scene.getMeshByName(entity.id);
+            if (shape) {
+                this.scene.removeMesh(shape);
+            }
+        }
     };
     Renderer.prototype.startup = function () {
         var _this = this;
@@ -52,41 +72,6 @@ var Renderer = (function () {
                 _this.scene.autoClear = false;
                 _this.camera = new TargetCamera("AvatarCamera", new Vector3(0, 5, -10), _this.scene);
                 _this.camera.setTarget(Vector3.Zero());
-                var material = new BABYLON.StandardMaterial("kosh", _this.scene);
-                var sphere1 = BABYLON.Mesh.CreateSphere("Sphere1", 32, 5, _this.scene);
-                var light = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(-17.6, 18.8, -49.9), _this.scene);
-                material.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/TropicalSunnyDay", _this.scene);
-                material.diffuseColor = new BABYLON.Color3(0, 0, 0);
-                material.emissiveColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-                material.alpha = 0;
-                material.specularPower = 16;
-                material.reflectionFresnelParameters = new BABYLON.FresnelParameters();
-                material.reflectionFresnelParameters.bias = 0.1;
-                material.emissiveFresnelParameters = new BABYLON.FresnelParameters();
-                material.emissiveFresnelParameters.bias = 0.6;
-                material.emissiveFresnelParameters.power = 4;
-                material.emissiveFresnelParameters.leftColor = BABYLON.Color3.White();
-                material.emissiveFresnelParameters.rightColor = BABYLON.Color3.Black();
-                material.opacityFresnelParameters = new BABYLON.FresnelParameters();
-                material.opacityFresnelParameters.leftColor = BABYLON.Color3.White();
-                material.opacityFresnelParameters.rightColor = BABYLON.Color3.Black();
-                sphere1.material = material;
-                var skybox = BABYLON.Mesh.CreateBox("skyBox", 100.0, _this.scene);
-                var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", _this.scene);
-                skyboxMaterial.backFaceCulling = false;
-                skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/TropicalSunnyDay", _this.scene);
-                skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-                skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-                skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-                skyboxMaterial.disableLighting = true;
-                skybox.material = skyboxMaterial;
-                var lensFlareSystem = new BABYLON.LensFlareSystem("lensFlareSystem", light, _this.scene);
-                var flare00 = new BABYLON.LensFlare(0.2, 0, new BABYLON.Color3(1, 1, 1), "images/effects/Flare.png", lensFlareSystem);
-                var flare01 = new BABYLON.LensFlare(0.5, 0.2, new BABYLON.Color3(0.5, 0.5, 1), "images/effects/Flare.png", lensFlareSystem);
-                var flare02 = new BABYLON.LensFlare(0.2, 1.0, new BABYLON.Color3(1, 1, 1), "images/effects/Flare.png", lensFlareSystem);
-                var flare03 = new BABYLON.LensFlare(0.4, 0.4, new BABYLON.Color3(1, 0.5, 1), "images/effects/Flare.png", lensFlareSystem);
-                var flare04 = new BABYLON.LensFlare(0.1, 0.6, new BABYLON.Color3(1, 1, 1), "images/effects/Flare.png", lensFlareSystem);
-                var flare05 = new BABYLON.LensFlare(0.3, 0.8, new BABYLON.Color3(1, 1, 1), "images/effects/Flare.png", lensFlareSystem);
                 return _this.scene;
             };
             this.scene = createScene();

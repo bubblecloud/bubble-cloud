@@ -61,6 +61,7 @@ export class InConnection {
             if (this.remoteIsServer && entity.external) {
                 continue; // Send external entities to clients only.
             }
+            //console.log('sending entity to remote server: ' + entity.id + ' ' + entity.repo + '/' + entity.type);
             this.send(entity);
         }
     }

@@ -8,6 +8,7 @@ var RpcApi_2 = require("../Utilities/RpcApi");
 var WsClient_1 = require("../Utilities/WsClient");
 var ConsoleController_1 = require("./ConsoleController");
 var ClientState_1 = require("./ClientState");
+var ActuatorRegister_1 = require("./ActuatorRegister");
 var ClientEngine = (function () {
     function ClientEngine() {
         this.api = RpcApi_2.getProxy('rpc', RpcApi_1.RpcApi);
@@ -17,6 +18,7 @@ var ClientEngine = (function () {
         this.avatarController = new AvatarController_1.AvatarController(this);
         this.keyboardReader = new KeyboardReader_1.KeyboardReader(this);
         this.mouseReader = new MouseReader_1.MouseReader(this);
+        this.actuatorRegister = new ActuatorRegister_1.ActuatorRegister();
         this.renderer = new Renderer_1.Renderer(this, this.model, this.keyboardReader);
         this.consoleController = new ConsoleController_1.ConsoleController(this);
         this.startTimeMillis = new Date().getTime();

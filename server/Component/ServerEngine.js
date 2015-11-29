@@ -15,7 +15,15 @@ var ServerEngine = (function () {
                 _this.coreEntity.core = true;
                 _this.coreEntity.id = '' + 0;
                 _this.coreEntity.dynamic = false;
+                _this.coreEntity.repo = 'default';
+                _this.coreEntity.type = 'water-world-core';
                 dao.insertEntity(_this.coreEntity);
+                var skyEntity = new ServerEntity_1.ServerEntity();
+                skyEntity.id = '' + 1;
+                skyEntity.dynamic = false;
+                skyEntity.repo = 'default';
+                skyEntity.type = 'water-world-sky';
+                dao.insertEntity(skyEntity);
             }
             else {
                 _this.coreEntity = loadedEntity;

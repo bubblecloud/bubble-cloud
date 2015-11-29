@@ -17,7 +17,7 @@ export class Quaternion {
     w:number = 1;
 }
 
-var entityIdCounter = 0;
+var entityIdCounter = 1;
 
 /**
  * Entity value object.
@@ -26,6 +26,9 @@ export class ServerEntity {
     id: string; // current ID
     oid: string; // original ID
     _id: string; // unique persistent ID
+
+    type: string; // The entity type
+    repo: string; // The repository of the entity type
 
     core: boolean = false;
     removed: boolean = false;

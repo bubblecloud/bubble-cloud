@@ -200,6 +200,7 @@ app.ws('/ws', function (ws, req) {
         catch (error) {
         }
     };
+    inConnection.connect();
     engine.inConnections.push(inConnection);
     ws.on('message', function (msg) {
         inConnection.receive(JSON.parse(msg));

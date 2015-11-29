@@ -17,7 +17,7 @@ var Quaternion = (function () {
     return Quaternion;
 })();
 exports.Quaternion = Quaternion;
-var entityIdCounter = 0;
+var entityIdCounter = 1;
 var ServerEntity = (function () {
     function ServerEntity() {
         this.core = false;

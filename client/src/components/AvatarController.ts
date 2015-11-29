@@ -19,6 +19,8 @@ export class AvatarController {
         this.startTimeMillis = new Date().getTime();
         this.avatar = new ClientEntity();
         this.avatar.newId();
+        this.avatar.repo = 'default';
+        this.avatar.type = 'water-world-cube';
         this.avatar.dynamic = true;
         /*this.avatar.position.x = 3 * Math.cos(2 * Math.PI * 0);
         this.avatar.position.z = 3 * Math.sin(2 * Math.PI * 0);

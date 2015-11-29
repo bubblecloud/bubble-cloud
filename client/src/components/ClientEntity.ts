@@ -10,6 +10,9 @@ export class ClientEntity {
     oid: string; // original ID
     _id: string; // unique persistent ID
 
+    type: string; // The entity type
+    repo: string; // The repository of the entity type
+
     position: Vector3 = new Vector3(0,0,0);
     rotationQuaternion: Quaternion = new Quaternion();
     scaling: Vector3 = new Vector3(0,0,0);

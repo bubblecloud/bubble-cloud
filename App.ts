@@ -1,3 +1,4 @@
+import {InConnection} from "./server/Component/InConnection";
 /**
  * Module dependencies.
  */
@@ -253,7 +254,7 @@ app.ws('/ws', function(ws, req) {
   if (req.user) {
     email = req.user.email;
   }
-  var inConnection = new ic.InConnection(remoteAddress, remotePort, email);
+  var inConnection: InConnection = new ic.InConnection(remoteAddress, remotePort, email);
   inConnection.engine = engine;
   inConnection.send = function(entity) {
     try {
@@ -267,6 +268,7 @@ app.ws('/ws', function(ws, req) {
     }
   }
 
+  inConnection.connect();
   engine.inConnections.push(inConnection);
   ws.on('message', function(msg) {
     inConnection.receive(JSON.parse(msg));
