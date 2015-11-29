@@ -41,6 +41,7 @@ var ServerEngine = (function () {
                 var loadedEntity = loadedEntities[_i];
                 _this.model.put(loadedEntity);
             }
+            _this.coreEntity = _this.model.entities['0'];
             for (var _a = 0, _b = _this.remoteServers; _a < _b.length; _a++) {
                 var remoteServer = _b[_a];
                 _this.outConnections.push(new OutConnection_1.OutConnection(remoteServer['url'], remoteServer['x'], remoteServer['y'], remoteServer['z'], _this));

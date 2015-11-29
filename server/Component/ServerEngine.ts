@@ -47,6 +47,7 @@ export class ServerEngine {
             for (var loadedEntity of loadedEntities) {
                 this.model.put(loadedEntity);
             }
+            this.coreEntity = this.model.entities['0'];
 
             for (var remoteServer of this.remoteServers) {
                 this.outConnections.push(new OutConnection(remoteServer['url'], remoteServer['x'], remoteServer['y'], remoteServer['z'], this));

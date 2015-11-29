@@ -23,7 +23,7 @@ export class ConsoleController {
             return;
         }
         if (line.indexOf('list users') === 0) {
-            this.listUsers();
+            this.listUsers(line);
             return;
         }
         if (line.indexOf('grant') === 0) {
@@ -40,17 +40,34 @@ export class ConsoleController {
     help() {
         this.println("Commands:");
         this.println("help - This help.");
-        this.println("list users - List of system users.");
+        this.println("list users [role={admin, member}] - List of user optionally limited by role.");
         this.println("grant <role={admin, member}> <email> - Grant role to a user.");
         this.println("revoke <role={admin, member}> <email> - Revoke role from a user.");
     }
 
-    listUsers() {
+    listUsers(line: string) {
+        var parts: string[] = line.split(' ');
         this.clientEngine.api.listUsers().then(
             (idEmailMap) => {
-                this.println('Users:');
-                for (var id in idEmailMap) {
-                    this.println('id: ' + id + ' email:' + idEmailMap[id]);
+                if (parts.length == 2) {
+                    this.println('users:');
+                    for (var id in idEmailMap) {
+                        this.println('id: ' + id + ' email:' + idEmailMap[id]);
+                    }
+                } else {
+                    var core: CoreEntity = <CoreEntity> this.clientEngine.getCore();
+
+                    if (!core) {
+                        this.println('Error: server core not available.');
+                        return;
+                    }
+
+                    var role = parts[2];
+                    this.println(role + 's:');
+                    var memberIds = core.getRoleMembersIds(role);
+                    for (var memberId of memberIds) {
+                        this.println('id: ' + memberId + ' email:' + idEmailMap[memberId]);
+                    }
                 }
             }
         ).catch((error) => {

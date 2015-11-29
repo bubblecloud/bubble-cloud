@@ -36,6 +36,13 @@ export class ClientEntity {
 export class CoreEntity extends ClientEntity {
     private roleMembers: {[key: string]: string[]} = {};
 
+    getRoleMembersIds(role: string): string[] {
+        if (!this.roleMembers[role]) {
+            return [];
+        }
+        return this.roleMembers[role];
+    }
+
     grantRole(role : string, userId: string): void {
         if (!this.roleMembers[role]) {
             this.roleMembers[role] = [];

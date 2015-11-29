@@ -14,7 +14,7 @@ var ConsoleController = (function () {
             return;
         }
         if (line.indexOf('list users') === 0) {
-            this.listUsers();
+            this.listUsers(line);
             return;
         }
         if (line.indexOf('grant') === 0) {
@@ -30,16 +30,33 @@ var ConsoleController = (function () {
     ConsoleController.prototype.help = function () {
         this.println("Commands:");
         this.println("help - This help.");
-        this.println("list users - List of system users.");
+        this.println("list users [role={admin, member}] - List of user optionally limited by role.");
         this.println("grant <role={admin, member}> <email> - Grant role to a user.");
         this.println("revoke <role={admin, member}> <email> - Revoke role from a user.");
     };
-    ConsoleController.prototype.listUsers = function () {
+    ConsoleController.prototype.listUsers = function (line) {
         var _this = this;
+        var parts = line.split(' ');
         this.clientEngine.api.listUsers().then(function (idEmailMap) {
-            _this.println('Users:');
-            for (var id in idEmailMap) {
-                _this.println('id: ' + id + ' email:' + idEmailMap[id]);
+            if (parts.length == 2) {
+                _this.println('users:');
+                for (var id in idEmailMap) {
+                    _this.println('id: ' + id + ' email:' + idEmailMap[id]);
+                }
+            }
+            else {
+                var core = _this.clientEngine.getCore();
+                if (!core) {
+                    _this.println('Error: server core not available.');
+                    return;
+                }
+                var role = parts[2];
+                _this.println(role + 's:');
+                var memberIds = core.getRoleMembersIds(role);
+                for (var _i = 0; _i < memberIds.length; _i++) {
+                    var memberId = memberIds[_i];
+                    _this.println('id: ' + memberId + ' email:' + idEmailMap[memberId]);
+                }
             }
         }).catch(function (error) {
             _this.println('Error listing users: ' + error);

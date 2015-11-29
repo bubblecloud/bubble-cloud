@@ -99,7 +99,10 @@ export class ClientModel {
             if (this.onUpdate) {
                 this.onUpdate(existingEntity);
             }
-            //console.log(JSON.stringify(entity));
+            /*if (entity.id == '0') {
+                console.log('Updating: ' + JSON.stringify(entity));
+                console.log('Existing: ' + JSON.stringify(existingEntity));
+            }*/
             if (this.mobiles.indexOf(existingEntity) < 0) {
                 this.mobiles.push(existingEntity);
             }

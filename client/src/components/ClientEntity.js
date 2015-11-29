@@ -29,6 +29,12 @@ var CoreEntity = (function (_super) {
         _super.apply(this, arguments);
         this.roleMembers = {};
     }
+    CoreEntity.prototype.getRoleMembersIds = function (role) {
+        if (!this.roleMembers[role]) {
+            return [];
+        }
+        return this.roleMembers[role];
+    };
     CoreEntity.prototype.grantRole = function (role, userId) {
         if (!this.roleMembers[role]) {
             this.roleMembers[role] = [];
