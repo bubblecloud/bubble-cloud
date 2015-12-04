@@ -11700,8 +11700,9 @@ body {
 }
 
 .form-control {
-  background-color: #d1ceed;
-  border: 1px solid rgba(255, 255, 255, 0.56);
+  background-color: rgba(0, 0, 0, 0.33);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .navbar-default .navbar-brand {
@@ -11779,7 +11780,7 @@ footer p, footer ul {
 }
 
 .navbar-default {
-  background-color: rgba(82, 144, 243, 0.71);
+  background-color: rgba(0, 0, 0, 0.19);
 }
 
 .hud {
@@ -11787,7 +11788,7 @@ footer p, footer ul {
   height: 30vh;
   touch-action: none;
   margin-bottom: -5px;
-  background-color: rgba(12, 58, 97, 0.77);
+  background-color: rgba(0, 0, 0, 0.19);
   position: absolute;
   top: 70vh;
   left: 0;
