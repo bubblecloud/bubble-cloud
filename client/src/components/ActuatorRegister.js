@@ -1,18 +1,19 @@
-var WaterWorldSky_1 = require("../environments/water-world/WaterWorldSky");
-var WaterWorldCube_1 = require("../environments/water-world/WaterWorldCube");
-var WaterWorldCore_1 = require("../environments/water-world/WaterWorldCore");
 var ActuatorRegister = (function () {
     function ActuatorRegister() {
         this.actuators = {};
-        this.add('default', new WaterWorldCore_1.WaterWorldCore());
-        this.add('default', new WaterWorldSky_1.WaterWorldSky());
-        this.add('default', new WaterWorldCube_1.WaterWorldCube());
     }
     ActuatorRegister.prototype.add = function (repo, actuator) {
         if (!this.actuators[repo]) {
             this.actuators[repo] = {};
         }
         this.actuators[repo][actuator.type] = actuator;
+        console.log('Registered actuator: ' + repo + ' / ' + actuator.type);
+    };
+    ActuatorRegister.prototype.remove = function (repo, actuator) {
+        if (this.actuators[repo]) {
+            delete this.actuators[repo][actuator.type];
+        }
+        console.log('De-registered actuator: ' + repo + ' / ' + actuator.type);
     };
     ActuatorRegister.prototype.get = function (repo, type) {
         if (this.actuators[repo]) {

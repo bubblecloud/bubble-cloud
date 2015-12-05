@@ -8,16 +8,22 @@ export class ActuatorRegister {
     private actuators: {[key: string]: {[key: string]: Actuator}} = {};
 
     constructor() {
-        this.add('default', new WaterWorldCore());
-        this.add('default', new WaterWorldSky());
-        this.add('default', new WaterWorldCube());
+
     }
 
-    add(repo: string, actuator: Actuator) {
+    add(repo: string, actuator: Actuator):void {
         if (!this.actuators[repo]) {
             this.actuators[repo] = {};
         }
         this.actuators[repo][actuator.type] = actuator;
+        console.log('Registered actuator: ' + repo + ' / ' + actuator.type);
+    }
+
+    remove(repo: string, actuator: Actuator): void {
+        if (this.actuators[repo]) {
+            delete this.actuators[repo][actuator.type];
+        }
+        console.log('De-registered actuator: ' + repo + ' / ' + actuator.type);
     }
 
     get(repo: string, type: string): Actuator {

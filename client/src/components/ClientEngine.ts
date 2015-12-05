@@ -11,6 +11,7 @@ import {ConsoleController} from "./ConsoleController";
 import {ClientState} from "./ClientState";
 import {ActuatorRegister} from "./ActuatorRegister";
 import {CoreEntity} from "./ClientEntity";
+import {WaterWorldModule} from "../environments/water-world/WaterWorldModule";
 
 export class ClientEngine {
     api: RpcApi = getProxy('rpc', RpcApi);
@@ -31,6 +32,10 @@ export class ClientEngine {
 
     startTimeMillis: number = new Date().getTime();
     lastLoopTimeMillis: number;
+
+    constructor() {
+        new WaterWorldModule().load(this);
+    }
 
     startup() {
         this.consoleController.println('Client starting up...');
