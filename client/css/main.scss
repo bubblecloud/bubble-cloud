@@ -45,6 +45,28 @@ body {
   color: rgba(255, 255, 255, 0.5);
 }
 
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+  background-color: rgba(255, 255, 255, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.nav-tabs > li > a:hover, .nav-tabs > li > a:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.nav-tabs > li > a {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0);
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.nav-tabs {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+
 a:hover, a:focus {
   color: rgba(68, 45, 63, 0.40);
 }
@@ -151,7 +173,7 @@ footer {
   top: 70px;
   bottom: 60px;
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding-left: 10px;
   padding-right: 10px;
 }
