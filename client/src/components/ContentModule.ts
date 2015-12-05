@@ -5,7 +5,10 @@ import {ClientEngine} from "./ClientEngine";
  */
 export interface ContentModule {
 
-    name: string;
+    /**
+     * The repository this module belongs to.
+     */
+    repository: string;
 
     /**
      * Load content to engine.
