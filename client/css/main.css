@@ -11828,7 +11828,7 @@ footer p, footer ul {
 .console-lines {
   position: absolute;
   top: 70px;
-  bottom: 60px;
+  bottom: 75px;
   width: 100%;
   overflow-y: auto;
   padding-left: 10px;
@@ -11838,5 +11838,5 @@ footer p, footer ul {
 .console-input {
   position: absolute;
   left: 0;
-  bottom: 15px;
+  bottom: 30px;
 }
