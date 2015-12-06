@@ -15,7 +15,7 @@ export class ClientEntity {
 
     position: Vector3 = new Vector3(0,0,0);
     rotationQuaternion: Quaternion = new Quaternion();
-    scaling: Vector3 = new Vector3(0,0,0);
+    scaling: Vector3 = new Vector3(1,1,1);
 
     interpolatedPosition: Vector3;
     interpolatorPosition: Vector3;

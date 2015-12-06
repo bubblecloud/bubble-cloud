@@ -10,7 +10,7 @@ var ClientEntity = (function () {
     function ClientEntity() {
         this.position = new Vector3(0, 0, 0);
         this.rotationQuaternion = new Quaternion();
-        this.scaling = new Vector3(0, 0, 0);
+        this.scaling = new Vector3(1, 1, 1);
         this.core = false;
         this.removed = false;
         this.external = false;

@@ -61,6 +61,9 @@ export class Renderer {
         if (shape) {
             shape.position = entity.interpolatedPosition;
             shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
+            if (entity.scaling && (entity.scaling.x != 0 || entity.scaling.y != 0 || entity.scaling.z != 0)) {
+                shape.scaling = entity.scaling;
+            }
         }
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
             this.avatarShape = shape; // Mesh.CreateBox(entity.id, 1, this.scene);
@@ -87,6 +90,9 @@ export class Renderer {
 
         shape.position = entity.interpolatedPosition;
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
+        if (entity.scaling && (entity.scaling.x != 0 || entity.scaling.y != 0 || entity.scaling.z != 0)) {
+            shape.scaling = entity.scaling;
+        }
 
         var actuator:Actuator = this.clientEngine.actuatorRegister.get(entity.repo, entity.type);
         if (actuator) {

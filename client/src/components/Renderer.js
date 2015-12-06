@@ -38,6 +38,9 @@ var Renderer = (function () {
         if (shape) {
             shape.position = entity.interpolatedPosition;
             shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
+            if (entity.scaling && (entity.scaling.x != 0 || entity.scaling.y != 0 || entity.scaling.z != 0)) {
+                shape.scaling = entity.scaling;
+            }
         }
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
             this.avatarShape = shape;
@@ -57,6 +60,9 @@ var Renderer = (function () {
         }
         shape.position = entity.interpolatedPosition;
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
+        if (entity.scaling && (entity.scaling.x != 0 || entity.scaling.y != 0 || entity.scaling.z != 0)) {
+            shape.scaling = entity.scaling;
+        }
         var actuator = this.clientEngine.actuatorRegister.get(entity.repo, entity.type);
         if (actuator) {
             actuator.update(this.clientEngine, entity);
