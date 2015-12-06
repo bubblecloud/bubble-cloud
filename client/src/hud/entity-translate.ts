@@ -11,76 +11,40 @@ export class EntityTranslate {
         this.engine = getClientEngine();
     }
 
-    forward(): void {
+    translate(translation: Vector3): void {
         var entity = this.engine.state.editedEntity;
         if (entity) {
             var rotationMatrix = new Matrix();
             this.engine.avatarController.avatar.rotationQuaternion.toRotationMatrix(rotationMatrix);
-            var stepDirection = Vector3.TransformCoordinates(new Vector3(0, 0, 1.4 * this.engine.grid.positionStep), rotationMatrix);
+            var stepDirection = Vector3.TransformCoordinates(translation.scale(this.engine.grid.positionStep * 1.4), rotationMatrix);
             entity.position.addInPlace(stepDirection);
             entity.position = this.engine.grid.positionSnap(entity.position);
             this.engine.ws.sendObject(entity);
         }
+    }
+
+    forward(): void {
+        this.translate(new Vector3(0, 0, 1));
     }
 
     backward(): void {
-        var entity = this.engine.state.editedEntity;
-        if (entity) {
-            var rotationMatrix = new Matrix();
-            this.engine.avatarController.avatar.rotationQuaternion.toRotationMatrix(rotationMatrix);
-            var stepDirection = Vector3.TransformCoordinates(new Vector3(0, 0, - 1.4 * this.engine.grid.positionStep), rotationMatrix);
-            entity.position.addInPlace(stepDirection);
-            entity.position = this.engine.grid.positionSnap(entity.position);
-            this.engine.ws.sendObject(entity);
-        }
+        this.translate(new Vector3(0, 0, -1));
     }
 
     left(): void {
-        var entity = this.engine.state.editedEntity;
-        if (entity) {
-            var rotationMatrix = new Matrix();
-            this.engine.avatarController.avatar.rotationQuaternion.toRotationMatrix(rotationMatrix);
-            var stepDirection = Vector3.TransformCoordinates(new Vector3(- 1.4 * this.engine.grid.positionStep, 0, 0), rotationMatrix);
-            entity.position.addInPlace(stepDirection);
-            entity.position = this.engine.grid.positionSnap(entity.position);
-            this.engine.ws.sendObject(entity);
-        }
+        this.translate(new Vector3(-1, 0, 0));
     }
 
     right(): void {
-        var entity = this.engine.state.editedEntity;
-        if (entity) {
-            var rotationMatrix = new Matrix();
-            this.engine.avatarController.avatar.rotationQuaternion.toRotationMatrix(rotationMatrix);
-            var stepDirection = Vector3.TransformCoordinates(new Vector3(1.4 * this.engine.grid.positionStep, 0, 0), rotationMatrix);
-            entity.position.addInPlace(stepDirection);
-            entity.position = this.engine.grid.positionSnap(entity.position);
-            this.engine.ws.sendObject(entity);
-        }
+        this.translate(new Vector3(1, 0, 0));
     }
 
     up(): void {
-        var entity = this.engine.state.editedEntity;
-        if (entity) {
-            var rotationMatrix = new Matrix();
-            this.engine.avatarController.avatar.rotationQuaternion.toRotationMatrix(rotationMatrix);
-            var stepDirection = Vector3.TransformCoordinates(new Vector3(0, 1.4 * this.engine.grid.positionStep, 0), rotationMatrix);
-            entity.position.addInPlace(stepDirection);
-            entity.position = this.engine.grid.positionSnap(entity.position);
-            this.engine.ws.sendObject(entity);
-        }
+        this.translate(new Vector3(0, 1, 0));
     }
 
     down(): void {
-        var entity = this.engine.state.editedEntity;
-        if (entity) {
-            var rotationMatrix = new Matrix();
-            this.engine.avatarController.avatar.rotationQuaternion.toRotationMatrix(rotationMatrix);
-            var stepDirection = Vector3.TransformCoordinates(new Vector3(0, - 1.4 * this.engine.grid.positionStep, 0), rotationMatrix);
-            entity.position.addInPlace(stepDirection);
-            entity.position = this.engine.grid.positionSnap(entity.position);
-            this.engine.ws.sendObject(entity);
-        }
+        this.translate(new Vector3(0, -1, 0));
     }
 
 }
