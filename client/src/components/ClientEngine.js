@@ -12,11 +12,13 @@ var ActuatorRegister_1 = require("./ActuatorRegister");
 var ClientEntity_1 = require("./ClientEntity");
 var WaterWorldModule_1 = require("../environments/water-world/WaterWorldModule");
 var CommonModule_1 = require("../environments/common/CommonModule");
+var ClientGrid_1 = require("./ClientGrid");
 var ClientEngine = (function () {
     function ClientEngine() {
         this.api = RpcApi_2.getProxy('rpc', RpcApi_1.RpcApi);
         this.running = false;
         this.state = new ClientState_1.ClientState();
+        this.grid = new ClientGrid_1.ClientGrid();
         this.model = new ClientModel_1.ClientModel();
         this.core = new ClientEntity_1.CoreEntity();
         this.avatarController = new AvatarController_1.AvatarController(this);

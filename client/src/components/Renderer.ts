@@ -169,7 +169,7 @@ export class Renderer {
 
                         var rotationMatrix = new Matrix();
                         this.avatarShape.rotationQuaternion.toRotationMatrix(rotationMatrix);
-                        var cameraDirection = Vector3.TransformCoordinates(new Vector3(0, 2, -10), rotationMatrix)
+                        var cameraDirection = Vector3.TransformCoordinates(new Vector3(0, 2, -10), rotationMatrix);
                         this.camera.position = cameraDirection.add(this.avatarShape.position);
                         this.camera.setTarget(this.avatarShape.position);
 

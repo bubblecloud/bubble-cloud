@@ -13,6 +13,7 @@ import {ActuatorRegister} from "./ActuatorRegister";
 import {CoreEntity} from "./ClientEntity";
 import {WaterWorldModule} from "../environments/water-world/WaterWorldModule";
 import {CommonModule} from "../environments/common/CommonModule";
+import {ClientGrid} from "./ClientGrid";
 
 export class ClientEngine {
     api: RpcApi = getProxy('rpc', RpcApi);
@@ -21,6 +22,7 @@ export class ClientEngine {
     running: boolean = false;
 
     state: ClientState = new ClientState();
+    grid: ClientGrid = new ClientGrid();
     model: ClientModel = new ClientModel();
     private core: CoreEntity = new CoreEntity();
 
