@@ -4,8 +4,13 @@ import {ClientEntity} from "../../components/ClientEntity";
 import Mesh = BABYLON.Mesh;
 import Scene = BABYLON.Scene;
 export class WaterWorldCore implements Actuator {
+    repository: string = 'default';
     environment: string = 'water-world';
     type: string = 'water-world-core';
+
+    construct():ClientEntity {
+        return undefined;
+    }
 
     add(engine: ClientEngine, entity: ClientEntity): void {
         var scene: Scene = engine.renderer.scene;

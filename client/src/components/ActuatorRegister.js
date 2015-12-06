@@ -2,18 +2,18 @@ var ActuatorRegister = (function () {
     function ActuatorRegister() {
         this.actuators = {};
     }
-    ActuatorRegister.prototype.add = function (repository, actuator) {
-        if (!this.actuators[repository]) {
-            this.actuators[repository] = {};
+    ActuatorRegister.prototype.add = function (actuator) {
+        if (!this.actuators[actuator.repository]) {
+            this.actuators[actuator.repository] = {};
         }
-        this.actuators[repository][actuator.type] = actuator;
-        console.log('Registered actuator: ' + repository + ' / ' + actuator.type);
+        this.actuators[actuator.repository][actuator.type] = actuator;
+        console.log('Registered actuator: ' + actuator.repository + ' / ' + actuator.type);
     };
-    ActuatorRegister.prototype.remove = function (repository, actuator) {
-        if (this.actuators[repository]) {
-            delete this.actuators[repository][actuator.type];
+    ActuatorRegister.prototype.remove = function (actuator) {
+        if (this.actuators[actuator.repository]) {
+            delete this.actuators[actuator.repository][actuator.type];
         }
-        console.log('De-registered actuator: ' + repository + ' / ' + actuator.type);
+        console.log('De-registered actuator: ' + actuator.repository + ' / ' + actuator.type);
     };
     ActuatorRegister.prototype.get = function (repository, type) {
         if (this.actuators[repository]) {

@@ -1,9 +1,13 @@
 var Mesh = BABYLON.Mesh;
 var WaterWorldCube = (function () {
     function WaterWorldCube() {
+        this.repository = 'default';
         this.environment = 'water-world';
         this.type = 'water-world-cube';
     }
+    WaterWorldCube.prototype.construct = function () {
+        return undefined;
+    };
     WaterWorldCube.prototype.add = function (engine, entity) {
         var scene = engine.renderer.scene;
         var mesh = Mesh.CreateBox(entity.id, 1, scene);

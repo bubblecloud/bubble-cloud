@@ -9,15 +9,15 @@ export class WaterWorldModule implements ContentModule {
     repository:string = 'default';
 
     load(engine:ClientEngine): void {
-        engine.actuatorRegister.add(this.repository, new WaterWorldCore());
-        engine.actuatorRegister.add(this.repository, new WaterWorldSky());
-        engine.actuatorRegister.add(this.repository, new WaterWorldCube());
+        engine.actuatorRegister.add(new WaterWorldCore());
+        engine.actuatorRegister.add(new WaterWorldSky());
+        engine.actuatorRegister.add(new WaterWorldCube());
     }
 
     unload(engine:ClientEngine): void {
-        engine.actuatorRegister.remove(this.repository, new WaterWorldCore());
-        engine.actuatorRegister.remove(this.repository, new WaterWorldSky());
-        engine.actuatorRegister.remove(this.repository, new WaterWorldCube());
+        engine.actuatorRegister.remove(new WaterWorldCore());
+        engine.actuatorRegister.remove(new WaterWorldSky());
+        engine.actuatorRegister.remove(new WaterWorldCube());
     }
 
 }

@@ -1,20 +1,27 @@
-var WaterWorldCore = (function () {
-    function WaterWorldCore() {
+var ClientEntity_1 = require("../../components/ClientEntity");
+var Mesh = BABYLON.Mesh;
+var Primitive = (function () {
+    function Primitive() {
         this.repository = 'default';
-        this.environment = 'water-world';
-        this.type = 'water-world-core';
+        this.environment = 'common';
+        this.type = 'primitive';
     }
-    WaterWorldCore.prototype.construct = function () {
-        return undefined;
+    Primitive.prototype.construct = function () {
+        var newEntity = new ClientEntity_1.ClientEntity();
+        newEntity.newId();
+        newEntity.repo = this.repository;
+        newEntity.type = this.environment;
+        newEntity.dynamic = true;
+        return newEntity;
     };
-    WaterWorldCore.prototype.add = function (engine, entity) {
+    Primitive.prototype.add = function (engine, entity) {
         var scene = engine.renderer.scene;
-        var mesh = BABYLON.Mesh.CreateSphere(entity.id, 32, 5, scene);
+        var mesh = Mesh.CreateBox(entity.id, 1, scene);
         var material = new BABYLON.StandardMaterial("kosh", scene);
         material.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/TropicalSunnyDay", scene);
         material.diffuseColor = new BABYLON.Color3(0, 0, 0);
         material.emissiveColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-        material.alpha = 0;
+        material.alpha = 0.2;
         material.specularPower = 16;
         material.reflectionFresnelParameters = new BABYLON.FresnelParameters();
         material.reflectionFresnelParameters.bias = 0.1;
@@ -28,15 +35,15 @@ var WaterWorldCore = (function () {
         material.opacityFresnelParameters.rightColor = BABYLON.Color3.Black();
         mesh.material = material;
     };
-    WaterWorldCore.prototype.remove = function (engine, entity) {
+    Primitive.prototype.remove = function (engine, entity) {
         var scene = engine.renderer.scene;
         var mesh = scene.getMeshByName(entity.id);
         if (mesh) {
             scene.removeMesh(mesh);
         }
     };
-    WaterWorldCore.prototype.update = function (engine, entity) {
+    Primitive.prototype.update = function (engine, entity) {
     };
-    return WaterWorldCore;
+    return Primitive;
 })();
-exports.WaterWorldCore = WaterWorldCore;
+exports.Primitive = Primitive;

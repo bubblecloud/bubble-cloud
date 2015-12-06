@@ -12,6 +12,7 @@ import {ClientState} from "./ClientState";
 import {ActuatorRegister} from "./ActuatorRegister";
 import {CoreEntity} from "./ClientEntity";
 import {WaterWorldModule} from "../environments/water-world/WaterWorldModule";
+import {CommonModule} from "../environments/common/CommonModule";
 
 export class ClientEngine {
     api: RpcApi = getProxy('rpc', RpcApi);
@@ -34,6 +35,7 @@ export class ClientEngine {
     lastLoopTimeMillis: number;
 
     constructor() {
+        new CommonModule().load(this);
         new WaterWorldModule().load(this);
     }
 

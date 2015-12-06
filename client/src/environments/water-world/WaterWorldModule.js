@@ -6,14 +6,14 @@ var WaterWorldModule = (function () {
         this.repository = 'default';
     }
     WaterWorldModule.prototype.load = function (engine) {
-        engine.actuatorRegister.add(this.repository, new WaterWorldCore_1.WaterWorldCore());
-        engine.actuatorRegister.add(this.repository, new WaterWorldSky_1.WaterWorldSky());
-        engine.actuatorRegister.add(this.repository, new WaterWorldCube_1.WaterWorldCube());
+        engine.actuatorRegister.add(new WaterWorldCore_1.WaterWorldCore());
+        engine.actuatorRegister.add(new WaterWorldSky_1.WaterWorldSky());
+        engine.actuatorRegister.add(new WaterWorldCube_1.WaterWorldCube());
     };
     WaterWorldModule.prototype.unload = function (engine) {
-        engine.actuatorRegister.remove(this.repository, new WaterWorldCore_1.WaterWorldCore());
-        engine.actuatorRegister.remove(this.repository, new WaterWorldSky_1.WaterWorldSky());
-        engine.actuatorRegister.remove(this.repository, new WaterWorldCube_1.WaterWorldCube());
+        engine.actuatorRegister.remove(new WaterWorldCore_1.WaterWorldCore());
+        engine.actuatorRegister.remove(new WaterWorldSky_1.WaterWorldSky());
+        engine.actuatorRegister.remove(new WaterWorldCube_1.WaterWorldCube());
     };
     return WaterWorldModule;
 })();

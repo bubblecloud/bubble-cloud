@@ -1,8 +1,12 @@
 var WaterWorldSky = (function () {
     function WaterWorldSky() {
+        this.repository = 'default';
         this.environment = "water-world";
         this.type = "water-world-sky";
     }
+    WaterWorldSky.prototype.construct = function () {
+        return undefined;
+    };
     WaterWorldSky.prototype.add = function (engine, entity) {
         if (entity.external) {
             return;

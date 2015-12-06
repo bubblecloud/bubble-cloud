@@ -11,19 +11,19 @@ export class ActuatorRegister {
 
     }
 
-    add(repository: string, actuator: Actuator):void {
-        if (!this.actuators[repository]) {
-            this.actuators[repository] = {};
+    add(actuator: Actuator):void {
+        if (!this.actuators[actuator.repository]) {
+            this.actuators[actuator.repository] = {};
         }
-        this.actuators[repository][actuator.type] = actuator;
-        console.log('Registered actuator: ' + repository + ' / ' + actuator.type);
+        this.actuators[actuator.repository][actuator.type] = actuator;
+        console.log('Registered actuator: ' + actuator.repository + ' / ' + actuator.type);
     }
 
-    remove(repository: string, actuator: Actuator): void {
-        if (this.actuators[repository]) {
-            delete this.actuators[repository][actuator.type];
+    remove(actuator: Actuator): void {
+        if (this.actuators[actuator.repository]) {
+            delete this.actuators[actuator.repository][actuator.type];
         }
-        console.log('De-registered actuator: ' + repository + ' / ' + actuator.type);
+        console.log('De-registered actuator: ' + actuator.repository + ' / ' + actuator.type);
     }
 
     get(repository: string, type: string): Actuator {

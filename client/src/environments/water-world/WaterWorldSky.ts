@@ -8,9 +8,13 @@ import {Actuator} from "../../components/Actuator";
  * The water world sky.
  */
 export class WaterWorldSky implements Actuator {
-
+    repository: string = 'default';
     environment: string = "water-world";
     type: string = "water-world-sky";
+
+    construct():ClientEntity {
+        return undefined;
+    }
 
     add(engine: ClientEngine, entity: ClientEntity): void {
         // Do not render sky of other servers.
