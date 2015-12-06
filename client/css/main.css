@@ -11772,6 +11772,28 @@ a {
   background-color: rgba(255, 255, 255, 0.07);
 }
 
+.button-panel {
+  padding: 2px;
+}
+
+.button-table {
+  width: 100%;
+}
+
+.button-table > tbody > tr > td {
+  padding: 1px;
+  text-align: center;
+}
+
+.button-table > tbody > tr > td > button {
+  width: 100%;
+  margin-bottom: 0px;
+}
+
+.button-table > tbody > tr > td > button > i {
+  margin-right: 0px;
+}
+
 footer {
   position: absolute;
   bottom: 0;

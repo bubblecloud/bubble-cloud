@@ -1,0 +1,12 @@
+<template>
+    <div class="panel panel-default">
+        <div class="panel-heading">Add / Remove Entities</div>
+        <div class="panel-body">
+            <select class="form-control" value.bind="addEntityType">
+                <option repeat.for="entityType of entityTypes" model.bind="entityType.type">${entityType.label}</option>
+            </select>
+            <button class="btn btn-primary" click.trigger="addEntity()"><i class="fa fa-plus"></i> Add</button>
+            <button class="btn btn-primary" click.trigger="removeEntity()"><i class="fa fa-minus"></i> Remove</button>
+        </div>
+    </div>
+</template>
