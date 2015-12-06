@@ -20,22 +20,29 @@ var EntityRotate = (function () {
             this.engine.ws.sendObject(entity);
         }
     };
-    EntityRotate.prototype.forward = function () {
-        this.rotate(new Vector3(1, 0, 0));
+    EntityRotate.prototype.reset = function () {
+        var entity = this.engine.state.editedEntity;
+        if (entity) {
+            entity.rotationQuaternion = new Quaternion();
+            this.engine.ws.sendObject(entity);
+        }
     };
-    EntityRotate.prototype.backward = function () {
+    EntityRotate.prototype.pitchUp = function () {
         this.rotate(new Vector3(-1, 0, 0));
     };
-    EntityRotate.prototype.left = function () {
+    EntityRotate.prototype.pitchDown = function () {
+        this.rotate(new Vector3(1, 0, 0));
+    };
+    EntityRotate.prototype.yawLeft = function () {
         this.rotate(new Vector3(0, -1, 0));
     };
-    EntityRotate.prototype.right = function () {
+    EntityRotate.prototype.yawRight = function () {
         this.rotate(new Vector3(0, 1, 0));
     };
-    EntityRotate.prototype.up = function () {
+    EntityRotate.prototype.rollRight = function () {
         this.rotate(new Vector3(0, 0, -1));
     };
-    EntityRotate.prototype.down = function () {
+    EntityRotate.prototype.rollLeft = function () {
         this.rotate(new Vector3(0, 0, 1));
     };
     return EntityRotate;

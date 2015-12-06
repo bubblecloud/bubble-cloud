@@ -30,27 +30,35 @@ export class EntityRotate {
 
     }
 
-    forward(): void {
-        this.rotate(new Vector3(1, 0, 0));
+    reset(): void {
+        var entity = this.engine.state.editedEntity;
+        if (entity) {
+            entity.rotationQuaternion = new Quaternion();
+            this.engine.ws.sendObject(entity);
+        }
     }
 
-    backward(): void {
+    pitchUp(): void {
         this.rotate(new Vector3(-1, 0, 0));
     }
 
-    left(): void {
+    pitchDown(): void {
+        this.rotate(new Vector3(1, 0, 0));
+    }
+
+    yawLeft(): void {
         this.rotate(new Vector3(0, -1, 0));
     }
 
-    right(): void {
+    yawRight(): void {
         this.rotate(new Vector3(0, 1, 0));
     }
 
-    up(): void {
+    rollRight(): void {
         this.rotate(new Vector3(0, 0, -1));
     }
 
-    down(): void {
+    rollLeft(): void {
         this.rotate(new Vector3(0, 0, 1));
     }
 
