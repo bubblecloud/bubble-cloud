@@ -19,6 +19,10 @@ export class Quaternion {
 
 var entityIdCounter = 1;
 
+export function loadedId(id: string) {
+    entityIdCounter = Math.max(entityIdCounter, Number(id));
+}
+
 /**
  * Entity value object.
  */

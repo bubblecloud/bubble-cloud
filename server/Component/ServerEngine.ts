@@ -1,6 +1,7 @@
 import {InConnection} from "./InConnection";
 import {ServerModel} from "./ServerModel";
 import {ServerEntity} from "./ServerEntity";
+import {loadedId} from "./ServerEntity";
 import {OutConnection} from "./OutConnection";
 import dao = require('./EntityDao');
 
@@ -45,6 +46,7 @@ export class ServerEngine {
         dao.getEntities().then((loadedEntities : ServerEntity[]) => {
             console.log("loaded " + loadedEntities.length + " from database.");
             for (var loadedEntity of loadedEntities) {
+                loadedId(loadedEntity.id);
                 this.model.put(loadedEntity);
             }
             this.coreEntity = this.model.entities['0'];

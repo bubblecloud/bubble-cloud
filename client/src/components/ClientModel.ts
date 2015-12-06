@@ -3,6 +3,7 @@ import {ClientEntity} from "./ClientEntity";
 import Vector3 = BABYLON.Vector3;
 import Matrix = BABYLON.Matrix;
 import Quaternion = BABYLON.Quaternion;
+import {receivedOid} from "./ClientEntity";
 
 export class ClientModel {
 
@@ -71,6 +72,31 @@ export class ClientModel {
     }
 
     /**
+     * Copies entity for local editing and handles id mapping.
+     * @param id the entity ID
+     * @returns {ClientEntity}
+     */
+    clone(id: string): ClientEntity {
+        var localCopy = new ClientEntity();
+        var entity = this.entities[id];
+        if (!entity.oid) {
+            localCopy.oid = entity.id;
+            localCopy.newId();
+        } else {
+            localCopy.oid = entity.id;
+            localCopy.id = entity.oid;
+        }
+        localCopy.core = entity.core;
+        localCopy.external = entity.external;
+        localCopy.removed = entity.removed;
+        localCopy.dynamic = entity.dynamic;
+        localCopy.position = new Vector3(entity.position.x, entity.position.y, entity.position.z);
+        localCopy.rotationQuaternion = new Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
+        localCopy.scaling = new Vector3(entity.scaling.x, entity.scaling.y, entity.scaling.z);
+        return localCopy;
+    }
+
+    /**
      * Copies properties from identified entity to the target entity.
      * @param sourceEntityId the source entity id
      * @param targetEntity the target entity
@@ -92,9 +118,10 @@ export class ClientModel {
     }
 
     put(entity: ClientEntity) : void {
-        if (entity.oid) {
+        if (entity.oid && !this.oidIdMap[entity.oid]) {
             this.oidIdMap[entity.oid] = entity.id;
             this.idOidMap[entity.id] = entity.oid;
+            receivedOid(entity.oid);
         }
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {

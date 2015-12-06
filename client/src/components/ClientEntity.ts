@@ -1,6 +1,10 @@
 import Vector3 = BABYLON.Vector3;
 import Quaternion = BABYLON.Quaternion;
-var entityIdCounter = 0;
+var entityIdCounter = 1;
+
+export function receivedOid(oid: string) {
+    entityIdCounter = Math.max(entityIdCounter, Number(oid));
+}
 
 /**
  * Entity value object.
@@ -40,6 +44,10 @@ export class PrimitiveEntity extends ClientEntity {
 
 export class CoreEntity extends ClientEntity {
     private roleMembers: {[key: string]: string[]} = {};
+
+    noAdminsYet(): boolean {
+        return !this.roleMembers['admin'];
+    }
 
     getRoleMembersIds(role: string): string[] {
         if (!this.roleMembers[role]) {

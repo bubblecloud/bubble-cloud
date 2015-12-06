@@ -10,6 +10,15 @@ var MouseReader = (function () {
                 document.getElementById("renderCanvas").requestPointerLock();
                 _this.mouseLook = true;
             }
+            if (eventData.button === 0) {
+                var pickResult = _this.engine.renderer.scene.pick(_this.engine.renderer.scene.pointerX, _this.engine.renderer.scene.pointerY);
+                var id = pickResult.pickedMesh.name;
+                if (_this.engine.model.entities[id]) {
+                    var entity = _this.engine.model.clone(id);
+                    _this.engine.ws.sendObject(entity);
+                    _this.engine.state.setEditedEntity(entity);
+                }
+            }
         };
         document.getElementById("renderCanvas").onmouseup = function (eventData) {
             if (eventData.button === 2) {

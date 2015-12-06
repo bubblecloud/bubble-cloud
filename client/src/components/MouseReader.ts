@@ -15,6 +15,15 @@ export class MouseReader {
                 document.getElementById("renderCanvas").requestPointerLock();
                 this.mouseLook = true;
             }
+            if (eventData.button === 0) {
+                var pickResult = this.engine.renderer.scene.pick(this.engine.renderer.scene.pointerX, this.engine.renderer.scene.pointerY);
+                var id = pickResult.pickedMesh.name;
+                if (this.engine.model.entities[id]) {
+                    var entity = this.engine.model.clone(id);
+                    this.engine.ws.sendObject(entity); // Refresh possibly new oid via server to client model.
+                    this.engine.state.setEditedEntity(entity);
+                }
+            }
         }
 
         document.getElementById("renderCanvas").onmouseup = (eventData) =>  {

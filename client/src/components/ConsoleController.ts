@@ -113,7 +113,7 @@ export class ConsoleController {
                     return;
                 }
 
-                if (!core.hasRole(role, userIdMatch)) {
+                if (core.noAdminsYet() || !core.hasRole(role, userIdMatch)) {
                     core.grantRole(role, userIdMatch);
                     this.clientEngine.ws.sendObject(core);
                     this.println('Success: granted ' + userEmailMatch + ' ' + role + ' role.');

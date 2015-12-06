@@ -5,7 +5,11 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Vector3 = BABYLON.Vector3;
 var Quaternion = BABYLON.Quaternion;
-var entityIdCounter = 0;
+var entityIdCounter = 1;
+function receivedOid(oid) {
+    entityIdCounter = Math.max(entityIdCounter, Number(oid));
+}
+exports.receivedOid = receivedOid;
 var ClientEntity = (function () {
     function ClientEntity() {
         this.position = new Vector3(0, 0, 0);
@@ -37,6 +41,9 @@ var CoreEntity = (function (_super) {
         _super.apply(this, arguments);
         this.roleMembers = {};
     }
+    CoreEntity.prototype.noAdminsYet = function () {
+        return !this.roleMembers['admin'];
+    };
     CoreEntity.prototype.getRoleMembersIds = function (role) {
         if (!this.roleMembers[role]) {
             return [];

@@ -96,7 +96,7 @@ var ConsoleController = (function () {
                 _this.println('Error: server core not available.');
                 return;
             }
-            if (!core.hasRole(role, userIdMatch)) {
+            if (core.noAdminsYet() || !core.hasRole(role, userIdMatch)) {
                 core.grantRole(role, userIdMatch);
                 _this.clientEngine.ws.sendObject(core);
                 _this.println('Success: granted ' + userEmailMatch + ' ' + role + ' role.');

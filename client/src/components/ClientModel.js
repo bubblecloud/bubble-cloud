@@ -1,5 +1,7 @@
+var ClientEntity_1 = require("./ClientEntity");
 var Vector3 = BABYLON.Vector3;
 var Quaternion = BABYLON.Quaternion;
+var ClientEntity_2 = require("./ClientEntity");
 var ClientModel = (function () {
     function ClientModel() {
         this.entities = {};
@@ -54,6 +56,26 @@ var ClientModel = (function () {
             this.onUpdate(entity);
         }
     };
+    ClientModel.prototype.clone = function (id) {
+        var localCopy = new ClientEntity_1.ClientEntity();
+        var entity = this.entities[id];
+        if (!entity.oid) {
+            localCopy.oid = entity.id;
+            localCopy.newId();
+        }
+        else {
+            localCopy.oid = entity.id;
+            localCopy.id = entity.oid;
+        }
+        localCopy.core = entity.core;
+        localCopy.external = entity.external;
+        localCopy.removed = entity.removed;
+        localCopy.dynamic = entity.dynamic;
+        localCopy.position = new Vector3(entity.position.x, entity.position.y, entity.position.z);
+        localCopy.rotationQuaternion = new Quaternion(entity.rotationQuaternion.x, entity.rotationQuaternion.y, entity.rotationQuaternion.z, entity.rotationQuaternion.w);
+        localCopy.scaling = new Vector3(entity.scaling.x, entity.scaling.y, entity.scaling.z);
+        return localCopy;
+    };
     ClientModel.prototype.copy = function (sourceEntityId, targetEntity) {
         var sourceEntity = this.entities[sourceEntityId];
         if (sourceEntity) {
@@ -70,9 +92,10 @@ var ClientModel = (function () {
         }
     };
     ClientModel.prototype.put = function (entity) {
-        if (entity.oid) {
+        if (entity.oid && !this.oidIdMap[entity.oid]) {
             this.oidIdMap[entity.oid] = entity.id;
             this.idOidMap[entity.id] = entity.oid;
+            ClientEntity_2.receivedOid(entity.oid);
         }
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {

@@ -19,6 +19,7 @@ export class EntityAdd {
     addEntity(): void {
         var actuator = this.engine.actuatorRegister.get('default', this.addEntityType);
         var newEntity = actuator.construct();
+        newEntity.dynamic = false;
         newEntity.position = this.engine.avatarController.avatar.position.clone();
         newEntity.rotationQuaternion = this.engine.avatarController.avatar.rotationQuaternion.clone();
         this.engine.ws.sendObject(newEntity);

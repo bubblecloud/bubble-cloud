@@ -12,7 +12,7 @@ var AvatarController = (function () {
     AvatarController.prototype.startup = function () {
         this.startTimeMillis = new Date().getTime();
         this.avatar = new ClientEntity_1.ClientEntity();
-        this.avatar.newId();
+        this.avatar.id = '0';
         this.avatar.repo = 'default';
         this.avatar.type = 'water-world-cube';
         this.avatar.dynamic = true;
