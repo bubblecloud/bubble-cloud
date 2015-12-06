@@ -22,7 +22,7 @@ export class EntityAdd {
         newEntity.position = this.engine.avatarController.avatar.position.clone();
         newEntity.rotationQuaternion = this.engine.avatarController.avatar.rotationQuaternion.clone();
         this.engine.ws.sendObject(newEntity);
-        this.engine.state.editedEntity = newEntity;
+        this.engine.state.setEditedEntity(newEntity);
 //        alert('add ' + this.addEntityType);
     }
 

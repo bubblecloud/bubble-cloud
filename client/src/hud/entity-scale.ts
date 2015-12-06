@@ -12,9 +12,10 @@ export class EntityScale {
     }
 
     scale(scale: Vector3): void {
-        var entity = this.engine.state.editedEntity;
+        var entity = this.engine.state.getEditedEntity();
         if (entity) {
             entity.scaling.addInPlace(scale.scaleInPlace(this.engine.grid.scaleStep));
+            this.engine.state.stateChanged();
             this.engine.ws.sendObject(entity);
         }
     }

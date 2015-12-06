@@ -7,7 +7,7 @@ var EntityRotate = (function () {
         this.engine = hud_1.getClientEngine();
     }
     EntityRotate.prototype.rotate = function (rotationAxis) {
-        var entity = this.engine.state.editedEntity;
+        var entity = this.engine.state.getEditedEntity();
         if (entity) {
             var currentRotationMatrix = new Matrix();
             entity.rotationQuaternion.toRotationMatrix(currentRotationMatrix);
@@ -17,13 +17,15 @@ var EntityRotate = (function () {
             rotationQuaternion.toRotationMatrix(rotationMatrix);
             entity.rotationQuaternion.fromRotationMatrix(currentRotationMatrix.multiply(rotationMatrix));
             entity.rotationQuaternion.normalize();
+            this.engine.state.stateChanged();
             this.engine.ws.sendObject(entity);
         }
     };
     EntityRotate.prototype.reset = function () {
-        var entity = this.engine.state.editedEntity;
+        var entity = this.engine.state.getEditedEntity();
         if (entity) {
             entity.rotationQuaternion = new Quaternion();
+            this.engine.state.stateChanged();
             this.engine.ws.sendObject(entity);
         }
     };

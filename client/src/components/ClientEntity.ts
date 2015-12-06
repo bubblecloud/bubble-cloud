@@ -10,6 +10,7 @@ export class ClientEntity {
     oid: string; // original ID
     _id: string; // unique persistent ID
 
+    name: string; // The entity name
     type: string; // The entity type
     repo: string; // The repository of the entity type
 

@@ -26,8 +26,10 @@ export class Primitive implements Actuator {
         var material = new BABYLON.StandardMaterial("kosh", scene);
         material.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/TropicalSunnyDay", scene);
         material.diffuseColor = new BABYLON.Color3(0, 0, 0);
-        material.emissiveColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+        material.emissiveColor = new BABYLON.Color3(1, 1, 1);
         material.alpha = 0.2;
+        //material.wireframe = true;
+        material.emissiveColor = new BABYLON.Color3(1, 1, 1);
         material.specularPower = 16;
         material.reflectionFresnelParameters = new BABYLON.FresnelParameters();
         material.reflectionFresnelParameters.bias = 0.1;

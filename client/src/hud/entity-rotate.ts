@@ -13,7 +13,7 @@ export class EntityRotate {
     }
 
     rotate(rotationAxis: Vector3) {
-        var entity = this.engine.state.editedEntity;
+        var entity = this.engine.state.getEditedEntity();
         if (entity) {
             var currentRotationMatrix = new Matrix();
             entity.rotationQuaternion.toRotationMatrix(currentRotationMatrix);
@@ -25,15 +25,17 @@ export class EntityRotate {
             rotationQuaternion.toRotationMatrix(rotationMatrix);
             entity.rotationQuaternion.fromRotationMatrix(currentRotationMatrix.multiply(rotationMatrix));
             entity.rotationQuaternion.normalize();
+            this.engine.state.stateChanged();
             this.engine.ws.sendObject(entity);
         }
 
     }
 
     reset(): void {
-        var entity = this.engine.state.editedEntity;
+        var entity = this.engine.state.getEditedEntity();
         if (entity) {
             entity.rotationQuaternion = new Quaternion();
+            this.engine.state.stateChanged();
             this.engine.ws.sendObject(entity);
         }
     }

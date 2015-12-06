@@ -5,9 +5,10 @@ var EntityScale = (function () {
         this.engine = hud_1.getClientEngine();
     }
     EntityScale.prototype.scale = function (scale) {
-        var entity = this.engine.state.editedEntity;
+        var entity = this.engine.state.getEditedEntity();
         if (entity) {
             entity.scaling.addInPlace(scale.scaleInPlace(this.engine.grid.scaleStep));
+            this.engine.state.stateChanged();
             this.engine.ws.sendObject(entity);
         }
     };
