@@ -11,8 +11,8 @@ var EntityAdd = (function () {
     EntityAdd.prototype.addEntity = function () {
         var actuator = this.engine.actuatorRegister.get('default', this.addEntityType);
         var newEntity = actuator.construct();
-        newEntity.position = this.engine.avatarController.avatar.position;
-        newEntity.rotationQuaternion = this.engine.avatarController.avatar.rotationQuaternion;
+        newEntity.position = this.engine.avatarController.avatar.position.clone();
+        newEntity.rotationQuaternion = this.engine.avatarController.avatar.rotationQuaternion.clone();
         this.engine.ws.sendObject(newEntity);
         this.engine.state.editedEntity = newEntity;
     };

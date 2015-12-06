@@ -7,7 +7,7 @@ import Quaternion = BABYLON.Quaternion;
 export class ClientGrid {
     positionStep: number = 0.2;
     positionOffset: number = 0;
-    rotationStep: number = 1;
+    rotationStep: number = 10;
     rotationOffset: number = 0;
     scaleStep: number = 0.1;
     scaleOffset: number = 0;

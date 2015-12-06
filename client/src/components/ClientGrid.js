@@ -4,7 +4,7 @@ var ClientGrid = (function () {
     function ClientGrid() {
         this.positionStep = 0.2;
         this.positionOffset = 0;
-        this.rotationStep = 1;
+        this.rotationStep = 10;
         this.rotationOffset = 0;
         this.scaleStep = 0.1;
         this.scaleOffset = 0;
