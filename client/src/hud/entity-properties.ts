@@ -6,6 +6,7 @@ import Vector3 = BABYLON.Vector3;
 import {ClientState} from "../components/ClientState";
 import {ClientStateListener} from "../components/ClientStateListener";
 import {ClientEntity} from "../components/ClientEntity";
+import Quaternion = BABYLON.Quaternion;
 
 export class EntityProperties implements ClientStateListener {
 
@@ -23,11 +24,16 @@ export class EntityProperties implements ClientStateListener {
     }
 
     stateChange(): void {
-        this.entity = this.state.getEditedEntity();
-        if (this.entity) {
-            this.position = this.entity.position.clone();
-            this.rotation = this.entity.rotationQuaternion.toEulerAngles();
-            this.scaling = this.entity.scaling.clone();
+        var editedEntity = this.state.getEditedEntity();
+        if (editedEntity && this.engine.model.oidIdMap[editedEntity.id]) {
+            var id = this.engine.model.oidIdMap[editedEntity.id];
+            this.entity = this.engine.model.entities[id];
+            this.position = new Vector3(this.entity.position.x, this.entity.position.y, this.entity.position.z);
+            var rotationQuaternion = new Quaternion();
+            rotationQuaternion.copyFrom(this.entity.rotationQuaternion);
+            this.rotation = rotationQuaternion.toEulerAngles();
+            this.rotation.scaleInPlace(180 / Math.PI);
+            this.scaling =  new Vector3(this.entity.scaling.x, this.entity.scaling.y, this.entity.scaling.z);
         } else {
             this.position = null;
             this.rotation = null;

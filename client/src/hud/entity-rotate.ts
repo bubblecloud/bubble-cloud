@@ -25,7 +25,6 @@ export class EntityRotate {
             rotationQuaternion.toRotationMatrix(rotationMatrix);
             entity.rotationQuaternion.fromRotationMatrix(currentRotationMatrix.multiply(rotationMatrix));
             entity.rotationQuaternion.normalize();
-            this.engine.state.stateChanged();
             this.engine.ws.sendObject(entity);
         }
 
@@ -35,7 +34,6 @@ export class EntityRotate {
         var entity = this.engine.state.getEditedEntity();
         if (entity) {
             entity.rotationQuaternion = new Quaternion();
-            this.engine.state.stateChanged();
             this.engine.ws.sendObject(entity);
         }
     }

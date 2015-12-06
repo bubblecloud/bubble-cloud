@@ -12,7 +12,6 @@ var EntityTranslate = (function () {
             this.engine.avatarController.avatar.rotationQuaternion.toRotationMatrix(rotationMatrix);
             var stepDirection = Vector3.TransformCoordinates(translation.scale(this.engine.grid.positionStep * 1.4), rotationMatrix);
             entity.position.copyFrom(this.engine.grid.positionSnap(entity.position.add(stepDirection)));
-            this.engine.state.stateChanged();
             this.engine.ws.sendObject(entity);
         }
     };

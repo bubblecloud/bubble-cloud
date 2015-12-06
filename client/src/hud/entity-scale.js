@@ -8,7 +8,6 @@ var EntityScale = (function () {
         var entity = this.engine.state.getEditedEntity();
         if (entity) {
             entity.scaling.addInPlace(scale.scaleInPlace(this.engine.grid.scaleStep));
-            this.engine.state.stateChanged();
             this.engine.ws.sendObject(entity);
         }
     };

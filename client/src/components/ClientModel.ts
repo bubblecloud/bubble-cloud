@@ -6,7 +6,9 @@ import Quaternion = BABYLON.Quaternion;
 
 export class ClientModel {
 
-    entities : {[key: string]: ClientEntity} = {}
+    entities : {[key: string]: ClientEntity} = {};
+    oidIdMap : {[key: string]: string} = {};
+    idOidMap : {[key: string]: string} = {};
     mobiles : ClientEntity[] = [];
 
     onAdd : (entity: ClientEntity) => void;
@@ -90,6 +92,10 @@ export class ClientModel {
     }
 
     put(entity: ClientEntity) : void {
+        if (entity.oid) {
+            this.oidIdMap[entity.oid] = entity.id;
+            this.idOidMap[entity.id] = entity.oid;
+        }
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {
             Object.getOwnPropertyNames(entity).forEach(name => {
@@ -115,6 +121,7 @@ export class ClientModel {
                 this.onAdd(entity);
             }
         }
+
     }
 
     get(entity: ClientEntity) : ClientEntity {
@@ -123,6 +130,10 @@ export class ClientModel {
 
     remove(entity: ClientEntity) : void {
         delete this.entities[entity.id];
+        if (entity.oid) {
+            delete this.oidIdMap[entity.oid];
+            delete this.idOidMap[entity.id];
+        }
         if (this.onRemove) {
             this.onRemove(entity);
         }

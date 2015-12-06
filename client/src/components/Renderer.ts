@@ -69,6 +69,12 @@ export class Renderer {
             this.avatarShape = shape; // Mesh.CreateBox(entity.id, 1, this.scene);
             //shape.visibility = 0;
         }
+
+        // If entity is edited locally then notify state listeners.
+        var editedEntity = this.clientEngine.state.getEditedEntity();
+        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id]) {
+            this.clientEngine.state.stateChanged();
+        }
     }
 
     onUpdate(entity: ClientEntity) {
@@ -97,6 +103,12 @@ export class Renderer {
         var actuator:Actuator = this.clientEngine.actuatorRegister.get(entity.repo, entity.type);
         if (actuator) {
             actuator.update(this.clientEngine, entity);
+        }
+
+        // If entity is edited locally then notify state listeners.
+        var editedEntity = this.clientEngine.state.getEditedEntity();
+        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id]) {
+            this.clientEngine.state.stateChanged();
         }
     }
 

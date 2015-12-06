@@ -45,6 +45,10 @@ var Renderer = (function () {
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
             this.avatarShape = shape;
         }
+        var editedEntity = this.clientEngine.state.getEditedEntity();
+        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id]) {
+            this.clientEngine.state.stateChanged();
+        }
     };
     Renderer.prototype.onUpdate = function (entity) {
         if (entity.oid == this.clientEngine.avatarController.avatar.id) {
@@ -66,6 +70,10 @@ var Renderer = (function () {
         var actuator = this.clientEngine.actuatorRegister.get(entity.repo, entity.type);
         if (actuator) {
             actuator.update(this.clientEngine, entity);
+        }
+        var editedEntity = this.clientEngine.state.getEditedEntity();
+        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id]) {
+            this.clientEngine.state.stateChanged();
         }
     };
     Renderer.prototype.onRemove = function (entity) {
