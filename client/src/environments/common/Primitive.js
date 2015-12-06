@@ -1,5 +1,5 @@
-var ClientEntity_1 = require("../../components/ClientEntity");
 var Mesh = BABYLON.Mesh;
+var ClientEntity_1 = require("../../components/ClientEntity");
 var Primitive = (function () {
     function Primitive() {
         this.repository = 'default';
@@ -7,11 +7,12 @@ var Primitive = (function () {
         this.type = 'primitive';
     }
     Primitive.prototype.construct = function () {
-        var newEntity = new ClientEntity_1.ClientEntity();
+        var newEntity = new ClientEntity_1.PrimitiveEntity();
         newEntity.newId();
         newEntity.repo = this.repository;
-        newEntity.type = this.environment;
+        newEntity.type = this.type;
         newEntity.dynamic = true;
+        newEntity.pType = 'cube';
         return newEntity;
     };
     Primitive.prototype.add = function (engine, entity) {

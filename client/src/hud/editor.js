@@ -9,7 +9,15 @@ var Editor = (function () {
         this.engine = hud_1.getClientEngine();
     }
     Editor.prototype.addEntity = function () {
-        alert('add');
+        var actuator = this.engine.actuatorRegister.get('default', this.addEntityType);
+        var newEntity = actuator.construct();
+        newEntity.position = this.engine.avatarController.avatar.position;
+        newEntity.rotationQuaternion = this.engine.avatarController.avatar.rotationQuaternion;
+        this.engine.ws.sendObject(newEntity);
+        this.engine.state.editedEntity = newEntity;
+    };
+    Editor.prototype.removeEntity = function () {
+        alert('remove');
     };
     return Editor;
 })();

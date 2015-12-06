@@ -61,7 +61,6 @@ export class ClientModel {
                     entity.interpolatorRotationQuaternion = rotationQuaternion;
                     entity.interpolatedRotationQuaternion = rotationQuaternion;
                     this.mobiles.splice(this.mobiles.indexOf(entity), 1);
-                    return;
                 }
             }
 

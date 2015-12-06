@@ -23,6 +23,14 @@ var ClientEntity = (function () {
     return ClientEntity;
 })();
 exports.ClientEntity = ClientEntity;
+var PrimitiveEntity = (function (_super) {
+    __extends(PrimitiveEntity, _super);
+    function PrimitiveEntity() {
+        _super.apply(this, arguments);
+    }
+    return PrimitiveEntity;
+})(ClientEntity);
+exports.PrimitiveEntity = PrimitiveEntity;
 var CoreEntity = (function (_super) {
     __extends(CoreEntity, _super);
     function CoreEntity() {

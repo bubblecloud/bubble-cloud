@@ -16,6 +16,16 @@ export class Editor {
     }
 
     addEntity(): void {
-        alert('add');
+        var actuator = this.engine.actuatorRegister.get('default', this.addEntityType);
+        var newEntity = actuator.construct();
+        newEntity.position = this.engine.avatarController.avatar.position;
+        newEntity.rotationQuaternion = this.engine.avatarController.avatar.rotationQuaternion;
+        this.engine.ws.sendObject(newEntity);
+        this.engine.state.editedEntity = newEntity;
+//        alert('add ' + this.addEntityType);
+    }
+
+    removeEntity(): void {
+        alert('remove');
     }
 }

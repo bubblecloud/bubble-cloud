@@ -33,6 +33,10 @@ export class ClientEntity {
     }
 }
 
+export class PrimitiveEntity extends ClientEntity {
+    pType: string;
+}
+
 export class CoreEntity extends ClientEntity {
     private roleMembers: {[key: string]: string[]} = {};
 

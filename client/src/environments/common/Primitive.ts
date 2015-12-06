@@ -3,17 +3,19 @@ import {ClientEngine} from "../../components/ClientEngine";
 import {ClientEntity} from "../../components/ClientEntity";
 import Mesh = BABYLON.Mesh;
 import Scene = BABYLON.Scene;
+import {PrimitiveEntity} from "../../components/ClientEntity";
 export class Primitive implements Actuator {
     repository: string = 'default';
     environment: string = 'common';
     type: string = 'primitive';
 
     construct():ClientEntity {
-        var newEntity: ClientEntity = new ClientEntity();
+        var newEntity: PrimitiveEntity = new PrimitiveEntity();
         newEntity.newId();
         newEntity.repo = this.repository;
-        newEntity.type = this.environment;
+        newEntity.type = this.type;
         newEntity.dynamic = true;
+        newEntity.pType = 'cube';
         return newEntity;
     }
 
