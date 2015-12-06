@@ -1,6 +1,6 @@
 var ClientState = (function () {
     function ClientState() {
-        this.hudVisible = false;
+        this.hudVisible = true;
     }
     return ClientState;
 })();

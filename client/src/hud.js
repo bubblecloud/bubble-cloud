@@ -2,10 +2,9 @@ var $ = require('jquery');
 require('bootstrap');
 require('babylonjs');
 var ClientEngine_1 = require("./components/ClientEngine");
-var globalClientEngine;
+var globalClientEngine = new ClientEngine_1.ClientEngine();
 $(document).ready(function () {
     if (document.getElementById("renderCanvas")) {
-        globalClientEngine = new ClientEngine_1.ClientEngine();
         globalClientEngine.startup();
         setInterval(function () {
             globalClientEngine.loop();

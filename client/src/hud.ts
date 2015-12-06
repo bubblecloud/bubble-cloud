@@ -4,11 +4,11 @@ import 'babylonjs';
 
 import {ClientEngine} from "./components/ClientEngine";
 
-var globalClientEngine: ClientEngine;
+var globalClientEngine: ClientEngine = new ClientEngine();
 
 $(document).ready(function() {
     if (document.getElementById("renderCanvas")) {
-        globalClientEngine = new ClientEngine();
+        //globalClientEngine = new ClientEngine();
         globalClientEngine.startup();
 
         setInterval(function() {

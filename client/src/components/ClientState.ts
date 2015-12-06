@@ -1,3 +1,3 @@
 export class ClientState {
-    hudVisible: boolean = false;
+    hudVisible: boolean = true;
 }
