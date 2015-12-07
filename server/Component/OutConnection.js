@@ -42,6 +42,30 @@ var OutConnection = (function () {
             entity.position.x -= this.x;
             entity.position.y -= this.y;
             entity.position.z -= this.z;
+            if (entity.id === '0') {
+                return;
+            }
+            if (entity.id === '0') {
+                if (!this.engine.hasRole('admin', this.userId)) {
+                    console.log('Access denied: Client attempted to write to core without admin role. User ID: ' + this.userId);
+                    return;
+                }
+            }
+            if (entity.external = false && entity.dynamic === false) {
+                if (!this.engine.hasRole('admin', this.userId) && !this.engine.hasRole('member', this.userId)) {
+                    console.log('Access denied: Client attempted to persist entity without admin or member role. ' + this.userId);
+                    return;
+                }
+            }
+            if (this.engine.model.entities[entity.id]) {
+                var existingEntity = this.engine.model.entities[entity.id];
+                if (existingEntity.external = false && existingEntity.dynamic === false) {
+                    if (!this.engine.hasRole('admin', this.userId) && !this.engine.hasRole('member', this.userId)) {
+                        console.log('Access denied: Client attempted to update existing persistent entity without admin or member role. ' + this.userId);
+                        return;
+                    }
+                }
+            }
             this.engine.model.put(entity);
         };
         this.disconnect = function () {

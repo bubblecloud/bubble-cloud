@@ -6,7 +6,7 @@ var EntityTranslate = (function () {
         this.engine = hud_1.getClientEngine();
     }
     EntityTranslate.prototype.translate = function (translation) {
-        var entity = this.engine.state.editedEntity;
+        var entity = this.engine.state.getEditedEntity();
         if (entity) {
             var rotationMatrix = new Matrix();
             this.engine.avatarController.avatar.rotationQuaternion.toRotationMatrix(rotationMatrix);

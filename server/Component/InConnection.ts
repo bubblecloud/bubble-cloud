@@ -42,6 +42,10 @@ export class InConnection {
             this.remoteIsServer = true;
         }
 
+        /*if (this.remoteIsServer) {
+            console.log("Received: " + JSON.stringify(entity));
+        }*/
+
         if (!entity.external) {
             entity.owner = this.email;
         }
@@ -74,17 +78,29 @@ export class InConnection {
         }
 
         // If entity is core then checking that user is admin
-        if (entity.id === '0' || entity.core) {
+        if (entity.id === '0') {
             if (!this.engine.hasRole('admin', this.userId)) {
                 console.log('Access denied: Client attempted to write to core without admin role. User ID: ' + this.userId);
                 return;
             }
         }
 
-        if (entity.dynamic === false) {
-            if (!this.engine.hasRole('admin', this.userId) && !this.engine.hasRole('admin', this.userId)) {
-                console.log('Access denied: Client attempted to write persistent entity without admin or member role. ' + this.userId);
+        // If received entity is persistent check for roles.
+        if (entity.external === false && entity.dynamic === false) {
+            if (!this.engine.hasRole('admin', this.userId) && !this.engine.hasRole('member', this.userId)) {
+                console.log('Access denied: Client attempted to persist entity without admin or member role. ' + this.userId);
                 return;
+            }
+        }
+
+        // If existing entity is persistent check for roles.
+        if (this.engine.model.entities[entity.id]) {
+            var existingEntity = this.engine.model.entities[entity.id];
+            if (existingEntity.external = false && existingEntity.dynamic === false) {
+                if (!this.engine.hasRole('admin', this.userId) && !this.engine.hasRole('member', this.userId)) {
+                    console.log('Access denied: Client attempted to update existing persistent entity without admin or member role. ' + this.userId);
+                    return;
+                }
             }
         }
 

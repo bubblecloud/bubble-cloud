@@ -12,7 +12,7 @@ export class EntityTranslate {
     }
 
     translate(translation: Vector3): void {
-        var entity = this.engine.state.editedEntity;
+        var entity = this.engine.state.getEditedEntity();
         if (entity) {
             var rotationMatrix = new Matrix();
             this.engine.avatarController.avatar.rotationQuaternion.toRotationMatrix(rotationMatrix);
