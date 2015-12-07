@@ -2,7 +2,7 @@ import Vector3 = BABYLON.Vector3;
 import Quaternion = BABYLON.Quaternion;
 var entityIdCounter = 1;
 
-export function receivedOid(oid: string) {
+export function reserveId(oid: string) {
     entityIdCounter = Math.max(entityIdCounter, Number(oid));
 }
 

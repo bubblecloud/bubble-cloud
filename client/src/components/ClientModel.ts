@@ -3,7 +3,7 @@ import {ClientEntity} from "./ClientEntity";
 import Vector3 = BABYLON.Vector3;
 import Matrix = BABYLON.Matrix;
 import Quaternion = BABYLON.Quaternion;
-import {receivedOid} from "./ClientEntity";
+import {reserveId} from "./ClientEntity";
 
 export class ClientModel {
 
@@ -121,7 +121,7 @@ export class ClientModel {
         if (entity.oid && !this.oidIdMap[entity.oid]) {
             this.oidIdMap[entity.oid] = entity.id;
             this.idOidMap[entity.id] = entity.oid;
-            receivedOid(entity.oid);
+            reserveId(entity.oid);
         }
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {

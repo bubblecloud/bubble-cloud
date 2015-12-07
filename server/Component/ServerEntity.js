@@ -18,10 +18,10 @@ var Quaternion = (function () {
 })();
 exports.Quaternion = Quaternion;
 var entityIdCounter = 1;
-function loadedId(id) {
+function reserveId(id) {
     entityIdCounter = Math.max(entityIdCounter, Number(id));
 }
-exports.loadedId = loadedId;
+exports.reserveId = reserveId;
 var ServerEntity = (function () {
     function ServerEntity() {
         this.core = false;

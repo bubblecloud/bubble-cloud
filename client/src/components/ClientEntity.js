@@ -6,10 +6,10 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Vector3 = BABYLON.Vector3;
 var Quaternion = BABYLON.Quaternion;
 var entityIdCounter = 1;
-function receivedOid(oid) {
+function reserveId(oid) {
     entityIdCounter = Math.max(entityIdCounter, Number(oid));
 }
-exports.receivedOid = receivedOid;
+exports.reserveId = reserveId;
 var ClientEntity = (function () {
     function ClientEntity() {
         this.position = new Vector3(0, 0, 0);

@@ -95,7 +95,7 @@ var ClientModel = (function () {
         if (entity.oid && !this.oidIdMap[entity.oid]) {
             this.oidIdMap[entity.oid] = entity.id;
             this.idOidMap[entity.id] = entity.oid;
-            ClientEntity_2.receivedOid(entity.oid);
+            ClientEntity_2.reserveId(entity.oid);
         }
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {
