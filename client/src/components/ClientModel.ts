@@ -86,6 +86,8 @@ export class ClientModel {
             localCopy.oid = entity.id;
             localCopy.id = entity.oid;
         }
+        localCopy.name = entity.name;
+        localCopy.type = entity.type;
         localCopy.core = entity.core;
         localCopy.external = entity.external;
         localCopy.removed = entity.removed;

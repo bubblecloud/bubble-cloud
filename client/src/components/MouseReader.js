@@ -15,7 +15,6 @@ var MouseReader = (function () {
                 var id = pickResult.pickedMesh.name;
                 if (_this.engine.model.entities[id]) {
                     var entity = _this.engine.model.clone(id);
-                    _this.engine.ws.sendObject(entity);
                     _this.engine.state.setEditedEntity(entity);
                 }
             }

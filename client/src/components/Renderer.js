@@ -46,7 +46,7 @@ var Renderer = (function () {
             this.avatarShape = shape;
         }
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id]) {
+        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id] === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     };
@@ -72,7 +72,7 @@ var Renderer = (function () {
             actuator.update(this.clientEngine, entity);
         }
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id]) {
+        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id] === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     };
@@ -87,6 +87,10 @@ var Renderer = (function () {
             if (shape) {
                 this.scene.removeMesh(shape);
             }
+        }
+        var editedEntity = this.clientEngine.state.getEditedEntity();
+        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id] === entity.id) {
+            this.clientEngine.state.stateChanged();
         }
     };
     Renderer.prototype.startup = function () {

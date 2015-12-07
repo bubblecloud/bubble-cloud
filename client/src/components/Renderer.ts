@@ -72,7 +72,7 @@ export class Renderer {
 
         // If entity is edited locally then notify state listeners.
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id]) {
+        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id] === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     }
@@ -107,7 +107,7 @@ export class Renderer {
 
         // If entity is edited locally then notify state listeners.
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id]) {
+        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id] === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     }
@@ -122,6 +122,12 @@ export class Renderer {
             if (shape) {
                 this.scene.removeMesh(shape);
             }
+        }
+
+        // If entity is edited locally then notify state listeners.
+        var editedEntity = this.clientEngine.state.getEditedEntity();
+        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id] === entity.id) {
+            this.clientEngine.state.stateChanged();
         }
     }
 

@@ -20,7 +20,7 @@ export class MouseReader {
                 var id = pickResult.pickedMesh.name;
                 if (this.engine.model.entities[id]) {
                     var entity = this.engine.model.clone(id);
-                    this.engine.ws.sendObject(entity); // Refresh possibly new oid via server to client model.
+                    //this.engine.ws.sendObject(entity); // Refresh possibly new oid via server to client model.
                     this.engine.state.setEditedEntity(entity);
                 }
             }
