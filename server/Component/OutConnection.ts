@@ -86,7 +86,7 @@ export class OutConnection {
         }
 
         // If received entity is persistent check for roles.
-        if (entity.external = false && entity.dynamic === false) {
+        if (entity.external === false && entity.dynamic === false) {
             if (!this.engine.hasRole('admin', this.userId) && !this.engine.hasRole('member', this.userId)) {
                 console.log('Access denied: Client attempted to persist entity without admin or member role. ' + this.userId);
                 return;

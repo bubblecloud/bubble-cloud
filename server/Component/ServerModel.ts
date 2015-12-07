@@ -10,6 +10,12 @@ export class ServerModel {
 
     put(entity: ServerEntity) : void {
         var existingEntity = this.entities[entity.id];
+        if (entity.removed) {
+            if (existingEntity) {
+                this.remove(entity);
+            }
+            return;
+        }
         if (existingEntity) {
             Object.getOwnPropertyNames(entity).forEach(name => {
                 existingEntity[name] = entity[name];

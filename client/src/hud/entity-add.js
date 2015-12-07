@@ -18,7 +18,11 @@ var EntityAdd = (function () {
         this.engine.state.setEditedEntity(newEntity);
     };
     EntityAdd.prototype.removeEntity = function () {
-        alert('remove');
+        var entity = this.engine.state.getEditedEntity();
+        if (entity) {
+            entity.removed = true;
+            this.engine.ws.sendObject(entity);
+        }
     };
     return EntityAdd;
 })();

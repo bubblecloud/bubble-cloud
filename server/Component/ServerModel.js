@@ -4,6 +4,12 @@ var ServerModel = (function () {
     }
     ServerModel.prototype.put = function (entity) {
         var existingEntity = this.entities[entity.id];
+        if (entity.removed) {
+            if (existingEntity) {
+                this.remove(entity);
+            }
+            return;
+        }
         if (existingEntity) {
             Object.getOwnPropertyNames(entity).forEach(function (name) {
                 existingEntity[name] = entity[name];
