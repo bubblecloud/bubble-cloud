@@ -22,9 +22,9 @@ export class AvatarController {
         this.avatar.repo = 'default';
         this.avatar.type = 'water-world-sphere';
         this.avatar.dynamic = true;
-        this.avatar.scaling.x = 0.3;
-        this.avatar.scaling.y = 0.8;
-        this.avatar.scaling.z = 1;
+        this.avatar.scaling.x = 0.25;
+        this.avatar.scaling.y = 0.5;
+        this.avatar.scaling.z = 1.5;
         /*this.avatar.position.x = 3 * Math.cos(2 * Math.PI * 0);
         this.avatar.position.z = 3 * Math.sin(2 * Math.PI * 0);
         this.avatar.rotationQuaternion = Quaternion.RotationYawPitchRoll(2 * Math.PI * 0, 0, 0);*/
