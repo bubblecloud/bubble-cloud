@@ -16,7 +16,9 @@ var AvatarController = (function () {
         this.avatar.repo = 'default';
         this.avatar.type = 'water-world-sphere';
         this.avatar.dynamic = true;
-        this.avatar.scaling.scaleInPlace(0.8);
+        this.avatar.scaling.x = 0.3;
+        this.avatar.scaling.y = 0.8;
+        this.avatar.scaling.z = 1;
         this.engine.ws.sendObject(this.avatar);
         this.running = true;
     };

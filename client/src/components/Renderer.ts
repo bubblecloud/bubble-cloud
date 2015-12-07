@@ -150,6 +150,8 @@ export class Renderer {
                 this.camera = new TargetCamera("AvatarCamera", new Vector3(0, 5, -10), this.scene);
                 this.camera.setTarget(Vector3.Zero());
 
+                var postProcess = new BABYLON.FxaaPostProcess("fxaa", 2.0, this.camera, BABYLON.Texture.TRILINEAR_SAMPLINGMODE, this.engine, true);
+
                 // The sky
                 /*
                 var skybox = BABYLON.Mesh.CreateSphere("skyBox", 10.0, 1000.0, this.scene);

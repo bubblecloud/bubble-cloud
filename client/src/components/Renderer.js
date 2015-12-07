@@ -106,6 +106,7 @@ var Renderer = (function () {
                 _this.scene.autoClear = false;
                 _this.camera = new TargetCamera("AvatarCamera", new Vector3(0, 5, -10), _this.scene);
                 _this.camera.setTarget(Vector3.Zero());
+                var postProcess = new BABYLON.FxaaPostProcess("fxaa", 2.0, _this.camera, BABYLON.Texture.TRILINEAR_SAMPLINGMODE, _this.engine, true);
                 return _this.scene;
             };
             this.scene = createScene();
