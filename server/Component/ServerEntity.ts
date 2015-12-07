@@ -46,6 +46,12 @@ export class ServerEntity {
     scaling: Vector3 = new Vector3();
 
     roleMembers: {[key: string]: string[]} = {};
+
+    constructor() {
+        this.scaling.x = 0.5;
+        this.scaling.y = 0.5;
+        this.scaling.z = 0.5;
+    }
 }
 
 export function newId(entity: ServerEntity) : void {

@@ -106,7 +106,9 @@ export class ServerEngine {
                 inConnection.disconnect();
                 this.inConnections.splice(this.inConnections.indexOf(inConnection), 1);
             }
-            inConnection.send(this.coreEntity);
+            if (inConnection.remoteIsServer) {
+                inConnection.send(this.coreEntity);
+            }
         }
         for (var outConnection of this.outConnections) {
             if (outConnection.disconnected()) {

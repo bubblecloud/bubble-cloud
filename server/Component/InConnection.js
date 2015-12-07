@@ -9,7 +9,7 @@ var InConnection = (function () {
             if (entity._id) {
                 delete entity._id;
             }
-            if (entity.id == '' + 0 && entity.core) {
+            if (entity.id == '' + 0 && entity.core && entity.external) {
                 this.remoteIsServer = true;
             }
             if (!entity.external) {

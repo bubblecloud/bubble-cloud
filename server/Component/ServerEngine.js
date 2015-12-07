@@ -111,7 +111,9 @@ var ServerEngine = (function () {
                 inConnection.disconnect();
                 this.inConnections.splice(this.inConnections.indexOf(inConnection), 1);
             }
-            inConnection.send(this.coreEntity);
+            if (inConnection.remoteIsServer) {
+                inConnection.send(this.coreEntity);
+            }
         }
         for (var _b = 0, _c = this.outConnections; _b < _c.length; _b++) {
             var outConnection = _c[_b];
