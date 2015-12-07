@@ -14,8 +14,9 @@ var AvatarController = (function () {
         this.avatar = new ClientEntity_1.ClientEntity();
         this.avatar.id = '0';
         this.avatar.repo = 'default';
-        this.avatar.type = 'water-world-cube';
+        this.avatar.type = 'water-world-sphere';
         this.avatar.dynamic = true;
+        this.avatar.scaling.scaleInPlace(0.8);
         this.engine.ws.sendObject(this.avatar);
         this.running = true;
     };

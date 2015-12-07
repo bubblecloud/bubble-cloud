@@ -142,7 +142,6 @@ export class Renderer {
         if (Engine.isSupported()) {
             // Load the BABYLON 3D engine
             this.engine = new Engine(canvas, true);
-
             // This begins the creation of a function that we will 'call' just after it's built
             var createScene = () => {
                 this.scene = new Scene(this.engine);

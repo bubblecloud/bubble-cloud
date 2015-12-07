@@ -3,10 +3,10 @@ import {ClientEngine} from "../../components/ClientEngine";
 import {ClientEntity} from "../../components/ClientEntity";
 import Mesh = BABYLON.Mesh;
 import Scene = BABYLON.Scene;
-export class WaterWorldCore implements Actuator {
+export class WaterWorldSphere implements Actuator {
     repository: string = 'default';
     environment: string = 'water-world';
-    type: string = 'water-world-core';
+    type: string = 'water-world-sphere';
 
     construct():ClientEntity {
         return undefined;
@@ -14,23 +14,14 @@ export class WaterWorldCore implements Actuator {
 
     add(engine: ClientEngine, entity: ClientEntity): void {
         var scene: Scene = engine.renderer.scene;
-        var mesh = BABYLON.Mesh.CreateSphere(entity.id, 32, 1, scene);
+        var mesh = Mesh.CreateSphere(entity.id, 32, 1, scene);
+
         var material = new BABYLON.StandardMaterial("kosh", scene);
         material.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/TropicalSunnyDay", scene);
         material.diffuseColor = new BABYLON.Color3(0, 0, 0);
-        material.emissiveColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-        material.alpha = 0;
+        //material.emissiveColor = new BABYLON.Color3(0.9, 0.9, 0.9);
+       //material.alpha = 0.8;
         material.specularPower = 16;
-        material.reflectionFresnelParameters = new BABYLON.FresnelParameters();
-        material.reflectionFresnelParameters.bias = 0.1;
-        material.emissiveFresnelParameters = new BABYLON.FresnelParameters();
-        material.emissiveFresnelParameters.bias = 0.6;
-        material.emissiveFresnelParameters.power = 4;
-        material.emissiveFresnelParameters.leftColor = BABYLON.Color3.White();
-        material.emissiveFresnelParameters.rightColor = BABYLON.Color3.Black();
-        material.opacityFresnelParameters = new BABYLON.FresnelParameters();
-        material.opacityFresnelParameters.leftColor = BABYLON.Color3.White();
-        material.opacityFresnelParameters.rightColor = BABYLON.Color3.Black();
         mesh.material = material;
     }
     remove(engine: ClientEngine, entity: ClientEntity): void {
@@ -41,5 +32,6 @@ export class WaterWorldCore implements Actuator {
         }
     }
     update(engine: ClientEngine, entity: ClientEntity): void {
+
     }
 }

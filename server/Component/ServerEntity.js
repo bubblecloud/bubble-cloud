@@ -32,9 +32,9 @@ var ServerEntity = (function () {
         this.rotationQuaternion = new Quaternion();
         this.scaling = new Vector3();
         this.roleMembers = {};
-        this.scaling.x = 0.5;
-        this.scaling.y = 0.5;
-        this.scaling.z = 0.5;
+        this.scaling.x = 1;
+        this.scaling.y = 1;
+        this.scaling.z = 1;
     }
     return ServerEntity;
 })();
