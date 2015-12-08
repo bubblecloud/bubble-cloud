@@ -12,7 +12,6 @@ var WaterWorldCore = (function () {
         var mesh = BABYLON.Mesh.CreateSphere(entity.id, 32, 1, scene);
         mesh.renderingGroupId = 1;
         var material = new BABYLON.StandardMaterial("kosh", scene);
-        material.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/TropicalSunnyDay", scene);
         material.diffuseColor = new BABYLON.Color3(0, 0, 0);
         material.emissiveColor = new BABYLON.Color3(0.5, 0.5, 0.5);
         material.alpha = 0;
