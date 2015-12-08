@@ -18,6 +18,7 @@ var Primitive = (function () {
     Primitive.prototype.add = function (engine, entity) {
         var scene = engine.renderer.scene;
         var mesh = Mesh.CreateBox(entity.id, 1, scene);
+        mesh.renderingGroupId = 1;
         var material = new BABYLON.StandardMaterial("kosh", scene);
         material.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/TropicalSunnyDay", scene);
         material.diffuseColor = new BABYLON.Color3(0, 0, 0);

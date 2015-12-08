@@ -79,7 +79,6 @@
       "aurelia-templating-binding": "npm:aurelia-templating-binding@^1.0.0-beta.1",
       "aurelia-templating-resources": "npm:aurelia-templating-resources@^1.0.0-beta.1.0.1",
       "aurelia-templating-router": "npm:aurelia-templating-router@^1.0.0-beta.1.0.1",
-      "babylonjs": "npm:babylonjs@^2.2.0",
       "bootstrap": "github:twbs/bootstrap@^3.3.5",
       "core-js": "npm:core-js@^1.2.6",
       "fetch": "github:github/fetch@^0.10.1",
