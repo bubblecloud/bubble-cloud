@@ -14,14 +14,16 @@ export class WaterWorldSphere implements Actuator {
 
     add(engine: ClientEngine, entity: ClientEntity): void {
         var scene: Scene = engine.renderer.scene;
-        var mesh = Mesh.CreateSphere(entity.id, 32, 1, scene);
+        scene.ambientColor = new BABYLON.Color3(0.3, 0.3, 0.4);
+        var mesh = Mesh.CreateSphere(entity.id, 100, 1, scene);
         mesh.renderingGroupId = 1;
-        var material = new BABYLON.StandardMaterial("kosh", scene);
-        material.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/TropicalSunnyDay", scene);
-        material.diffuseColor = new BABYLON.Color3(0, 0, 0);
-        //material.emissiveColor = new BABYLON.Color3(0.9, 0.9, 0.9);
-       //material.alpha = 0.8;
-        material.specularPower = 16;
+
+        var material = new BABYLON.StandardMaterial("sphere", scene);
+        //material.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/TropicalSunnyDay", scene);
+        material.specularColor = new BABYLON.Color3(0.05, 0.05, 0.05);
+        material.ambientColor = new BABYLON.Color3(1, 1, 1);
+        material.diffuseColor = new BABYLON.Color3(0.4, 0.4, 0.4);
+        //material.specularPower = 16;
         mesh.material = material;
     }
     remove(engine: ClientEngine, entity: ClientEntity): void {

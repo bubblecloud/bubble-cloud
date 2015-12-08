@@ -10,12 +10,13 @@ var WaterWorldSphere = (function () {
     };
     WaterWorldSphere.prototype.add = function (engine, entity) {
         var scene = engine.renderer.scene;
-        var mesh = Mesh.CreateSphere(entity.id, 32, 1, scene);
+        scene.ambientColor = new BABYLON.Color3(0.3, 0.3, 0.4);
+        var mesh = Mesh.CreateSphere(entity.id, 100, 1, scene);
         mesh.renderingGroupId = 1;
-        var material = new BABYLON.StandardMaterial("kosh", scene);
-        material.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/TropicalSunnyDay", scene);
-        material.diffuseColor = new BABYLON.Color3(0, 0, 0);
-        material.specularPower = 16;
+        var material = new BABYLON.StandardMaterial("sphere", scene);
+        material.specularColor = new BABYLON.Color3(0.05, 0.05, 0.05);
+        material.ambientColor = new BABYLON.Color3(1, 1, 1);
+        material.diffuseColor = new BABYLON.Color3(0.4, 0.4, 0.4);
         mesh.material = material;
     };
     WaterWorldSphere.prototype.remove = function (engine, entity) {
