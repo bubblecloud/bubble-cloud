@@ -12,6 +12,7 @@ var WaterWorldSky = (function () {
             return;
         }
         var scene = engine.renderer.scene;
+        scene.ambientColor = new BABYLON.Color3(1, 1, 1);
         var skybox = BABYLON.Mesh.CreateBox(entity.id, 10000, scene);
         var skyboxMaterial = new BABYLON.StandardMaterial(entity.id + "skybox-material", scene);
         skyboxMaterial.backFaceCulling = false;

@@ -22,6 +22,7 @@ export class WaterWorldSky implements Actuator {
             return;
         }
         var scene: Scene = engine.renderer.scene;
+        scene.ambientColor = new BABYLON.Color3(1, 1, 1);
         //scene.fogMode = BABYLON.Scene.FOGMODE_LINEAR
         //scene.fogDensity = 0.01;
         //scene.fogStart = 20.0;
