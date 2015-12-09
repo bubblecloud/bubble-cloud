@@ -22,10 +22,11 @@ var Primitive = (function () {
         var material = new BABYLON.StandardMaterial("primitve", scene);
         material.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/evening", scene, ['_px.png', '_py.png', '_pz.png', '_nx.png', '_ny.png', '_nz.png']);
         material.reflectionFresnelParameters = new BABYLON.FresnelParameters();
-        material.reflectionFresnelParameters.bias = 0.4;
-        material.specularColor = new BABYLON.Color3(0.05, 0.05, 0.05);
-        material.ambientColor = new BABYLON.Color3(0.3, 0.3, 0.3);
-        material.diffuseColor = new BABYLON.Color3(0.4, 0.4, 0.4);
+        material.reflectionFresnelParameters.bias = 0.9;
+        material.bumpTexture = new BABYLON.Texture("images/bump-maps/tilesbump.png", scene);
+        material.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);
+        material.ambientColor = new BABYLON.Color3(0.6, 0.6, 0.6);
+        material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
         mesh.material = material;
     };
     Primitive.prototype.remove = function (engine, entity) {
