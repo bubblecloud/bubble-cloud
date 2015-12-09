@@ -31,7 +31,7 @@ export class WaterWorldSky implements Actuator {
         var skybox = BABYLON.Mesh.CreateBox(entity.id, 10000, scene);
         var skyboxMaterial = new BABYLON.StandardMaterial(entity.id + "skybox-material", scene);
         skyboxMaterial.backFaceCulling = false;
-        skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/TropicalSunnyDay", scene);
+        skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/evening", scene, ['_px.png', '_py.png', '_pz.png', '_nx.png', '_ny.png', '_nz.png']);
         skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
         skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
         skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -46,18 +46,18 @@ export class WaterWorldSky implements Actuator {
         light1.parent = skybox;
 
         // Add sun.
-        var light = new BABYLON.PointLight("sun" + entity.id, new BABYLON.Vector3(-17.6, 18.8, -49.9), scene);
+        var light = new BABYLON.PointLight("sun" + entity.id, new BABYLON.Vector3(10000, 1000, -10000), scene);
         //light.position = new BABYLON.Vector3(-17.6, 18.8, -49.9);
         //light.setDirectionToTarget(new BABYLON.Vector3(-17.6, 18.8, -49.9).scale(-1))
         light.parent = skybox;
 
-        var lensFlareSystem = new BABYLON.LensFlareSystem("lensFlareSystem", light, scene);
+        /*var lensFlareSystem = new BABYLON.LensFlareSystem("lensFlareSystem", light, scene);
         new BABYLON.LensFlare(0.2, 0, new BABYLON.Color3(1, 1, 1), "images/effects/Flare.png", lensFlareSystem);
         new BABYLON.LensFlare(0.5, 0.2, new BABYLON.Color3(0.5, 0.5, 1), "images/effects/Flare.png", lensFlareSystem);
         new BABYLON.LensFlare(0.2, 1.0, new BABYLON.Color3(1, 1, 1), "images/effects/Flare.png", lensFlareSystem);
         new BABYLON.LensFlare(0.4, 0.4, new BABYLON.Color3(1, 0.5, 1), "images/effects/Flare.png", lensFlareSystem);
         new BABYLON.LensFlare(0.1, 0.6, new BABYLON.Color3(1, 1, 1), "images/effects/Flare.png", lensFlareSystem);
-        new BABYLON.LensFlare(0.3, 0.8, new BABYLON.Color3(1, 1, 1), "images/effects/Flare.png", lensFlareSystem);
+        new BABYLON.LensFlare(0.3, 0.8, new BABYLON.Color3(1, 1, 1), "images/effects/Flare.png", lensFlareSystem);*/
 
         engine.renderer.avatarAttachments.push(entity);
 
@@ -75,7 +75,7 @@ export class WaterWorldSky implements Actuator {
         // Water mesh
         var waterMesh = BABYLON.Mesh.CreateGround("water" + entity.id, 5000, 5000, 90, scene, false);
         //waterMesh.parent = skybox;
-        waterMesh.position.y = - 100;
+        waterMesh.position.y = - 5;
         waterMesh.renderingGroupId = 0;
         waterMesh.material = waterMaterial;
 
