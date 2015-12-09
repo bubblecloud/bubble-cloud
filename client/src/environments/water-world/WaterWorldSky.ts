@@ -37,7 +37,7 @@ export class WaterWorldSky implements Actuator {
         shader.backFaceCulling = false;
         skySphere.material = shader;
 
-        var light1 = new BABYLON.DirectionalLight("light1", new BABYLON.Vector3(0, -1, 0), scene);
+        var light1 = new BABYLON.DirectionalLight("light1", new BABYLON.Vector3(0, -10, 0), scene);
         light1.diffuse = BABYLON.Color3.FromInts(229,229,190);
         light1.specular =  BABYLON.Color3.FromInts(0, 0, 0);
        //light1.groundColor = new BABYLON.Color3(0, 0, 0);
@@ -61,21 +61,23 @@ export class WaterWorldSky implements Actuator {
 
         var waterMaterial = new BABYLON.WaterMaterial("waterMaterial", scene, new BABYLON.Vector2(512, 512));
         waterMaterial.bumpTexture = new BABYLON.Texture("images/bump-maps/waterbump.png", scene);
+        waterMaterial.zOffset = -1;
         waterMaterial.windForce = -1;
-        waterMaterial.waveHeight = 0.25;
+        waterMaterial.waveHeight = 0.0;
         waterMaterial.bumpHeight = 0.1;
         waterMaterial.waveLength = 0.2;
         waterMaterial.waveSpeed = 50;
         waterMaterial.colorBlendFactor = 0.01;
         waterMaterial.windDirection = new BABYLON.Vector2(1, 1);
 
+        /*
         var groundTexture = new BABYLON.Texture("images/textures/sand.jpg", scene);
         groundTexture.vScale = groundTexture.uScale = 20;
 
         var groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
         groundMaterial.diffuseTexture = groundTexture;
 
-        /*var ground = BABYLON.Mesh.CreateGround("ground", 512, 512, 32, scene, false);
+        var ground = BABYLON.Mesh.CreateGround("ground", 512, 512, 32, scene, false);
         ground.parent = skySphere;
         ground.position.y = -21;
         ground.renderingGroupId = 0;
@@ -83,10 +85,11 @@ export class WaterWorldSky implements Actuator {
 
         // Water mesh
         var waterMesh = BABYLON.Mesh.CreateGround("water" + entity.id, 10000, 10000, 32, scene, false);
-        waterMesh.parent = skySphere;
-        waterMesh.position.y = -30;
+        //waterMesh.parent = skySphere;
+        waterMesh.position.y = -100;
         waterMesh.renderingGroupId = 0;
         waterMesh.material = waterMaterial;
+        //waterMesh.
 
         //waterMaterial.addToRenderList(ground);
         waterMaterial.addToRenderList(skySphere);
