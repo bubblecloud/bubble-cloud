@@ -25,7 +25,7 @@ export class WaterWorldSky implements Actuator {
         }
         var scene: Scene = engine.renderer.scene;
 
-        scene.ambientColor = BABYLON.Color3.FromInts(0,57,115);
+        scene.ambientColor = BABYLON.Color3.FromInts(0,80,215);
 
         var skySphere = BABYLON.Mesh.CreateSphere(entity.id, 100.0, 10000.0, scene);
         BABYLON.Effect.ShadersStore['gradientVertexShader'] = "precision mediump float;attribute vec3 position;attribute vec3 normal;attribute vec2 uv;uniform mat4 worldViewProjection;varying vec4 vPosition;varying vec3 vNormal;void main(){vec4 p = vec4(position,1.);vPosition = p;vNormal = normal;gl_Position = worldViewProjection * p;}";
@@ -38,13 +38,13 @@ export class WaterWorldSky implements Actuator {
         skySphere.material = shader;
 
         var light1 = new BABYLON.DirectionalLight("light1", new BABYLON.Vector3(0, -1, 0), scene);
-        light1.diffuse = new BABYLON.Color3(1, 1, 1);
-        light1.specular = new BABYLON.Color3(0, 0, 0);
+        light1.diffuse = BABYLON.Color3.FromInts(229,229,190);
+        light1.specular =  BABYLON.Color3.FromInts(0, 0, 0);
        //light1.groundColor = new BABYLON.Color3(0, 0, 0);
         light1.parent = skySphere;
 
         // Add sun.
-        var light = new BABYLON.PointLight("sun" + entity.id, new BABYLON.Vector3(0, 100, 0), scene);
+        var light = new BABYLON.PointLight("sun" + entity.id, new BABYLON.Vector3(-30, 50, -30), scene);
         //light.position = new BABYLON.Vector3(-17.6, 18.8, -49.9);
         //light.setDirectionToTarget(new BABYLON.Vector3(-17.6, 18.8, -49.9).scale(-1))
         light.parent = skySphere;
@@ -66,7 +66,7 @@ export class WaterWorldSky implements Actuator {
         waterMaterial.bumpHeight = 0.1;
         waterMaterial.waveLength = 0.2;
         waterMaterial.waveSpeed = 50;
-        waterMaterial.colorBlendFactor = 0.02;
+        waterMaterial.colorBlendFactor = 0.01;
         waterMaterial.windDirection = new BABYLON.Vector2(1, 1);
 
         var groundTexture = new BABYLON.Texture("images/textures/sand.jpg", scene);
