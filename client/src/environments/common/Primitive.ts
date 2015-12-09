@@ -29,8 +29,8 @@ export class Primitive implements Actuator {
         material.reflectionFresnelParameters.bias = 0.9;
         material.bumpTexture = new BABYLON.Texture("images/bump-maps/tilesbump.png", scene);
         material.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);
-        material.ambientColor = new BABYLON.Color3(0.6, 0.6, 0.6);
-        material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+        material.ambientColor = new BABYLON.Color3(0.7, 0.7, 0.7);
+        material.diffuseColor = new BABYLON.Color3(0.15, 0.15, 0.15);
         mesh.material = material;
     }
     remove(engine: ClientEngine, entity: ClientEntity): void {
