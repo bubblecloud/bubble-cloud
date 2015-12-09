@@ -12,14 +12,14 @@ var WaterWorldSky = (function () {
             return;
         }
         var scene = engine.renderer.scene;
-        scene.ambientColor = BABYLON.Color3.FromInts(100, 180, 200);
+        scene.ambientColor = BABYLON.Color3.FromInts(0, 57, 115);
         var skySphere = BABYLON.Mesh.CreateSphere(entity.id, 100.0, 10000.0, scene);
-        BABYLON.Effect.ShadersStore.gradientVertexShader = "precision mediump float;attribute vec3 position;attribute vec3 normal;attribute vec2 uv;uniform mat4 worldViewProjection;varying vec4 vPosition;varying vec3 vNormal;void main(){vec4 p = vec4(position,1.);vPosition = p;vNormal = normal;gl_Position = worldViewProjection * p;}";
-        BABYLON.Effect.ShadersStore.gradientPixelShader = "precision mediump float;uniform mat4 worldView;varying vec4 vPosition;varying vec3 vNormal;uniform float offset;uniform vec3 topColor;uniform vec3 bottomColor;void main(void){float h = normalize(vPosition+offset).y;gl_FragColor = vec4( mix(bottomColor, topColor, max(pow(max(h, 0.0), 1.2), 0.0)), 1.0 );}";
+        BABYLON.Effect.ShadersStore['gradientVertexShader'] = "precision mediump float;attribute vec3 position;attribute vec3 normal;attribute vec2 uv;uniform mat4 worldViewProjection;varying vec4 vPosition;varying vec3 vNormal;void main(){vec4 p = vec4(position,1.);vPosition = p;vNormal = normal;gl_Position = worldViewProjection * p;}";
+        BABYLON.Effect.ShadersStore['gradientPixelShader'] = "precision mediump float;uniform mat4 worldView;varying vec4 vPosition;varying vec3 vNormal;uniform float offset;uniform vec3 topColor;uniform vec3 bottomColor;void main(void){float h = normalize(vPosition+offset).y;gl_FragColor = vec4( mix(bottomColor, topColor, max(pow(max(h, 0.0), 1.2), 0.0)), 1.0 );}";
         var shader = new BABYLON.ShaderMaterial("gradient", scene, "gradient", {});
         shader.setFloat("offset", 10);
-        shader.setColor3("topColor", BABYLON.Color3.FromInts(255, 255, 255));
-        shader.setColor3("bottomColor", BABYLON.Color3.FromInts(100, 180, 200));
+        shader.setColor3("topColor", BABYLON.Color3.FromInts(229, 229, 190));
+        shader.setColor3("bottomColor", BABYLON.Color3.FromInts(0, 57, 115));
         shader.backFaceCulling = false;
         skySphere.material = shader;
         var light1 = new BABYLON.DirectionalLight("light1", new BABYLON.Vector3(0, -1, 0), scene);
@@ -32,7 +32,7 @@ var WaterWorldSky = (function () {
         var waterMaterial = new BABYLON.WaterMaterial("waterMaterial", scene, new BABYLON.Vector2(512, 512));
         waterMaterial.bumpTexture = new BABYLON.Texture("images/bump-maps/waterbump.png", scene);
         waterMaterial.windForce = -1;
-        waterMaterial.waveHeight = 0.5;
+        waterMaterial.waveHeight = 0.25;
         waterMaterial.bumpHeight = 0.1;
         waterMaterial.waveLength = 0.2;
         waterMaterial.waveSpeed = 50;
