@@ -14,6 +14,7 @@ import {CoreEntity} from "./ClientEntity";
 import {WaterWorldModule} from "../environments/water-world/WaterWorldModule";
 import {CommonModule} from "../environments/common/CommonModule";
 import {ClientGrid} from "./ClientGrid";
+import {MaterialRegister} from "./MaterialRegister";
 
 export class ClientEngine {
     api: RpcApi = getProxy('rpc', RpcApi);
@@ -30,6 +31,7 @@ export class ClientEngine {
     keyboardReader: KeyboardReader = new KeyboardReader(this);
     mouseReader: MouseReader = new MouseReader(this);
     actuatorRegister: ActuatorRegister = new ActuatorRegister();
+    materialRegister: MaterialRegister = new MaterialRegister();
     renderer: Renderer = new Renderer(this, this.model, this.keyboardReader);
     consoleController: ConsoleController = new ConsoleController(this);
 
@@ -37,8 +39,6 @@ export class ClientEngine {
     lastLoopTimeMillis: number;
 
     constructor() {
-        new CommonModule().load(this);
-        new WaterWorldModule().load(this);
     }
 
     startup() {
@@ -67,6 +67,10 @@ export class ClientEngine {
         });
 
         this.renderer.startup();
+
+        new CommonModule().load(this);
+        new WaterWorldModule().load(this);
+
         this.lastLoopTimeMillis = (new Date).getTime();
 
         this.consoleController.println('Client started.');

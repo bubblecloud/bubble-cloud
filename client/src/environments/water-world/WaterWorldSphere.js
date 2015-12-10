@@ -12,11 +12,7 @@ var WaterWorldSphere = (function () {
         var scene = engine.renderer.scene;
         var mesh = Mesh.CreateSphere(entity.id, 30, 1, scene);
         mesh.renderingGroupId = 1;
-        var material = new BABYLON.StandardMaterial("sphere", scene);
-        material.specularColor = new BABYLON.Color3(0.05, 0.05, 0.05);
-        material.ambientColor = new BABYLON.Color3(0.4, 0.4, 0.4);
-        material.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-        mesh.material = material;
+        mesh.material = engine.materialRegister.get("default", "rock");
     };
     WaterWorldSphere.prototype.remove = function (engine, entity) {
         var scene = engine.renderer.scene;

@@ -23,7 +23,7 @@ body {
 }
 
 .form-control {
-  background-color: rgba(0, 0, 0, 0.33);
+  background-color: rgba(0, 0, 0, 0.11);
   color: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -76,6 +76,11 @@ body {
 
 .btn {
   margin-bottom: 10px;
+}
+
+.btn-primary {
+  background-color: rgba(0, 0, 0, 0);
+  border-color: rgba(0, 0, 0, 0);
 }
 
 .panel-default > .panel-heading {

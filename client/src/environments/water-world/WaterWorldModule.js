@@ -13,10 +13,6 @@ var WaterWorldModule = (function () {
         engine.actuatorRegister.add(new WaterWorldSphere_1.WaterWorldSphere());
     };
     WaterWorldModule.prototype.unload = function (engine) {
-        engine.actuatorRegister.remove(new WaterWorldCore_1.WaterWorldCore());
-        engine.actuatorRegister.remove(new WaterWorldSky_1.WaterWorldSky());
-        engine.actuatorRegister.remove(new WaterWorldCube_1.WaterWorldCube());
-        engine.actuatorRegister.remove(new WaterWorldSphere_1.WaterWorldSphere());
     };
     return WaterWorldModule;
 })();

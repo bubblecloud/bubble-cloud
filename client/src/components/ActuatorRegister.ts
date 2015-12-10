@@ -1,7 +1,4 @@
 import {Actuator} from "./Actuator";
-import {WaterWorldSky} from "../environments/water-world/WaterWorldSky";
-import {WaterWorldCube} from "../environments/water-world/WaterWorldCube";
-import {WaterWorldCore} from "../environments/water-world/WaterWorldCore";
 
 export class ActuatorRegister {
 

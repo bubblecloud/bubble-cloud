@@ -17,10 +17,6 @@ export class WaterWorldModule implements ContentModule {
     }
 
     unload(engine:ClientEngine): void {
-        engine.actuatorRegister.remove(new WaterWorldCore());
-        engine.actuatorRegister.remove(new WaterWorldSky());
-        engine.actuatorRegister.remove(new WaterWorldCube());
-        engine.actuatorRegister.remove(new WaterWorldSphere());
     }
 
 }

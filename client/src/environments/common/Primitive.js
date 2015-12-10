@@ -19,16 +19,7 @@ var Primitive = (function () {
         var scene = engine.renderer.scene;
         var mesh = Mesh.CreateBox(entity.id, 1, scene);
         mesh.renderingGroupId = 1;
-        var material = new BABYLON.StandardMaterial("primitve", scene);
-        material.diffuseTexture = new BABYLON.Texture("images/textures/rock.jpg", scene);
-        material.reflectionTexture = new BABYLON.CubeTexture("images/skyboxes/evening", scene, ['_px.png', '_py.png', '_pz.png', '_nx.png', '_ny.png', '_nz.png']);
-        material.reflectionFresnelParameters = new BABYLON.FresnelParameters();
-        material.reflectionFresnelParameters.bias = 0.8;
-        material.bumpTexture = new BABYLON.Texture("images/bump-maps/rock-bump.jpg", scene);
-        material.specularColor = new BABYLON.Color3(0.02, 0.02, 0.02);
-        material.ambientColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-        material.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);
-        mesh.material = material;
+        mesh.material = engine.materialRegister.get("default", "rock");
     };
     Primitive.prototype.remove = function (engine, entity) {
         var scene = engine.renderer.scene;

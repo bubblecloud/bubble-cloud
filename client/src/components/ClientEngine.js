@@ -13,6 +13,7 @@ var ClientEntity_1 = require("./ClientEntity");
 var WaterWorldModule_1 = require("../environments/water-world/WaterWorldModule");
 var CommonModule_1 = require("../environments/common/CommonModule");
 var ClientGrid_1 = require("./ClientGrid");
+var MaterialRegister_1 = require("./MaterialRegister");
 var ClientEngine = (function () {
     function ClientEngine() {
         this.api = RpcApi_2.getProxy('rpc', RpcApi_1.RpcApi);
@@ -25,11 +26,10 @@ var ClientEngine = (function () {
         this.keyboardReader = new KeyboardReader_1.KeyboardReader(this);
         this.mouseReader = new MouseReader_1.MouseReader(this);
         this.actuatorRegister = new ActuatorRegister_1.ActuatorRegister();
+        this.materialRegister = new MaterialRegister_1.MaterialRegister();
         this.renderer = new Renderer_1.Renderer(this, this.model, this.keyboardReader);
         this.consoleController = new ConsoleController_1.ConsoleController(this);
         this.startTimeMillis = new Date().getTime();
-        new CommonModule_1.CommonModule().load(this);
-        new WaterWorldModule_1.WaterWorldModule().load(this);
     }
     ClientEngine.prototype.startup = function () {
         var _this = this;
@@ -54,6 +54,8 @@ var ClientEngine = (function () {
             console.log(error);
         });
         this.renderer.startup();
+        new CommonModule_1.CommonModule().load(this);
+        new WaterWorldModule_1.WaterWorldModule().load(this);
         this.lastLoopTimeMillis = (new Date).getTime();
         this.consoleController.println('Client started.');
     };
