@@ -63,6 +63,6 @@ export class Surface implements Actuator {
             paths.push(path);
         }
 
-        return BABYLON.Mesh.CreateRibbon(name, paths, false, false, 0, scene, false, BABYLON.Mesh.FRONTSIDE);
+        return BABYLON.Mesh.CreateRibbon(name, paths, false, false, 0, scene, false, BABYLON.Mesh.DOUBLESIDE);
     }
 }
