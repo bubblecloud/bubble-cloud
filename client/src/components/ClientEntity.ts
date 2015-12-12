@@ -42,6 +42,19 @@ export class PrimitiveEntity extends ClientEntity {
     pType: string;
 }
 
+export class SurfaceEntity extends ClientEntity {
+    ni: number;
+    nj: number;
+
+    w : number;
+    h: number;
+    d : number;
+
+    fx : string;
+    fy : string;
+    fz : string;
+}
+
 export class CoreEntity extends ClientEntity {
     private roleMembers: {[key: string]: string[]} = {};
 

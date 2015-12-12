@@ -7,16 +7,33 @@ var Surface = (function () {
         this.type = 'surface';
     }
     Surface.prototype.construct = function () {
-        var newEntity = new ClientEntity_1.PrimitiveEntity();
+        var newEntity = new ClientEntity_1.SurfaceEntity();
         newEntity.newId();
         newEntity.repo = this.repository;
         newEntity.type = this.type;
         newEntity.dynamic = true;
+        newEntity.ni = 20;
+        newEntity.nj = 20;
+        newEntity.w = 4;
+        newEntity.h = 4;
+        newEntity.d = 4;
+        newEntity.fx = 'w * i';
+        newEntity.fy = 'h * j';
+        newEntity.fz = 'cos(2 * PI * (i-j)) / d';
         return newEntity;
     };
     Surface.prototype.add = function (engine, entity) {
         var scene = engine.renderer.scene;
-        var mesh = this.createSurface(entity.id, scene);
+        var surface = entity;
+        var ni = surface.ni;
+        var nj = surface.nj;
+        var w = surface.w;
+        var h = surface.h;
+        var d = surface.d;
+        var fx = surface.fx;
+        var fy = surface.fy;
+        var fz = surface.fz;
+        var mesh = this.createSurface(entity.id, scene, ni, nj, w, h, d, fx, fy, fz);
         mesh.renderingGroupId = 1;
         mesh.material = engine.materialRegister.get("default", "rock");
     };
@@ -29,25 +46,17 @@ var Surface = (function () {
     };
     Surface.prototype.update = function (engine, entity) {
     };
-    Surface.prototype.createSurface = function (name, scene) {
-        var ni = 20;
-        var nj = 20;
-        var li = 4;
-        var lj = 4;
-        var ly = 4;
-        var xFunction = 'li * i';
-        var yFunction = 'lj * j';
-        var zFunction = 'cos(2 * PI * (i-j))/ 5';
+    Surface.prototype.createSurface = function (name, scene, ni, nj, w, h, d, fx, fy, fz) {
         var paths = [];
         for (var jj = 0; jj < nj; jj++) {
             var path = [];
             for (var ii = 0; ii < ni; ii++) {
                 var i = ii / ni;
                 var j = jj / nj;
-                var scope = { 'i': i, 'j': j, 'li': li, 'lj': lj, 'ly': ly };
-                var x = math.eval(xFunction, scope);
-                var y = math.eval(yFunction, scope);
-                var z = math.eval(zFunction, scope);
+                var scope = { 'i': i, 'j': j, 'w': w, 'h': h, 'd': d };
+                var x = math.eval(fx, scope);
+                var y = math.eval(fy, scope);
+                var z = math.eval(fz, scope);
                 path.push(new BABYLON.Vector3(x, y, z));
             }
             paths.push(path);

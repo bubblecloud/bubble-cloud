@@ -35,6 +35,14 @@ var PrimitiveEntity = (function (_super) {
     return PrimitiveEntity;
 })(ClientEntity);
 exports.PrimitiveEntity = PrimitiveEntity;
+var SurfaceEntity = (function (_super) {
+    __extends(SurfaceEntity, _super);
+    function SurfaceEntity() {
+        _super.apply(this, arguments);
+    }
+    return SurfaceEntity;
+})(ClientEntity);
+exports.SurfaceEntity = SurfaceEntity;
 var CoreEntity = (function (_super) {
     __extends(CoreEntity, _super);
     function CoreEntity() {
