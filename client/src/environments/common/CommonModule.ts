@@ -3,6 +3,7 @@ import {ClientEngine} from "../../components/ClientEngine";
 import {Primitive} from "./Primitive";
 import {MaterialRegister} from "../../components/MaterialRegister";
 import Material = BABYLON.Material;
+import {Surface} from "./Surface";
 
 export class CommonModule implements ContentModule {
 
@@ -23,6 +24,7 @@ export class CommonModule implements ContentModule {
         engine.materialRegister.add(this.repository, rockMaterial);
 
         engine.actuatorRegister.add(new Primitive());
+        engine.actuatorRegister.add(new Surface());
     }
 
     unload(engine:ClientEngine): void {

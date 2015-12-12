@@ -1,4 +1,5 @@
 var Primitive_1 = require("./Primitive");
+var Surface_1 = require("./Surface");
 var CommonModule = (function () {
     function CommonModule() {
         this.repository = 'default';
@@ -16,6 +17,7 @@ var CommonModule = (function () {
         rockMaterial.diffuseColor = new BABYLON.Color3(0.3, 0.3, 0.3);
         engine.materialRegister.add(this.repository, rockMaterial);
         engine.actuatorRegister.add(new Primitive_1.Primitive());
+        engine.actuatorRegister.add(new Surface_1.Surface());
     };
     CommonModule.prototype.unload = function (engine) {
     };

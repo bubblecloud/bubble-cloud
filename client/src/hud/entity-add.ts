@@ -7,8 +7,8 @@ export class EntityAdd {
     engine: ClientEngine;
     addEntityType: string;
     entityTypes: any[] = [
-        {type:'primitive', label: 'Primitive'},
         {type:'surface', label: 'Surface'},
+        {type:'primitive', label: 'Primitive'},
         {type:'model', label: 'Model'}
     ];
 
