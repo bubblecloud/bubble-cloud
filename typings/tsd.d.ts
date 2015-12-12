@@ -11,4 +11,4 @@
 /// <reference path="jquery/jquery.d.ts" />
 /// <reference path="es6-collections/es6-collections.d.ts" />
 /// <reference path="babylon/babylon.waterMaterial.d.ts" />
-/// <reference path="babylon/babylon.furMaterial.d.ts" />
+/// <reference path="mathjs/mathjs.d.ts" />

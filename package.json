@@ -84,6 +84,7 @@
       "fetch": "github:github/fetch@^0.10.1",
       "font-awesome": "npm:font-awesome@^4.4.0",
       "hand": "npm:hand@^0.1.2",
+      "mathjs": "npm:mathjs@^2.5.0",
       "text": "github:systemjs/plugin-text@^0.0.3"
     },
     "devDependencies": {}

@@ -1,4 +1,5 @@
 var ClientEntity_1 = require("../../components/ClientEntity");
+var math = require('mathjs');
 var Surface = (function () {
     function Surface() {
         this.repository = 'default';
@@ -33,15 +34,20 @@ var Surface = (function () {
         var nj = 20;
         var li = 4;
         var lj = 4;
+        var ly = 4;
+        var xFunction = 'li * i';
+        var yFunction = 'lj * j';
+        var zFunction = 'cos(2 * PI * (i-j))/ 5';
         var paths = [];
         for (var jj = 0; jj < nj; jj++) {
             var path = [];
             for (var ii = 0; ii < ni; ii++) {
                 var i = ii / ni;
                 var j = jj / nj;
-                var x = li * i;
-                var y = lj * j;
-                var z = Math.cos(2 * Math.PI * (i - j)) / 5;
+                var scope = { 'i': i, 'j': j, 'li': li, 'lj': lj, 'ly': ly };
+                var x = math.eval(xFunction, scope);
+                var y = math.eval(yFunction, scope);
+                var z = math.eval(zFunction, scope);
                 path.push(new BABYLON.Vector3(x, y, z));
             }
             paths.push(path);

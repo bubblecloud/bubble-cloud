@@ -37,6 +37,9 @@
     },
     "es6-collections/es6-collections.d.ts": {
       "commit": "fb2b3b1e068c9ff7d8f9b0851c08d37d96c95c38"
+    },
+    "mathjs/mathjs.d.ts": {
+      "commit": "5a8fc5ee71701431e4fdbb80c506e3c13f85a9ff"
     }
   }
 }

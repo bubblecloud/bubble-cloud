@@ -5,6 +5,9 @@ import Mesh = BABYLON.Mesh;
 import Scene = BABYLON.Scene;
 import {PrimitiveEntity} from "../../components/ClientEntity";
 import AbstractMesh = BABYLON.AbstractMesh;
+
+var math = require('mathjs');
+
 export class Surface implements Actuator {
     repository: string = 'default';
     environment: string = 'common';
@@ -44,6 +47,12 @@ export class Surface implements Actuator {
         var nj = 20;
         var li = 4;
         var lj = 4;
+        var ly = 4;
+
+
+        var xFunction = 'li * i';
+        var yFunction = 'lj * j';
+        var zFunction = 'cos(2 * PI * (i-j))/ 5';
 
         var paths = [];
         for (var jj = 0; jj < nj; jj++) {
@@ -53,10 +62,15 @@ export class Surface implements Actuator {
                 var i = ii / ni;
                 var j = jj / nj;
 
+                // Define scope
+                var scope = {'i':i, 'j':j, 'li': li, 'lj': lj, 'ly': ly};
+
                 // Define surface function
-                var x = li * i;
-                var y = lj * j;
-                var z = Math.cos(2 * Math.PI * (i-j))/ 5;
+                var x = math.eval(xFunction, scope);
+                var y = math.eval(yFunction, scope);
+                var z = math.eval(zFunction, scope);
+
+                /*var z = Math.cos(2 * Math.PI * (i-j))/ 5;*/
 
                 path.push(new BABYLON.Vector3(x, y, z));
             }
