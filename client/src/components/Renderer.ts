@@ -26,6 +26,7 @@ export class Renderer {
 
     avatarShape: AbstractMesh;
     avatarAttachments: ClientEntity[] = [];
+    orphans: {[key: string]: string[]} = {};
 
     lastLoopTimeMillis: number = new Date().getTime();
 
@@ -59,6 +60,7 @@ export class Renderer {
 
         var shape = this.scene.getMeshByName(entity.id);
         if (shape) {
+            this.updateParentRelationship(entity, shape);
             shape.position = entity.interpolatedPosition;
             shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
             if (entity.scaling && (entity.scaling.x != 0 || entity.scaling.y != 0 || entity.scaling.z != 0)) {
@@ -94,6 +96,7 @@ export class Renderer {
             return;
         }
 
+        this.updateParentRelationship(entity, shape);
         shape.position = entity.interpolatedPosition;
         shape.rotationQuaternion = entity.interpolatedRotationQuaternion;
         if (entity.scaling && (entity.scaling.x != 0 || entity.scaling.y != 0 || entity.scaling.z != 0)) {
@@ -128,6 +131,47 @@ export class Renderer {
         var editedEntity = this.clientEngine.state.getEditedEntity();
         if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id] === entity.id) {
             this.clientEngine.state.stateChanged();
+        }
+    }
+
+    updateParentRelationship(entity: ClientEntity, shape:AbstractMesh) {
+        if (entity.pid) {
+            var parentShape = this.scene.getMeshByName(entity.pid);
+            if (!parentShape) {
+                if (!this.orphans[entity.pid]) {
+                    this.orphans[entity.pid] = [];
+                }
+                this.orphans[entity.pid].push(entity.id);
+                console.log('Renderer added orphan: ' + entity.id);
+            } else {
+                if (!shape.parent) {
+                    shape.parent = parentShape;
+                    console.log('Renderer set parent: ' + entity.id);
+                } else {
+                    if (shape.parent !== parentShape) {
+                        shape.parent = parentShape;
+                        console.log('Renderer changed parent: ' + entity.id);
+                    }
+                }
+            }
+        } else {
+            if (shape.parent) {
+                shape.parent = null;
+                console.log('Renderer cleared parent: ' + entity.id);
+            }
+        }
+        if (this.orphans[entity.id] && this.orphans[entity.id].length > 0) {
+            for (var childId of this.orphans[entity.id]) {
+                var childEntity = this.clientEngine.model.entities[childId];
+                if (childEntity) {
+                    var childShape = this.scene.getMeshByName(childId);
+                    if (childShape) {
+                        this.updateParentRelationship(childEntity, childShape);
+                        console.log('Renderer set parent for orphan: ' + childId);
+                    }
+                }
+            }
+            this.orphans[entity.id] = [];
         }
     }
 
