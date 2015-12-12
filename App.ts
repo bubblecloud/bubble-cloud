@@ -265,11 +265,14 @@ app.ws('/ws', function(ws, req) {
         return; // Send external objects to server only.
       }
       entity.oid = inConnection.idOIdMap[entity.id];
+      delete entity.oid;
+      delete entity.poid;
       if (entity.pid) {
         entity.poid = inConnection.idOIdMap[entity.pid];
       }
       ws.send(JSON.stringify(entity));
       delete entity.oid;
+      delete entity.poid;
     } catch (error) {
     }
   }

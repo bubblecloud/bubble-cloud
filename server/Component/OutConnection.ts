@@ -33,6 +33,8 @@ export class OutConnection {
     send: (entity: ServerEntity) => void = function (entity: ServerEntity): void {
         if (this.wsClient && this.running) {
             //console.log('sending entity to remote server: ' + entity.id)
+            delete entity.oid;
+            delete entity.poid;
             entity.external = true;
             entity.position.x += this.x;
             entity.position.y += this.y;

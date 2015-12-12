@@ -9,6 +9,8 @@ var OutConnection = (function () {
         this.oidIdMap = {};
         this.send = function (entity) {
             if (this.wsClient && this.running) {
+                delete entity.oid;
+                delete entity.poid;
                 entity.external = true;
                 entity.position.x += this.x;
                 entity.position.y += this.y;
