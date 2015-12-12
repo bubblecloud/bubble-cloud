@@ -11699,6 +11699,11 @@ body {
   background: linear-gradient(to bottom, #0077ff, #f0f0ff, #f0f0ff) !important;
 }
 
+.col {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
 .form-control {
   background-color: rgba(0, 0, 0, 0.11);
   color: rgba(255, 255, 255, 0.8);
@@ -11737,6 +11742,7 @@ body {
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0);
   color: rgba(255, 255, 255, 0.4);
+  pointer-events: auto;
 }
 
 .nav-tabs {
@@ -11745,6 +11751,7 @@ body {
 
 .form-control {
   margin-bottom: 10px;
+  pointer-events: auto;
 }
 
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
@@ -11753,6 +11760,7 @@ body {
 
 .btn {
   margin-bottom: 10px;
+  pointer-events: auto;
 }
 
 .btn-primary {
@@ -11854,18 +11862,28 @@ footer p, footer ul {
 }
 
 .navbar-default {
-  background-color: rgba(0, 0, 0, 0.19);
+  background-color: rgba(0, 0, 0, 0.04);
+  box-shadow: 0 0 0px rgba(0, 0, 0, 0.2);
+}
+
+.status-bar {
+  background-color: rgba(0, 0, 0, 0.04);
+  height: 50px;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
 }
 
 .hud {
   width: 100%;
-  height: 40vh;
+  height: 100vh;
   touch-action: none;
   margin-bottom: -5px;
-  background-color: rgba(0, 0, 0, 0.19);
+  padding-top: 60px;
+  padding-bottom: 60px;
   position: absolute;
-  top: 60vh;
   left: 0;
+  pointer-events: none;
 }
 
 .fill {
@@ -11880,7 +11898,7 @@ footer p, footer ul {
 .console-lines {
   position: absolute;
   top: 70px;
-  bottom: 75px;
+  bottom: 60px;
   width: 100%;
   overflow-y: auto;
   padding-left: 10px;
@@ -11890,5 +11908,5 @@ footer p, footer ul {
 .console-input {
   position: absolute;
   left: 0;
-  bottom: 30px;
+  bottom: 0;
 }

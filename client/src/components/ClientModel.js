@@ -2,6 +2,7 @@ var ClientEntity_1 = require("./ClientEntity");
 var Vector3 = BABYLON.Vector3;
 var Quaternion = BABYLON.Quaternion;
 var ClientEntity_2 = require("./ClientEntity");
+var ClientEntity_3 = require("./ClientEntity");
 var ClientModel = (function () {
     function ClientModel() {
         this.entities = {};
@@ -62,10 +63,29 @@ var ClientModel = (function () {
         if (!entity.oid) {
             localCopy.oid = entity.id;
             localCopy.newId();
+            entity.oid = localCopy.id;
+            this.oidIdMap[entity.oid] = entity.id;
+            this.idOidMap[entity.id] = entity.oid;
         }
         else {
             localCopy.oid = entity.id;
             localCopy.id = entity.oid;
+        }
+        if (entity.pid) {
+            if (!entity.poid) {
+                localCopy.poid = entity.pid;
+                localCopy.pid = '' + ClientEntity_3.getNewId();
+                entity.poid = localCopy.pid;
+                if (this.entities[entity.pid]) {
+                    this.entities[entity.pid].oid = entity.poid;
+                }
+                this.oidIdMap[entity.poid] = entity.pid;
+                this.idOidMap[entity.pid] = entity.poid;
+            }
+            else {
+                localCopy.poid = entity.pid;
+                localCopy.pid = entity.poid;
+            }
         }
         localCopy.name = entity.name;
         localCopy.type = entity.type;
@@ -98,6 +118,11 @@ var ClientModel = (function () {
             this.oidIdMap[entity.oid] = entity.id;
             this.idOidMap[entity.id] = entity.oid;
             ClientEntity_2.reserveId(entity.oid);
+        }
+        if (entity.poid && !this.oidIdMap[entity.poid]) {
+            this.oidIdMap[entity.poid] = entity.pid;
+            this.idOidMap[entity.pid] = entity.poid;
+            ClientEntity_2.reserveId(entity.poid);
         }
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {

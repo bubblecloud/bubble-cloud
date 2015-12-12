@@ -1,8 +1,10 @@
+var EditorState_1 = require("./EditorState");
 var ClientState = (function () {
     function ClientState() {
         this.clientStateListeners = [];
         this.editedEntity = null;
         this.hudVisible = true;
+        this.editorState = EditorState_1.EditorState.NONE;
     }
     ClientState.prototype.getEditedEntity = function () {
         return this.editedEntity;

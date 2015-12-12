@@ -1,3 +1,4 @@
+var EditorState_1 = require("./EditorState");
 var MouseReader = (function () {
     function MouseReader(engine) {
         var _this = this;
@@ -14,8 +15,22 @@ var MouseReader = (function () {
                 var pickResult = _this.engine.renderer.scene.pick(_this.engine.renderer.scene.pointerX, _this.engine.renderer.scene.pointerY);
                 var id = pickResult.pickedMesh.name;
                 if (_this.engine.model.entities[id]) {
-                    var entity = _this.engine.model.clone(id);
-                    _this.engine.state.setEditedEntity(entity);
+                    if (_this.engine.state.editorState == EditorState_1.EditorState.PARENT_SET) {
+                        _this.engine.state.editorState = EditorState_1.EditorState.NONE;
+                        document.body.style.cursor = 'auto';
+                        var entity = _this.engine.state.getEditedEntity();
+                        if (entity) {
+                            var parentEntity = _this.engine.model.clone(id);
+                            entity.pid = parentEntity.id;
+                            entity.poid = parentEntity.oid;
+                            _this.engine.ws.sendObject(entity);
+                            _this.engine.state.stateChanged();
+                        }
+                    }
+                    else {
+                        var entity = _this.engine.model.clone(id);
+                        _this.engine.state.setEditedEntity(entity);
+                    }
                 }
             }
         };

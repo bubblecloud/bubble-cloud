@@ -1,4 +1,5 @@
 var hud_1 = require("../hud");
+var EditorState_1 = require("../components/EditorState");
 var EntityProperties = (function () {
     function EntityProperties() {
         this.lastChangeTimeMillis = 0;
@@ -6,6 +7,15 @@ var EntityProperties = (function () {
         this.state = this.engine.state;
         this.state.addClientStateListener(this);
     }
+    EntityProperties.prototype.selectParent = function () {
+        this.state.editorState = EditorState_1.EditorState.PARENT_SET;
+        document.body.style.cursor = 'crosshair';
+    };
+    EntityProperties.prototype.clearParent = function () {
+        this.currentEditedEntity.pid = null;
+        this.currentEditedEntity.poid = null;
+        this.engine.ws.sendObject(this.currentEditedEntity);
+    };
     EntityProperties.prototype.stateChange = function () {
         var editedEntity = this.state.getEditedEntity();
         if (!editedEntity || (this.currentEditedEntity && editedEntity.id !== this.currentEditedEntity.id)) {
@@ -19,7 +29,18 @@ var EntityProperties = (function () {
             this.type = editedEntity.type;
             this.id = editedEntity.id;
             this.oid = editedEntity.oid;
+            this.pid = editedEntity.pid;
+            this.poid = editedEntity.poid;
+            if (this.pid && this.engine.model.oidIdMap[this.pid] && this.engine.model.entities[this.engine.model.oidIdMap[this.pid]]) {
+                this.parent = this.engine.model.entities[this.engine.model.oidIdMap[this.pid]].name;
+            }
+            else {
+                this.parent = null;
+            }
             this.dynamic = editedEntity.dynamic;
+            this.external = editedEntity.external;
+            this.removed = editedEntity.removed;
+            this.core = editedEntity.core;
             this.px = editedEntity.position.x;
             this.py = editedEntity.position.y;
             this.pz = editedEntity.position.z;
@@ -37,7 +58,13 @@ var EntityProperties = (function () {
             this.type = null;
             this.id = null;
             this.oid = null;
+            this.pid = null;
+            this.poid = null;
+            this.parent = null;
             this.dynamic = null;
+            this.external = null;
+            this.removed = null;
+            this.core = null;
             this.px = null;
             this.py = null;
             this.pz = null;

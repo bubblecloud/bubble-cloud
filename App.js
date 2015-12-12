@@ -195,6 +195,9 @@ app.ws('/ws', function (ws, req) {
                 return;
             }
             entity.oid = inConnection.idOIdMap[entity.id];
+            if (entity.pid) {
+                entity.poid = inConnection.idOIdMap[entity.pid];
+            }
             ws.send(JSON.stringify(entity));
             delete entity.oid;
         }

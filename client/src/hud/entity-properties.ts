@@ -7,6 +7,7 @@ import {ClientState} from "../components/ClientState";
 import {ClientStateListener} from "../components/ClientStateListener";
 import {ClientEntity} from "../components/ClientEntity";
 import Quaternion = BABYLON.Quaternion;
+import {EditorState} from "../components/EditorState";
 
 export class EntityProperties implements ClientStateListener {
 
@@ -14,10 +15,16 @@ export class EntityProperties implements ClientStateListener {
     state: ClientState;
 
     name: string;
+    parent: string;
     type: string;
     id: string;
     oid: string;
+    pid: string;
+    poid: string;
     dynamic: boolean;
+    external: boolean;
+    removed: boolean;
+    core: boolean;
     px: number;
     py: number;
     pz: number;
@@ -39,6 +46,17 @@ export class EntityProperties implements ClientStateListener {
         this.state.addClientStateListener(this);
     }
 
+    selectParent(): void {
+        this.state.editorState = EditorState.PARENT_SET;
+        document.body.style.cursor = 'crosshair';
+    }
+
+    clearParent(): void {
+        this.currentEditedEntity.pid = null;
+        this.currentEditedEntity.poid = null;
+        this.engine.ws.sendObject(this.currentEditedEntity);
+    }
+
     stateChange(): void {
         var editedEntity = this.state.getEditedEntity();
 
@@ -53,9 +71,22 @@ export class EntityProperties implements ClientStateListener {
 
             this.name = editedEntity.name;
             this.type = editedEntity.type;
+
             this.id = editedEntity.id;
             this.oid = editedEntity.oid;
+            this.pid = editedEntity.pid;
+            this.poid = editedEntity.poid;
+
+            if (this.pid && this.engine.model.oidIdMap[this.pid] && this.engine.model.entities[this.engine.model.oidIdMap[this.pid]]) {
+                this.parent = this.engine.model.entities[this.engine.model.oidIdMap[this.pid]].name;
+            } else {
+                this.parent = null;
+            }
+
             this.dynamic = editedEntity.dynamic;
+            this.external = editedEntity.external;
+            this.removed = editedEntity.removed;
+            this.core = editedEntity.core;
 
             this.px = editedEntity.position.x;
             this.py = editedEntity.position.y;
@@ -77,7 +108,15 @@ export class EntityProperties implements ClientStateListener {
 
             this.id = null;
             this.oid = null;
+            this.pid = null;
+            this.poid = null;
+
+            this.parent = null;
+
             this.dynamic = null;
+            this.external = null;
+            this.removed = null;
+            this.core = null;
 
             this.px = null;
             this.py = null;

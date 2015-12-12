@@ -1,4 +1,5 @@
 var ServerEntity_1 = require("./ServerEntity");
+var ServerEntity_2 = require("./ServerEntity");
 var InConnection = (function () {
     function InConnection(remoteAddress, remotePort, email, userId) {
         this.receivedTime = new Date().getTime();
@@ -42,6 +43,33 @@ var InConnection = (function () {
             }
             else {
                 entity.id = this.oidIdMap[oid];
+            }
+            var poid = entity.pid;
+            if (poid) {
+                if (!this.oidIdMap[poid]) {
+                    if (!this.remoteIsServer && entity.poid) {
+                        entity.pid = entity.poid;
+                        this.oidIdMap[poid] = entity.pid;
+                        this.idOIdMap[entity.pid] = poid;
+                    }
+                    else {
+                        var pid = '' + ServerEntity_2.getNewId();
+                        while (this.oidIdMap[pid]) {
+                            pid = '' + ServerEntity_2.getNewId();
+                        }
+                        entity.pid = pid;
+                        this.oidIdMap[poid] = entity.pid;
+                        this.idOIdMap[entity.pid] = poid;
+                    }
+                }
+                else {
+                    entity.pid = this.oidIdMap[poid];
+                }
+                delete entity.poid;
+            }
+            else {
+                entity.pid = null;
+                entity.poid = null;
             }
             if (entity.id === '0') {
                 if (!this.engine.hasRole('admin', this.userId)) {

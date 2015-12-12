@@ -10,6 +10,11 @@ function reserveId(oid) {
     entityIdCounter = Math.max(entityIdCounter, Number(oid));
 }
 exports.reserveId = reserveId;
+function getNewId() {
+    entityIdCounter++;
+    return entityIdCounter;
+}
+exports.getNewId = getNewId;
 var ClientEntity = (function () {
     function ClientEntity() {
         this.position = new Vector3(0, 0, 0);

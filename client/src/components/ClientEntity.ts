@@ -6,12 +6,19 @@ export function reserveId(oid: string) {
     entityIdCounter = Math.max(entityIdCounter, Number(oid));
 }
 
+export function getNewId() : number {
+    entityIdCounter++;
+    return entityIdCounter;
+}
+
 /**
  * Entity value object.
  */
 export class ClientEntity {
-    id: string;
+    id: string; // ID
     oid: string; // original ID
+    pid: string; // parent ID
+    poid: string; // original parent ID
     _id: string; // unique persistent ID
 
     name: string; // The entity name

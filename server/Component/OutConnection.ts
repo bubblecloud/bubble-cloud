@@ -1,5 +1,6 @@
 import {ServerEntity} from "./ServerEntity";
 import {newId} from "./ServerEntity";
+import {getNewId} from "./ServerEntity";
 import {ServerWsClient} from "./ServerWsClient";
 import {ServerEngine} from "./ServerEngine";
 
@@ -66,6 +67,25 @@ export class OutConnection {
             this.oidIdMap[oid] = entity.id;
         } else {
             entity.id = this.oidIdMap[oid]
+        }
+
+        // Map parent original ID.
+        var poid = entity.pid;
+        if (poid) {
+            if (!this.oidIdMap[poid]) {
+                var pid:string = '' + getNewId();
+                while (this.oidIdMap[poid]) { // Reallocate until free ID is found
+                    pid = '' + getNewId();
+                }
+                this.pid = pid;
+                this.oidIdMap[poid] = entity.pid;
+            } else {
+                entity.pid = this.oidIdMap[poid]
+            }
+            delete entity.poid; // Delete parent original ID for new. Will be set on send.
+        } else {
+            entity.pid = null;
+            entity.poid = null;
         }
 
         entity.external = true;

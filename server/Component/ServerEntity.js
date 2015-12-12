@@ -20,6 +20,7 @@ exports.Quaternion = Quaternion;
 var entityIdCounter = 1;
 function reserveId(id) {
     entityIdCounter = Math.max(entityIdCounter, Number(id));
+    console.log("reserveId: " + id);
 }
 exports.reserveId = reserveId;
 var ServerEntity = (function () {
@@ -41,6 +42,13 @@ var ServerEntity = (function () {
 exports.ServerEntity = ServerEntity;
 function newId(entity) {
     entityIdCounter++;
+    console.log("newId: " + entityIdCounter);
     entity.id = '' + entityIdCounter;
 }
 exports.newId = newId;
+function getNewId() {
+    entityIdCounter++;
+    console.log("getNewId: " + entityIdCounter);
+    return entityIdCounter;
+}
+exports.getNewId = getNewId;

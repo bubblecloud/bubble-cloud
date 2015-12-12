@@ -21,6 +21,7 @@ var entityIdCounter = 1;
 
 export function reserveId(id: string) {
     entityIdCounter = Math.max(entityIdCounter, Number(id));
+    console.log("reserveId: " + id);
 }
 
 /**
@@ -29,6 +30,8 @@ export function reserveId(id: string) {
 export class ServerEntity {
     id: string; // current ID
     oid: string; // original ID received from remote peer
+    pid: string; // parent ID
+    poid: string; // original parent ID
     _id: string; // unique persistent ID
 
     type: string; // The entity type
@@ -56,5 +59,12 @@ export class ServerEntity {
 
 export function newId(entity: ServerEntity) : void {
     entityIdCounter++;
+    console.log("newId: " + entityIdCounter);
     entity.id = '' + entityIdCounter;
+}
+
+export function getNewId() : number {
+    entityIdCounter++;
+    console.log("getNewId: " + entityIdCounter);
+    return entityIdCounter;
 }

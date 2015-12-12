@@ -1,4 +1,5 @@
 var ServerEntity_1 = require("./ServerEntity");
+var ServerEntity_2 = require("./ServerEntity");
 var ServerWsClient_1 = require("./ServerWsClient");
 var OutConnection = (function () {
     function OutConnection(url, x, y, z, engine) {
@@ -37,6 +38,25 @@ var OutConnection = (function () {
             }
             else {
                 entity.id = this.oidIdMap[oid];
+            }
+            var poid = entity.pid;
+            if (poid) {
+                if (!this.oidIdMap[poid]) {
+                    var pid = '' + ServerEntity_2.getNewId();
+                    while (this.oidIdMap[poid]) {
+                        pid = '' + ServerEntity_2.getNewId();
+                    }
+                    this.pid = pid;
+                    this.oidIdMap[poid] = entity.pid;
+                }
+                else {
+                    entity.pid = this.oidIdMap[poid];
+                }
+                delete entity.poid;
+            }
+            else {
+                entity.pid = null;
+                entity.poid = null;
             }
             entity.external = true;
             entity.position.x -= this.x;

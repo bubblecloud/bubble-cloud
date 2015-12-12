@@ -1,4 +1,5 @@
 import {ClientEngine} from "./ClientEngine";
+import {EditorState} from "./EditorState";
 
 export class MouseReader {
 
@@ -19,9 +20,22 @@ export class MouseReader {
                 var pickResult = this.engine.renderer.scene.pick(this.engine.renderer.scene.pointerX, this.engine.renderer.scene.pointerY);
                 var id = pickResult.pickedMesh.name;
                 if (this.engine.model.entities[id]) {
-                    var entity = this.engine.model.clone(id);
-                    //this.engine.ws.sendObject(entity); // Refresh possibly new oid via server to client model.
-                    this.engine.state.setEditedEntity(entity);
+                    if (this.engine.state.editorState == EditorState.PARENT_SET) {
+                        this.engine.state.editorState = EditorState.NONE;
+                        document.body.style.cursor = 'auto';
+                        var entity = this.engine.state.getEditedEntity();
+                        if (entity) {
+                            var parentEntity = this.engine.model.clone(id);
+                            entity.pid = parentEntity.id;
+                            entity.poid = parentEntity.oid;
+                            this.engine.ws.sendObject(entity);
+                            this.engine.state.stateChanged();
+                        }
+                    } else {
+                        var entity = this.engine.model.clone(id);
+                        //this.engine.ws.sendObject(entity); // Refresh possibly new oid via server to client model.
+                        this.engine.state.setEditedEntity(entity);
+                    }
                 }
             }
         }

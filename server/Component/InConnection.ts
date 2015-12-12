@@ -1,5 +1,6 @@
 import {ServerEntity} from "./ServerEntity";
 import {newId} from "./ServerEntity";
+import {getNewId} from "./ServerEntity";
 import {ServerEngine} from "./ServerEngine";
 
 /**
@@ -50,6 +51,7 @@ export class InConnection {
             entity.owner = this.email;
         }
 
+        // Map IDs
         var oid = entity.id;
         if(!this.oidIdMap[oid]) {
             if (!this.remoteIsServer && entity.oid) {
@@ -76,6 +78,34 @@ export class InConnection {
         } else {
             entity.id = this.oidIdMap[oid]
         }
+
+        // Map parent IDs.
+        var poid = entity.pid;
+        if (poid) {
+            if (!this.oidIdMap[poid]) {
+                if (!this.remoteIsServer && entity.poid) {
+                    entity.pid = entity.poid;
+                    this.oidIdMap[poid] = entity.pid;
+                    this.idOIdMap[entity.pid] = poid;
+                } else {
+                    var pid:string = '' + getNewId();
+                    while (this.oidIdMap[pid]) { // Reallocate until free ID is found
+                        pid = '' + getNewId();
+                    }
+                    entity.pid = pid;
+                    this.oidIdMap[poid] = entity.pid;
+                    this.idOIdMap[entity.pid] = poid;
+                }
+            } else {
+                entity.pid = this.oidIdMap[poid]
+            }
+            delete entity.poid; // Delete parent original ID for new. Will be set on send.
+        } else {
+            entity.pid = null;
+            entity.poid = null;
+        }
+
+
 
         // If entity is core then checking that user is admin
         if (entity.id === '0') {

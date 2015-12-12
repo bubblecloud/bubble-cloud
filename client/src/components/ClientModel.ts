@@ -4,10 +4,15 @@ import Vector3 = BABYLON.Vector3;
 import Matrix = BABYLON.Matrix;
 import Quaternion = BABYLON.Quaternion;
 import {reserveId} from "./ClientEntity";
+import {getNewId} from "./ClientEntity";
 
 export class ClientModel {
 
     entities : {[key: string]: ClientEntity} = {};
+
+    /**
+     * OID is client ID in this context.
+     */
     oidIdMap : {[key: string]: string} = {};
     idOidMap : {[key: string]: string} = {};
     mobiles : ClientEntity[] = [];
@@ -79,13 +84,35 @@ export class ClientModel {
     clone(id: string): ClientEntity {
         var localCopy = new ClientEntity();
         var entity = this.entities[id];
+
         if (!entity.oid) {
             localCopy.oid = entity.id;
             localCopy.newId();
+            entity.oid  = localCopy.id;
+            this.oidIdMap[entity.oid] = entity.id;
+            this.idOidMap[entity.id] = entity.oid;
         } else {
             localCopy.oid = entity.id;
             localCopy.id = entity.oid;
         }
+
+        if (entity.pid) {
+            if (!entity.poid) {
+                localCopy.poid = entity.pid;
+                localCopy.pid = '' + getNewId();
+                entity.poid = localCopy.pid;
+                if (this.entities[entity.pid]) {
+                    this.entities[entity.pid].oid = entity.poid;
+                }
+                this.oidIdMap[entity.poid] = entity.pid;
+                this.idOidMap[entity.pid] = entity.poid;
+            } else {
+                localCopy.poid = entity.pid;
+                localCopy.pid = entity.poid;
+            }
+        }
+
+
         localCopy.name = entity.name;
         localCopy.type = entity.type;
         localCopy.core = entity.core;
@@ -124,6 +151,11 @@ export class ClientModel {
             this.oidIdMap[entity.oid] = entity.id;
             this.idOidMap[entity.id] = entity.oid;
             reserveId(entity.oid);
+        }
+        if (entity.poid && !this.oidIdMap[entity.poid]) {
+            this.oidIdMap[entity.poid] = entity.pid;
+            this.idOidMap[entity.pid] = entity.poid;
+            reserveId(entity.poid);
         }
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {
