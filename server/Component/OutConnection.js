@@ -12,13 +12,17 @@ var OutConnection = (function () {
                 delete entity.oid;
                 delete entity.poid;
                 entity.external = true;
-                entity.position.x += this.x;
-                entity.position.y += this.y;
-                entity.position.z += this.z;
+                if (!entity.pid) {
+                    entity.position.x += this.x;
+                    entity.position.y += this.y;
+                    entity.position.z += this.z;
+                }
                 this.wsClient.sendObject(entity);
-                entity.position.x -= this.x;
-                entity.position.y -= this.y;
-                entity.position.z -= this.z;
+                if (!entity.pid) {
+                    entity.position.x -= this.x;
+                    entity.position.y -= this.y;
+                    entity.position.z -= this.z;
+                }
                 delete entity.external;
             }
         };
@@ -48,7 +52,7 @@ var OutConnection = (function () {
                     while (this.oidIdMap[poid]) {
                         pid = '' + ServerEntity_2.getNewId();
                     }
-                    this.pid = pid;
+                    entity.pid = pid;
                     this.oidIdMap[poid] = entity.pid;
                 }
                 else {
@@ -61,9 +65,11 @@ var OutConnection = (function () {
                 entity.poid = null;
             }
             entity.external = true;
-            entity.position.x -= this.x;
-            entity.position.y -= this.y;
-            entity.position.z -= this.z;
+            if (!entity.pid) {
+                entity.position.x -= this.x;
+                entity.position.y -= this.y;
+                entity.position.z -= this.z;
+            }
             if (entity.id === '0') {
                 return;
             }

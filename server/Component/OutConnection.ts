@@ -36,13 +36,17 @@ export class OutConnection {
             delete entity.oid;
             delete entity.poid;
             entity.external = true;
-            entity.position.x += this.x;
-            entity.position.y += this.y;
-            entity.position.z += this.z;
+            if (!entity.pid) {
+                entity.position.x += this.x;
+                entity.position.y += this.y;
+                entity.position.z += this.z;
+            }
             this.wsClient.sendObject(entity);
-            entity.position.x -= this.x;
-            entity.position.y -= this.y;
-            entity.position.z -= this.z;
+            if (!entity.pid) {
+                entity.position.x -= this.x;
+                entity.position.y -= this.y;
+                entity.position.z -= this.z;
+            }
             delete entity.external;
         }
     }
@@ -79,7 +83,7 @@ export class OutConnection {
                 while (this.oidIdMap[poid]) { // Reallocate until free ID is found
                     pid = '' + getNewId();
                 }
-                this.pid = pid;
+                entity.pid = pid;
                 this.oidIdMap[poid] = entity.pid;
             } else {
                 entity.pid = this.oidIdMap[poid]
@@ -91,9 +95,11 @@ export class OutConnection {
         }
 
         entity.external = true;
-        entity.position.x -= this.x;
-        entity.position.y -= this.y;
-        entity.position.z -= this.z;
+        if (!entity.pid) {
+            entity.position.x -= this.x;
+            entity.position.y -= this.y;
+            entity.position.z -= this.z;
+        }
 
         if (entity.id === '0') {
             return;
