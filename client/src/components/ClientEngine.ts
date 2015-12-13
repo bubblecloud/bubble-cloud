@@ -54,9 +54,17 @@ export class ClientEngine {
         });
 
         this.ws.setOnReceiveObject( (entity: ClientEntity) => {
-            entity.oid = this.model.idRegister.processReceivedIdPair(entity.id, entity.oid, this.model.idOidMap, this.model.oidIdMap);
-            if (entity.pid) {
-                entity.poid = this.model.idRegister.processReceivedIdPair(entity.pid, entity.poid, this.model.idOidMap, this.model.oidIdMap);
+            // Swap to local IDs
+            var id = entity.id;
+            entity.id = entity.oid;
+            entity.oid = id;
+            var pid = entity.pid;
+            entity.pid = entity.poid;
+            entity.poid = pid;
+
+            entity.id = this.model.idRegister.processReceivedIdPair(entity.id, entity.oid, this.model.localIdRemoteIdMap, this.model.remoteIdLocalIdMap);
+            if (entity.poid) {
+                entity.pid = this.model.idRegister.processReceivedIdPair(entity.pid, entity.poid, this.model.localIdRemoteIdMap, this.model.remoteIdLocalIdMap);
             } else {
                 entity.pid = null;
                 entity.poid = null;

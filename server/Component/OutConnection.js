@@ -6,7 +6,7 @@ var OutConnection = (function () {
         this.receivedTime = new Date().getTime();
         this.running = false;
         this.wsClient = null;
-        this.oidIdMap = {};
+        this.remoteIdLocalIdMap = {};
         this.send = function (entity) {
             if (this.wsClient && this.running) {
                 delete entity.oid;
@@ -35,28 +35,28 @@ var OutConnection = (function () {
             }
             this.receivedTime = new Date().getTime();
             var oid = entity.id;
-            if (!this.oidIdMap[oid]) {
+            if (!this.remoteIdLocalIdMap[oid]) {
                 ServerEntity_1.newId(entity);
-                while (this.oidIdMap[oid]) {
+                while (this.remoteIdLocalIdMap[oid]) {
                     ServerEntity_1.newId(entity);
                 }
-                this.oidIdMap[oid] = entity.id;
+                this.remoteIdLocalIdMap[oid] = entity.id;
             }
             else {
-                entity.id = this.oidIdMap[oid];
+                entity.id = this.remoteIdLocalIdMap[oid];
             }
             var poid = entity.pid;
             if (poid) {
-                if (!this.oidIdMap[poid]) {
+                if (!this.remoteIdLocalIdMap[poid]) {
                     var pid = '' + ServerEntity_2.getNewId();
-                    while (this.oidIdMap[poid]) {
+                    while (this.remoteIdLocalIdMap[poid]) {
                         pid = '' + ServerEntity_2.getNewId();
                     }
                     entity.pid = pid;
-                    this.oidIdMap[poid] = entity.pid;
+                    this.remoteIdLocalIdMap[poid] = entity.pid;
                 }
                 else {
-                    entity.pid = this.oidIdMap[poid];
+                    entity.pid = this.remoteIdLocalIdMap[poid];
                 }
                 delete entity.poid;
             }
@@ -97,8 +97,8 @@ var OutConnection = (function () {
             this.engine.model.put(entity);
         };
         this.disconnect = function () {
-            for (var oid in this.oidIdMap) {
-                var id = this.oidIdMap[oid];
+            for (var oid in this.remoteIdLocalIdMap) {
+                var id = this.remoteIdLocalIdMap[oid];
                 var entity = this.engine.model.get(id);
                 if (entity) {
                     entity.removed = true;

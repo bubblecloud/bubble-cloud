@@ -6,8 +6,8 @@ var ClientModel = (function () {
     function ClientModel() {
         this.idRegister = new IdRegister_1.IdRegister();
         this.entities = {};
-        this.oidIdMap = {};
-        this.idOidMap = {};
+        this.localIdRemoteIdMap = {};
+        this.remoteIdLocalIdMap = {};
         this.mobiles = [];
         this.lastTimeMillis = (new Date).getTime();
     }
@@ -60,10 +60,10 @@ var ClientModel = (function () {
     ClientModel.prototype.clone = function (id) {
         var localCopy = new ClientEntity_1.ClientEntity();
         var entity = this.entities[id];
-        localCopy.oid = entity.id;
-        localCopy.id = entity.oid;
-        localCopy.poid = entity.pid;
-        localCopy.pid = entity.poid;
+        localCopy.id = entity.id;
+        localCopy.oid = entity.oid;
+        localCopy.pid = entity.pid;
+        localCopy.poid = entity.poid;
         localCopy.name = entity.name;
         localCopy.type = entity.type;
         localCopy.core = entity.core;
@@ -130,8 +130,8 @@ var ClientModel = (function () {
     ClientModel.prototype.remove = function (entity) {
         delete this.entities[entity.id];
         if (entity.oid) {
-            delete this.oidIdMap[entity.oid];
-            delete this.idOidMap[entity.id];
+            delete this.remoteIdLocalIdMap[entity.oid];
+            delete this.localIdRemoteIdMap[entity.id];
         }
         if (this.onRemove) {
             this.onRemove(entity);

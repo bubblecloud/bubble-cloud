@@ -18,8 +18,8 @@ export class InConnection {
     remoteIsServer: boolean;
 
     engine: ServerEngine;
-    oidIdMap: {[key: string]:string} = {};
-    idOIdMap: {[key: string]:string} = {};
+    remoteIdLocalIdMap: {[key: string]:string} = {};
+    localIdRemoteIdMap: {[key: string]:string} = {};
 
     constructor(remoteAddress: string, remotePort: number, email: string, userId: string) {
         this.remoteAddress = remoteAddress;
@@ -53,7 +53,7 @@ export class InConnection {
 
         // Map IDs
         var oid = entity.id;
-        if(!this.oidIdMap[oid]) {
+        if(!this.remoteIdLocalIdMap[oid]) {
             if (!this.remoteIsServer && entity.oid) {
                 if (entity.dynamic === true) {
                     console.log('Access denied: Client attempted to write to dynamic entity it did not add in this session.');
@@ -65,39 +65,39 @@ export class InConnection {
                 }
                 console.log('Client updating persistent entity: ' + entity.oid);
                 entity.id = entity.oid;
-                this.oidIdMap[oid] = entity.id;
-                this.idOIdMap[entity.id] = oid;
+                this.remoteIdLocalIdMap[oid] = entity.id;
+                this.localIdRemoteIdMap[entity.id] = oid;
             } else {
                 newId(entity);
-                while (this.oidIdMap[entity.id]) { // Reallocate until free ID is found
+                while (this.remoteIdLocalIdMap[entity.id]) { // Reallocate until free ID is found
                     newId(entity);
                 }
-                this.oidIdMap[oid] = entity.id;
-                this.idOIdMap[entity.id] = oid;
+                this.remoteIdLocalIdMap[oid] = entity.id;
+                this.localIdRemoteIdMap[entity.id] = oid;
             }
         } else {
-            entity.id = this.oidIdMap[oid]
+            entity.id = this.remoteIdLocalIdMap[oid]
         }
 
         // Map parent IDs.
         var poid = entity.pid;
         if (poid) {
-            if (!this.oidIdMap[poid]) {
+            if (!this.remoteIdLocalIdMap[poid]) {
                 if (!this.remoteIsServer && entity.poid) {
                     entity.pid = entity.poid;
-                    this.oidIdMap[poid] = entity.pid;
-                    this.idOIdMap[entity.pid] = poid;
+                    this.remoteIdLocalIdMap[poid] = entity.pid;
+                    this.localIdRemoteIdMap[entity.pid] = poid;
                 } else {
                     var pid:string = '' + getNewId();
-                    while (this.oidIdMap[pid]) { // Reallocate until free ID is found
+                    while (this.remoteIdLocalIdMap[pid]) { // Reallocate until free ID is found
                         pid = '' + getNewId();
                     }
                     entity.pid = pid;
-                    this.oidIdMap[poid] = entity.pid;
-                    this.idOIdMap[entity.pid] = poid;
+                    this.remoteIdLocalIdMap[poid] = entity.pid;
+                    this.localIdRemoteIdMap[entity.pid] = poid;
                 }
             } else {
-                entity.pid = this.oidIdMap[poid]
+                entity.pid = this.remoteIdLocalIdMap[poid]
             }
             delete entity.poid; // Delete parent original ID for new. Will be set on send.
         } else {
@@ -149,8 +149,8 @@ export class InConnection {
     }
 
     disconnect: () => void = function (): void {
-        for (var oid in this.oidIdMap) {
-            var id = this.oidIdMap[oid];
+        for (var oid in this.remoteIdLocalIdMap) {
+            var id = this.remoteIdLocalIdMap[oid];
             var entity = this.engine.model.get(id);
             if (entity && (entity.dynamic || entity.external)) {
                 entity.removed = true;

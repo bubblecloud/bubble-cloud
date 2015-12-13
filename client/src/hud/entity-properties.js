@@ -31,8 +31,8 @@ var EntityProperties = (function () {
             this.oid = editedEntity.oid;
             this.pid = editedEntity.pid;
             this.poid = editedEntity.poid;
-            if (this.pid && this.engine.model.oidIdMap[this.pid] && this.engine.model.entities[this.engine.model.oidIdMap[this.pid]]) {
-                this.parent = this.engine.model.entities[this.engine.model.oidIdMap[this.pid]].name;
+            if (this.pid && this.engine.model.remoteIdLocalIdMap[this.pid] && this.engine.model.entities[this.engine.model.remoteIdLocalIdMap[this.pid]]) {
+                this.parent = this.engine.model.entities[this.engine.model.remoteIdLocalIdMap[this.pid]].name;
             }
             else {
                 this.parent = null;

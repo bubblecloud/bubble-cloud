@@ -20,7 +20,7 @@ export class OutConnection {
 
     wsClient: ServerWsClient = null;
 
-    oidIdMap: {[key: string]:string} = {};
+    remoteIdLocalIdMap: {[key: string]:string} = {};
 
     constructor(url: string, x: number, y: number, z: number, engine: ServerEngine) {
         this.url = url;
@@ -65,28 +65,28 @@ export class OutConnection {
         this.receivedTime = new Date().getTime();
 
         var oid = entity.id;
-        if(!this.oidIdMap[oid]) {
+        if(!this.remoteIdLocalIdMap[oid]) {
             newId(entity);
-            while (this.oidIdMap[oid]) { // Reallocate until free ID is found
+            while (this.remoteIdLocalIdMap[oid]) { // Reallocate until free ID is found
                 newId(entity);
             }
-            this.oidIdMap[oid] = entity.id;
+            this.remoteIdLocalIdMap[oid] = entity.id;
         } else {
-            entity.id = this.oidIdMap[oid]
+            entity.id = this.remoteIdLocalIdMap[oid]
         }
 
         // Map parent original ID.
         var poid = entity.pid;
         if (poid) {
-            if (!this.oidIdMap[poid]) {
+            if (!this.remoteIdLocalIdMap[poid]) {
                 var pid:string = '' + getNewId();
-                while (this.oidIdMap[poid]) { // Reallocate until free ID is found
+                while (this.remoteIdLocalIdMap[poid]) { // Reallocate until free ID is found
                     pid = '' + getNewId();
                 }
                 entity.pid = pid;
-                this.oidIdMap[poid] = entity.pid;
+                this.remoteIdLocalIdMap[poid] = entity.pid;
             } else {
-                entity.pid = this.oidIdMap[poid]
+                entity.pid = this.remoteIdLocalIdMap[poid]
             }
             delete entity.poid; // Delete parent original ID for new. Will be set on send.
         } else {
@@ -136,8 +136,8 @@ export class OutConnection {
     }
 
     disconnect: () => void = function (): void {
-        for (var oid in this.oidIdMap) {
-            var id = this.oidIdMap[oid];
+        for (var oid in this.remoteIdLocalIdMap) {
+            var id = this.remoteIdLocalIdMap[oid];
             var entity = this.engine.model.get(id);
             if (entity) {
                 entity.removed = true;

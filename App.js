@@ -194,12 +194,12 @@ app.ws('/ws', function (ws, req) {
             if (inConnection.remoteIsServer && entity.external) {
                 return;
             }
-            entity.oid = inConnection.idOIdMap[entity.id];
+            entity.oid = inConnection.localIdRemoteIdMap[entity.id];
             delete entity.oid;
             delete entity.poid;
-            entity.oid = inConnection.idOIdMap[entity.id];
+            entity.oid = inConnection.localIdRemoteIdMap[entity.id];
             if (entity.pid) {
-                entity.poid = inConnection.idOIdMap[entity.pid];
+                entity.poid = inConnection.localIdRemoteIdMap[entity.pid];
             }
             ws.send(JSON.stringify(entity));
             delete entity.oid;

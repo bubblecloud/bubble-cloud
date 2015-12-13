@@ -44,16 +44,16 @@ var Renderer = (function () {
                 shape.scaling = entity.scaling;
             }
         }
-        if (entity.oid == this.clientEngine.avatarController.avatar.id) {
+        if (entity.id == this.clientEngine.avatarController.avatar.id) {
             this.avatarShape = shape;
         }
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id] === entity.id) {
+        if (editedEntity && this.clientEngine.model.remoteIdLocalIdMap[editedEntity.id] === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     };
     Renderer.prototype.onUpdate = function (entity) {
-        if (entity.oid == this.clientEngine.avatarController.avatar.id) {
+        if (entity.id == this.clientEngine.avatarController.avatar.id) {
             return;
         }
         if (this.avatarAttachments.indexOf(entity) >= 0) {
@@ -75,7 +75,7 @@ var Renderer = (function () {
             actuator.update(this.clientEngine, entity);
         }
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id] === entity.id) {
+        if (editedEntity && this.clientEngine.model.remoteIdLocalIdMap[editedEntity.id] === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     };
@@ -92,7 +92,7 @@ var Renderer = (function () {
             }
         }
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id] === entity.id) {
+        if (editedEntity && this.clientEngine.model.remoteIdLocalIdMap[editedEntity.id] === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     };

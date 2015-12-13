@@ -67,21 +67,21 @@ export class Renderer {
                 shape.scaling = entity.scaling;
             }
         }
-        if (entity.oid == this.clientEngine.avatarController.avatar.id) {
+        if (entity.id == this.clientEngine.avatarController.avatar.id) {
             this.avatarShape = shape; // Mesh.CreateBox(entity.id, 1, this.scene);
             //shape.visibility = 0;
         }
 
         // If entity is edited locally then notify state listeners.
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id] === entity.id) {
+        if (editedEntity && this.clientEngine.model.remoteIdLocalIdMap[editedEntity.id] === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     }
 
     onUpdate(entity: ClientEntity) {
         // Update others than avatar which is locally controlled in render loop to eliminate lag
-        if (entity.oid == this.clientEngine.avatarController.avatar.id) {
+        if (entity.id == this.clientEngine.avatarController.avatar.id) {
             return;
         }
 
@@ -110,7 +110,7 @@ export class Renderer {
 
         // If entity is edited locally then notify state listeners.
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id] === entity.id) {
+        if (editedEntity && this.clientEngine.model.remoteIdLocalIdMap[editedEntity.id] === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     }
@@ -129,7 +129,7 @@ export class Renderer {
 
         // If entity is edited locally then notify state listeners.
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.oidIdMap[editedEntity.id] === entity.id) {
+        if (editedEntity && this.clientEngine.model.remoteIdLocalIdMap[editedEntity.id] === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     }

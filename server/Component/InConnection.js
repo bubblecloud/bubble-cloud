@@ -3,8 +3,8 @@ var ServerEntity_2 = require("./ServerEntity");
 var InConnection = (function () {
     function InConnection(remoteAddress, remotePort, email, userId) {
         this.receivedTime = new Date().getTime();
-        this.oidIdMap = {};
-        this.idOIdMap = {};
+        this.remoteIdLocalIdMap = {};
+        this.localIdRemoteIdMap = {};
         this.receive = function (entity) {
             this.receivedTime = new Date().getTime();
             if (entity._id) {
@@ -17,7 +17,7 @@ var InConnection = (function () {
                 entity.owner = this.email;
             }
             var oid = entity.id;
-            if (!this.oidIdMap[oid]) {
+            if (!this.remoteIdLocalIdMap[oid]) {
                 if (!this.remoteIsServer && entity.oid) {
                     if (entity.dynamic === true) {
                         console.log('Access denied: Client attempted to write to dynamic entity it did not add in this session.');
@@ -29,41 +29,41 @@ var InConnection = (function () {
                     }
                     console.log('Client updating persistent entity: ' + entity.oid);
                     entity.id = entity.oid;
-                    this.oidIdMap[oid] = entity.id;
-                    this.idOIdMap[entity.id] = oid;
+                    this.remoteIdLocalIdMap[oid] = entity.id;
+                    this.localIdRemoteIdMap[entity.id] = oid;
                 }
                 else {
                     ServerEntity_1.newId(entity);
-                    while (this.oidIdMap[entity.id]) {
+                    while (this.remoteIdLocalIdMap[entity.id]) {
                         ServerEntity_1.newId(entity);
                     }
-                    this.oidIdMap[oid] = entity.id;
-                    this.idOIdMap[entity.id] = oid;
+                    this.remoteIdLocalIdMap[oid] = entity.id;
+                    this.localIdRemoteIdMap[entity.id] = oid;
                 }
             }
             else {
-                entity.id = this.oidIdMap[oid];
+                entity.id = this.remoteIdLocalIdMap[oid];
             }
             var poid = entity.pid;
             if (poid) {
-                if (!this.oidIdMap[poid]) {
+                if (!this.remoteIdLocalIdMap[poid]) {
                     if (!this.remoteIsServer && entity.poid) {
                         entity.pid = entity.poid;
-                        this.oidIdMap[poid] = entity.pid;
-                        this.idOIdMap[entity.pid] = poid;
+                        this.remoteIdLocalIdMap[poid] = entity.pid;
+                        this.localIdRemoteIdMap[entity.pid] = poid;
                     }
                     else {
                         var pid = '' + ServerEntity_2.getNewId();
-                        while (this.oidIdMap[pid]) {
+                        while (this.remoteIdLocalIdMap[pid]) {
                             pid = '' + ServerEntity_2.getNewId();
                         }
                         entity.pid = pid;
-                        this.oidIdMap[poid] = entity.pid;
-                        this.idOIdMap[entity.pid] = poid;
+                        this.remoteIdLocalIdMap[poid] = entity.pid;
+                        this.localIdRemoteIdMap[entity.pid] = poid;
                     }
                 }
                 else {
-                    entity.pid = this.oidIdMap[poid];
+                    entity.pid = this.remoteIdLocalIdMap[poid];
                 }
                 delete entity.poid;
             }
@@ -104,8 +104,8 @@ var InConnection = (function () {
             }
         };
         this.disconnect = function () {
-            for (var oid in this.oidIdMap) {
-                var id = this.oidIdMap[oid];
+            for (var oid in this.remoteIdLocalIdMap) {
+                var id = this.remoteIdLocalIdMap[oid];
                 var entity = this.engine.model.get(id);
                 if (entity && (entity.dynamic || entity.external)) {
                     entity.removed = true;

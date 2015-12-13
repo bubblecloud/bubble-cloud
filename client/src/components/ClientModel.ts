@@ -11,11 +11,8 @@ export class ClientModel {
 
     entities : {[key: string]: ClientEntity} = {};
 
-    /**
-     * OID is client ID in this context.
-     */
-    oidIdMap : {[key: string]: string} = {};
-    idOidMap : {[key: string]: string} = {};
+    localIdRemoteIdMap : {[key: string]: string} = {};
+    remoteIdLocalIdMap : {[key: string]: string} = {};
     mobiles : ClientEntity[] = [];
 
     onAdd : (entity: ClientEntity) => void;
@@ -113,10 +110,10 @@ export class ClientModel {
             }
         }*/
 
-        localCopy.oid = entity.id;
-        localCopy.id = entity.oid;
-        localCopy.poid = entity.pid;
-        localCopy.pid = entity.poid;
+        localCopy.id = entity.id;
+        localCopy.oid = entity.oid;
+        localCopy.pid = entity.pid;
+        localCopy.poid = entity.poid;
 
         localCopy.name = entity.name;
         localCopy.type = entity.type;
@@ -198,8 +195,8 @@ export class ClientModel {
     remove(entity: ClientEntity) : void {
         delete this.entities[entity.id];
         if (entity.oid) {
-            delete this.oidIdMap[entity.oid];
-            delete this.idOidMap[entity.id];
+            delete this.remoteIdLocalIdMap[entity.oid];
+            delete this.localIdRemoteIdMap[entity.id];
         }
         if (this.onRemove) {
             this.onRemove(entity);

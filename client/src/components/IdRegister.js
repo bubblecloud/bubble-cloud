@@ -9,21 +9,21 @@ var IdRegister = (function () {
         this.entityIdCounter++;
         return this.entityIdCounter;
     };
-    IdRegister.prototype.processReceivedIdPair = function (id, oid, idOidMap, oidIdMap) {
-        if (idOidMap[id]) {
-            return idOidMap[id];
+    IdRegister.prototype.processReceivedIdPair = function (localId, remoteId, localIdRemoteIdMap, remoteIdLocalIdMap) {
+        if (remoteIdLocalIdMap[remoteId]) {
+            return remoteIdLocalIdMap[remoteId];
         }
-        if (oid) {
-            oidIdMap[oid] = id;
-            idOidMap[id] = oid;
-            this.reserveId(oid);
-            return oid;
+        if (localId) {
+            localIdRemoteIdMap[localId] = remoteId;
+            remoteIdLocalIdMap[remoteId] = localId;
+            this.reserveId(localId);
+            return localId;
         }
-        else if (!oid) {
-            var newOid = '' + this.getNewId();
-            oidIdMap[newOid] = id;
-            idOidMap[id] = newOid;
-            return newOid;
+        else if (!localId) {
+            var newLocalId = '' + this.getNewId();
+            localIdRemoteIdMap[newLocalId] = remoteId;
+            remoteIdLocalIdMap[remoteId] = newLocalId;
+            return newLocalId;
         }
     };
     return IdRegister;

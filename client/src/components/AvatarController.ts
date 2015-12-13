@@ -18,7 +18,7 @@ export class AvatarController {
     startup() {
         this.startTimeMillis = new Date().getTime();
         this.avatar = new ClientEntity();
-        this.avatar.id = '0';
+        this.avatar.id = '-1';
         this.avatar.repo = 'default';
         this.avatar.type = 'water-world-sphere';
         this.avatar.dynamic = true;

@@ -13,23 +13,29 @@ export class IdRegister {
         return this.entityIdCounter;
     }
 
-    processReceivedIdPair(id: string, oid: string, idOidMap : {[key: string]: string}, oidIdMap : {[key: string]: string}): string {
-        if (idOidMap[id]) {
-            // If id is already mapped then return the oid.
-            return idOidMap[id];
+    processReceivedIdPair(localId: string, remoteId: string, localIdRemoteIdMap : {[key: string]: string}, remoteIdLocalIdMap : {[key: string]: string}): string {
+        if (remoteIdLocalIdMap[remoteId]) {
+            // If remote ID is already mapped to local ID then return the mapped local ID.
+            return remoteIdLocalIdMap[remoteId];
         }
-        if (oid) {
-            // If id was not mapped and oid was returned. (Remote peer has received ID from this instance.)
-            oidIdMap[oid] = id;
-            idOidMap[id] = oid;
-            this.reserveId(oid);
-            return oid;
-        } else if (!oid) {
+        if (localId) {
+            // If remote ID  was not mapped and local ID was returned from remote per. (Remote peer has received ID from this instance.)
+            // Map the received remote ID and local ID.
+            localIdRemoteIdMap[localId] = remoteId;
+            remoteIdLocalIdMap[remoteId] = localId;
+            // Reserve the remotely received ID from local ID registry just in case.
+            this.reserveId(localId);
+            // Return the received local ID.
+            return localId;
+        } else if (!localId) {
+            // No already mapped local ID and peer did not return local ID.
             // Reserve new ID.
-            var newOid = '' + this.getNewId();
-            oidIdMap[newOid] = id;
-            idOidMap[id] = newOid;
-            return newOid;
+            var newLocalId = '' + this.getNewId();
+            // Map the new local ID.
+            localIdRemoteIdMap[newLocalId] = remoteId;
+            remoteIdLocalIdMap[remoteId] = newLocalId;
+            // Return the new local ID.
+            return newLocalId;
         }
     }
 }
