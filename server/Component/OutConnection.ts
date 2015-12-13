@@ -30,7 +30,7 @@ export class OutConnection {
         this.engine = engine;
     }
 
-    send: (entity: ServerEntity) => void = function (entity: ServerEntity): void {
+    send (entity: ServerEntity): void {
         if (this.wsClient && this.running) {
             //console.log('sending entity to remote server: ' + entity.id)
             delete entity.rid;
@@ -51,7 +51,7 @@ export class OutConnection {
         }
     }
 
-    receive: (entity: ServerEntity) => void = function (entity: ServerEntity): void {
+    receive(entity: ServerEntity): void {
         //console.log('received entity from remote server: rid=' + entity.id + ' external: ' + entity.external);
         // TODO This could be done on server side.
         if (entity.external) { // Ignore external entities from remote server.

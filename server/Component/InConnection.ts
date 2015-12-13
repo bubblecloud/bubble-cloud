@@ -32,7 +32,7 @@ export class InConnection {
 
     sendObject: (object: Object) => void;
 
-    send: (entity: ServerEntity) => void = function(entity) {
+    send(entity: ServerEntity): void {
         try {
             if (this.remoteIsServer && entity.external) {
                 return; // Send external objects to server only.
@@ -51,7 +51,7 @@ export class InConnection {
         }
     }
 
-    receive: (entity: ServerEntity) => void = function (entity: ServerEntity): void {
+    receive(entity: ServerEntity): void {
         this.receivedTime = new Date().getTime();
 
         if (entity._id) {
