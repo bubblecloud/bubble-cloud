@@ -1,6 +1,5 @@
 var ServerModel_1 = require("./ServerModel");
 var ServerEntity_1 = require("./ServerEntity");
-var ServerEntity_2 = require("./ServerEntity");
 var OutConnection_1 = require("./OutConnection");
 var dao = require('./EntityDao');
 var ServerEngine = (function () {
@@ -40,7 +39,7 @@ var ServerEngine = (function () {
             console.log("loaded " + loadedEntities.length + " from database.");
             for (var _i = 0; _i < loadedEntities.length; _i++) {
                 var loadedEntity = loadedEntities[_i];
-                ServerEntity_2.reserveId(loadedEntity.id);
+                _this.model.idRegister.reserveId(loadedEntity.id);
                 _this.model.put(loadedEntity);
             }
             _this.coreEntity = _this.model.entities['0'];

@@ -1,6 +1,4 @@
 import {ServerEntity} from "./ServerEntity";
-import {newId} from "./ServerEntity";
-import {getNewId} from "./ServerEntity";
 import {ServerEngine} from "./ServerEngine";
 
 /**
@@ -87,10 +85,10 @@ export class InConnection {
                 this.remoteIdLocalIdMap[rid] = entity.id;
                 this.localIdRemoteIdMap[entity.id] = rid;
             } else {
-                newId(entity);
-                while (this.remoteIdLocalIdMap[entity.id]) { // Reallocate until free ID is found
-                    newId(entity);
-                }
+                entity.id = '' + this.engine.model.idRegister.getNewId();
+                /*while (this.remoteIdLocalIdMap[entity.id]) { // Reallocate until free ID is found
+                    entity.id = '' + this.engine.model.idRegister.getNewId();
+                }*/
                 this.remoteIdLocalIdMap[rid] = entity.id;
                 this.localIdRemoteIdMap[entity.id] = rid;
             }
@@ -107,10 +105,10 @@ export class InConnection {
                     this.remoteIdLocalIdMap[prid] = entity.pid;
                     this.localIdRemoteIdMap[entity.pid] = prid;
                 } else {
-                    var pid:string = '' + getNewId();
-                    while (this.remoteIdLocalIdMap[pid]) { // Reallocate until free ID is found
-                        pid = '' + getNewId();
-                    }
+                    var pid:string = '' + this.engine.model.idRegister.getNewId();
+                    /*while (this.remoteIdLocalIdMap[pid]) { // Reallocate until free ID is found
+                        pid = '' + this.engine.model.idRegister.getNewId();
+                    }*/
                     entity.pid = pid;
                     this.remoteIdLocalIdMap[prid] = entity.pid;
                     this.localIdRemoteIdMap[entity.pid] = prid;

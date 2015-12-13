@@ -17,19 +17,12 @@ export class Quaternion {
     w:number = 1;
 }
 
-var entityIdCounter = 1;
-
-export function reserveId(id: string) {
-    entityIdCounter = Math.max(entityIdCounter, Number(id));
-    console.log("reserveId: " + id);
-}
-
 /**
  * Entity value object.
  */
 export class ServerEntity {
     id: string; // current ID
-    rid: string; // remote ID received from remote peer
+    rid: string; // remote ID received
     pid: string; // parent ID
     prid: string; // parent remote ID
     _id: string; // unique persistent ID
@@ -55,16 +48,4 @@ export class ServerEntity {
         this.scaling.y = 1;
         this.scaling.z = 1;
     }
-}
-
-export function newId(entity: ServerEntity) : void {
-    entityIdCounter++;
-    console.log("newId: " + entityIdCounter);
-    entity.id = '' + entityIdCounter;
-}
-
-export function getNewId() : number {
-    entityIdCounter++;
-    console.log("getNewId: " + entityIdCounter);
-    return entityIdCounter;
 }

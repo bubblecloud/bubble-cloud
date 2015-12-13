@@ -6,10 +6,12 @@ export class IdRegister {
 
     reserveId(oid: string) {
         this.entityIdCounter = Math.max(this.entityIdCounter, Number(oid));
+        console.log("registered loaded ID: " + oid);
     }
 
     getNewId() : number {
         this.entityIdCounter++;
+        console.log("registered new ID: " + this.entityIdCounter);
         return this.entityIdCounter;
     }
 

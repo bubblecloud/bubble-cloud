@@ -4,9 +4,11 @@ var IdRegister = (function () {
     }
     IdRegister.prototype.reserveId = function (oid) {
         this.entityIdCounter = Math.max(this.entityIdCounter, Number(oid));
+        console.log("registered loaded ID: " + oid);
     };
     IdRegister.prototype.getNewId = function () {
         this.entityIdCounter++;
+        console.log("registered new ID: " + this.entityIdCounter);
         return this.entityIdCounter;
     };
     IdRegister.prototype.processReceivedIdPair = function (localId, remoteId, localIdRemoteIdMap, remoteIdLocalIdMap) {

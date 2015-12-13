@@ -1,5 +1,7 @@
+var IdRegister_1 = require("../../client/src/components/IdRegister");
 var ServerModel = (function () {
     function ServerModel() {
+        this.idRegister = new IdRegister_1.IdRegister();
         this.entities = {};
     }
     ServerModel.prototype.put = function (entity) {

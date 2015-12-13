@@ -1,5 +1,3 @@
-var ServerEntity_1 = require("./ServerEntity");
-var ServerEntity_2 = require("./ServerEntity");
 var InConnection = (function () {
     function InConnection(remoteAddress, remotePort, email, userId) {
         this.receivedTime = new Date().getTime();
@@ -78,10 +76,7 @@ var InConnection = (function () {
                 this.localIdRemoteIdMap[entity.id] = rid;
             }
             else {
-                ServerEntity_1.newId(entity);
-                while (this.remoteIdLocalIdMap[entity.id]) {
-                    ServerEntity_1.newId(entity);
-                }
+                entity.id = '' + this.engine.model.idRegister.getNewId();
                 this.remoteIdLocalIdMap[rid] = entity.id;
                 this.localIdRemoteIdMap[entity.id] = rid;
             }
@@ -98,10 +93,7 @@ var InConnection = (function () {
                     this.localIdRemoteIdMap[entity.pid] = prid;
                 }
                 else {
-                    var pid = '' + ServerEntity_2.getNewId();
-                    while (this.remoteIdLocalIdMap[pid]) {
-                        pid = '' + ServerEntity_2.getNewId();
-                    }
+                    var pid = '' + this.engine.model.idRegister.getNewId();
                     entity.pid = pid;
                     this.remoteIdLocalIdMap[prid] = entity.pid;
                     this.localIdRemoteIdMap[entity.pid] = prid;

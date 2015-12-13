@@ -8,7 +8,6 @@ import {IdRegister} from "./IdRegister";
 export class ClientModel {
 
     idRegister: IdRegister = new IdRegister();
-
     entities : {[key: string]: ClientEntity} = {};
 
     localIdRemoteIdMap : {[key: string]: string} = {};

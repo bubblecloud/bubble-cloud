@@ -1,6 +1,4 @@
 import {ServerEntity} from "./ServerEntity";
-import {newId} from "./ServerEntity";
-import {getNewId} from "./ServerEntity";
 import {ServerWsClient} from "./ServerWsClient";
 import {ServerEngine} from "./ServerEngine";
 
@@ -66,10 +64,10 @@ export class OutConnection {
 
         var rid = entity.id;
         if(!this.remoteIdLocalIdMap[rid]) {
-            newId(entity);
-            while (this.remoteIdLocalIdMap[rid]) { // Reallocate until free ID is found
-                newId(entity);
-            }
+            entity.id = '' + this.engine.model.idRegister.getNewId();
+            /*while (this.remoteIdLocalIdMap[rid]) { // Reallocate until free ID is found
+                entity.id = '' + this.engine.model.idRegister.getNewId();
+            }*/
             this.remoteIdLocalIdMap[rid] = entity.id;
         } else {
             entity.id = this.remoteIdLocalIdMap[rid]
@@ -79,10 +77,10 @@ export class OutConnection {
         var prid = entity.pid;
         if (prid) {
             if (!this.remoteIdLocalIdMap[prid]) {
-                var pid:string = '' + getNewId();
-                while (this.remoteIdLocalIdMap[prid]) { // Reallocate until free ID is found
-                    pid = '' + getNewId();
-                }
+                var pid:string = '' + this.engine.model.idRegister.getNewId();
+               /*while (this.remoteIdLocalIdMap[prid]) { // Reallocate until free ID is found
+                    pid = '' + this.engine.model.idRegister.getNewId();
+                }*/
                 entity.pid = pid;
                 this.remoteIdLocalIdMap[prid] = entity.pid;
             } else {
@@ -107,28 +105,21 @@ export class OutConnection {
 
         // If entity is core then checking that user is admin
         if (entity.id === '0') {
-            if (!this.engine.hasRole('admin', this.userId)) {
-                console.log('Access denied: Client attempted to write to core without admin role. User ID: ' + this.userId);
-                return;
-            }
+            console.log('Access denied: Remote server tried to write to core:' + entity.id);
+            return;
         }
 
         // If received entity is persistent check for roles.
         if (entity.external === false && entity.dynamic === false) {
-            if (!this.engine.hasRole('admin', this.userId) && !this.engine.hasRole('member', this.userId)) {
-                console.log('Access denied: Client attempted to persist entity without admin or member role. ' + this.userId);
-                return;
-            }
+            console.log('Access denied: Remote server tried to write to persistent entity:' + entity.id);
+            return;
         }
 
         // If existing entity is persistent check for roles.
         if (this.engine.model.entities[entity.id]) {
             var existingEntity = this.engine.model.entities[entity.id];
             if (existingEntity.external = false && existingEntity.dynamic === false) {
-                if (!this.engine.hasRole('admin', this.userId) && !this.engine.hasRole('member', this.userId)) {
-                    console.log('Access denied: Client attempted to update existing persistent entity without admin or member role. ' + this.userId);
-                    return;
-                }
+                console.log('Access denied: Remote server tried to write to persistent entity:' + entity.id);
             }
         }
 

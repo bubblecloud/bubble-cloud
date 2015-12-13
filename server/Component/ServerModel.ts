@@ -1,7 +1,9 @@
 import {ServerEntity} from "./ServerEntity";
+import {IdRegister} from "../../client/src/components/IdRegister";
 
 export class ServerModel {
 
+    idRegister: IdRegister = new IdRegister();
     entities : {[key: string]: ServerEntity} = {}
 
     onAdd : (entity: ServerEntity) => void;
