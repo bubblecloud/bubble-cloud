@@ -30,7 +30,26 @@ export class InConnection {
         console.log('connected: ' + this.remoteAddress + ':' + this.remotePort + " " + this.email);
     }
 
-    send: (entity: ServerEntity) => void;
+    sendObject: (object: Object) => void;
+
+    send: (entity: ServerEntity) => void = function(entity) {
+        try {
+            if (this.remoteIsServer && entity.external) {
+                return; // Send external objects to server only.
+            }
+            entity.rid = this.localIdRemoteIdMap[entity.id];
+            delete entity.rid;
+            delete entity.prid;
+            entity.rid = this.localIdRemoteIdMap[entity.id];
+            if (entity.pid) {
+                entity.prid = this.localIdRemoteIdMap[entity.pid];
+            }
+            this.sendObject(entity);
+            delete entity.rid;
+            delete entity.prid;
+        } catch (error) {
+        }
+    }
 
     receive: (entity: ServerEntity) => void = function (entity: ServerEntity): void {
         this.receivedTime = new Date().getTime();

@@ -5,6 +5,25 @@ var InConnection = (function () {
         this.receivedTime = new Date().getTime();
         this.remoteIdLocalIdMap = {};
         this.localIdRemoteIdMap = {};
+        this.send = function (entity) {
+            try {
+                if (this.remoteIsServer && entity.external) {
+                    return;
+                }
+                entity.rid = this.localIdRemoteIdMap[entity.id];
+                delete entity.rid;
+                delete entity.prid;
+                entity.rid = this.localIdRemoteIdMap[entity.id];
+                if (entity.pid) {
+                    entity.prid = this.localIdRemoteIdMap[entity.pid];
+                }
+                this.sendObject(entity);
+                delete entity.rid;
+                delete entity.prid;
+            }
+            catch (error) {
+            }
+        };
         this.receive = function (entity) {
             this.receivedTime = new Date().getTime();
             if (entity._id) {

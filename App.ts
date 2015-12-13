@@ -259,7 +259,13 @@ app.ws('/ws', function(ws, req) {
   }
   var inConnection: InConnection = new ic.InConnection(remoteAddress, remotePort, email, userId);
   inConnection.engine = engine;
-  inConnection.send = function(entity) {
+  inConnection.sendObject = function(object: Object) {
+    try {
+      ws.send(JSON.stringify(object));
+    } catch (error) {
+    }
+  }
+  /*inConnection.send = function(entity) {
     try {
       if (inConnection.remoteIsServer && entity.external) {
         return; // Send external objects to server only.
@@ -276,7 +282,7 @@ app.ws('/ws', function(ws, req) {
       delete entity.prid;
     } catch (error) {
     }
-  }
+  }*/
 
   inConnection.connect();
   engine.inConnections.push(inConnection);

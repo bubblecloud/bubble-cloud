@@ -189,21 +189,9 @@ app.ws('/ws', function (ws, req) {
     }
     var inConnection = new ic.InConnection(remoteAddress, remotePort, email, userId);
     inConnection.engine = engine;
-    inConnection.send = function (entity) {
+    inConnection.sendObject = function (object) {
         try {
-            if (inConnection.remoteIsServer && entity.external) {
-                return;
-            }
-            entity.rid = inConnection.localIdRemoteIdMap[entity.id];
-            delete entity.rid;
-            delete entity.prid;
-            entity.rid = inConnection.localIdRemoteIdMap[entity.id];
-            if (entity.pid) {
-                entity.prid = inConnection.localIdRemoteIdMap[entity.pid];
-            }
-            ws.send(JSON.stringify(entity));
-            delete entity.rid;
-            delete entity.prid;
+            ws.send(JSON.stringify(object));
         }
         catch (error) {
         }
