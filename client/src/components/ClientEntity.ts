@@ -1,10 +1,11 @@
 import Vector3 = BABYLON.Vector3;
 import Quaternion = BABYLON.Quaternion;
+import {Entity} from "./Entity";
 
 /**
  * Entity value object.
  */
-export class ClientEntity {
+export class ClientEntity implements Entity {
     id: string; // ID
     rid: string; // remote ID
     pid: string; // parent ID

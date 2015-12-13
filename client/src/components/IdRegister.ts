@@ -1,4 +1,5 @@
 import {ServerEntity} from "../../../server/Component/ServerEntity";
+import {Entity} from "./Entity";
 /**
  * Class for keeping track of IDs.
  */
@@ -42,7 +43,7 @@ export class IdRegister {
         }
     }
 
-    mapIdsOfReceivedEntity(entity: ServerEntity, localIdRemoteIdMap : {[key: string]: string}, remoteIdLocalIdMap : {[key: string]: string}): void {
+    mapIdsOfReceivedEntity(entity: Entity, localIdRemoteIdMap : {[key: string]: string}, remoteIdLocalIdMap : {[key: string]: string}): void {
         // Swap to local IDs
         var id = entity.id;
         entity.id = entity.rid;

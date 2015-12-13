@@ -1,3 +1,4 @@
+import {Entity} from "../../client/src/components/Entity";
 /**
  * Vector3 value object.
  */
@@ -20,13 +21,14 @@ export class Quaternion {
 /**
  * Entity value object.
  */
-export class ServerEntity {
+export class ServerEntity implements Entity {
     id: string; // current ID
     rid: string; // remote ID received
     pid: string; // parent ID
     prid: string; // parent remote ID
     _id: string; // unique persistent ID
 
+    name: string;
     type: string; // The entity type
     repo: string; // The repository of the entity type
 

@@ -55,7 +55,8 @@ export class ClientEngine {
 
         this.ws.setOnReceiveObject( (entity: ClientEntity) => {
             // Swap to local IDs
-            var id = entity.id;
+            this.model.idRegister.mapIdsOfReceivedEntity(entity, this.model.localIdRemoteIdMap, this.model.remoteIdLocalIdMap);
+            /*var id = entity.id;
             entity.id = entity.rid;
             entity.rid = id;
             var pid = entity.pid;
@@ -68,7 +69,7 @@ export class ClientEngine {
             } else {
                 entity.pid = null;
                 entity.prid = null;
-            }
+            }*/
 
             if (entity.removed) {
                 this.model.remove(entity);

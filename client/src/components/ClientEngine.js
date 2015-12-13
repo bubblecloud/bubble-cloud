@@ -41,20 +41,7 @@ var ClientEngine = (function () {
             _this.consoleController.println('Server connected.');
         });
         this.ws.setOnReceiveObject(function (entity) {
-            var id = entity.id;
-            entity.id = entity.rid;
-            entity.rid = id;
-            var pid = entity.pid;
-            entity.pid = entity.prid;
-            entity.prid = pid;
-            entity.id = _this.model.idRegister.processReceivedIdPair(entity.id, entity.rid, _this.model.localIdRemoteIdMap, _this.model.remoteIdLocalIdMap);
-            if (entity.prid) {
-                entity.pid = _this.model.idRegister.processReceivedIdPair(entity.pid, entity.prid, _this.model.localIdRemoteIdMap, _this.model.remoteIdLocalIdMap);
-            }
-            else {
-                entity.pid = null;
-                entity.prid = null;
-            }
+            _this.model.idRegister.mapIdsOfReceivedEntity(entity, _this.model.localIdRemoteIdMap, _this.model.remoteIdLocalIdMap);
             if (entity.removed) {
                 _this.model.remove(entity);
             }
