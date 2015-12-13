@@ -91,8 +91,16 @@ var ClientModel = (function () {
         }
     };
     ClientModel.prototype.put = function (entity) {
-        entity.oid = this.idRegister.processReceivedIdPair(entity.id, entity.oid, this.idOidMap, this.oidIdMap);
-        entity.poid = this.idRegister.processReceivedIdPair(entity.pid, entity.poid, this.idOidMap, this.oidIdMap);
+        /*if (entity.oid && !this.oidIdMap[entity.oid]) {
+            this.oidIdMap[entity.oid] = entity.id;
+            this.idOidMap[entity.id] = entity.oid;
+            this.idRegister.reserveId(entity.oid);
+        }
+        if (entity.poid && !this.oidIdMap[entity.poid]) {
+            this.oidIdMap[entity.poid] = entity.pid;
+            this.idOidMap[entity.pid] = entity.poid;
+            this.idRegister.reserveId(entity.poid);
+        }*/
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {
             Object.getOwnPropertyNames(entity).forEach(function (name) {

@@ -54,6 +54,14 @@ export class ClientEngine {
         });
 
         this.ws.setOnReceiveObject( (entity: ClientEntity) => {
+            entity.oid = this.model.idRegister.processReceivedIdPair(entity.id, entity.oid, this.model.idOidMap, this.model.oidIdMap);
+            if (entity.pid) {
+                entity.poid = this.model.idRegister.processReceivedIdPair(entity.pid, entity.poid, this.model.idOidMap, this.model.oidIdMap);
+            } else {
+                entity.pid = null;
+                entity.poid = null;
+            }
+
             if (entity.removed) {
                 this.model.remove(entity);
             } else {

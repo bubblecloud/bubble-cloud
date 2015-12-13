@@ -41,6 +41,14 @@ var ClientEngine = (function () {
             _this.consoleController.println('Server connected.');
         });
         this.ws.setOnReceiveObject(function (entity) {
+            entity.oid = _this.model.idRegister.processReceivedIdPair(entity.id, entity.oid, _this.model.idOidMap, _this.model.oidIdMap);
+            if (entity.pid) {
+                entity.poid = _this.model.idRegister.processReceivedIdPair(entity.pid, entity.poid, _this.model.idOidMap, _this.model.oidIdMap);
+            }
+            else {
+                entity.pid = null;
+                entity.poid = null;
+            }
             if (entity.removed) {
                 _this.model.remove(entity);
             }

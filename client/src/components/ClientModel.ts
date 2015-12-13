@@ -162,8 +162,7 @@ export class ClientModel {
             this.idOidMap[entity.pid] = entity.poid;
             this.idRegister.reserveId(entity.poid);
         }*/
-        entity.oid = this.idRegister.processReceivedIdPair(entity.id, entity.oid, this.idOidMap, this.oidIdMap);
-        entity.poid = this.idRegister.processReceivedIdPair(entity.pid, entity.poid, this.idOidMap, this.oidIdMap);
+
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {
             Object.getOwnPropertyNames(entity).forEach(name => {
