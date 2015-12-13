@@ -60,10 +60,6 @@ export class InConnection {
             this.remoteIsServer = true;
         }
 
-        /*if (this.remoteIsServer) {
-            console.log("Received: " + JSON.stringify(entity));
-        }*/
-
         if (!entity.external) {
             entity.owner = this.email;
         }
@@ -71,71 +67,6 @@ export class InConnection {
 
         // Map IDs
         this.engine.model.idRegister.mapIdsOfReceivedEntity(entity, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
-
-        /*var id = entity.id;
-        entity.id = entity.rid;
-        entity.rid = id;
-        var pid = entity.pid;
-        entity.pid = entity.prid;
-        entity.prid = pid;
-
-        entity.id = this.engine.model.idRegister.processReceivedIdPair(entity.id, entity.rid, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
-        if (entity.prid) {
-            entity.pid = this.engine.model.idRegister.processReceivedIdPair(entity.pid, entity.prid, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
-        } else {
-            entity.pid = null;
-            entity.prid = null;
-        }*/
-
-        /*
-        // Map IDs
-        var rid = entity.id;
-        if(!this.remoteIdLocalIdMap[rid]) {
-            if (!this.remoteIsServer && entity.rid) {
-                if (entity.dynamic === true) {
-                    console.log('Access denied: Client attempted to write to dynamic entity it did not add in this session.');
-                    return;
-                }
-                if (!this.engine.model.entities[entity.rid]) {
-                    console.log('Access denied: Client attempted to update non existent persistent entity it did not add in this session: ' + entity.rid);
-                    return;
-                }
-                console.log('Client updating persistent entity: ' + entity.rid);
-                entity.id = entity.rid;
-                this.remoteIdLocalIdMap[rid] = entity.id;
-                this.localIdRemoteIdMap[entity.id] = rid;
-            } else {
-                entity.id = '' + this.engine.model.idRegister.getNewId();
-                this.remoteIdLocalIdMap[rid] = entity.id;
-                this.localIdRemoteIdMap[entity.id] = rid;
-            }
-        } else {
-            entity.id = this.remoteIdLocalIdMap[rid]
-        }
-
-        // Map parent IDs.
-        var prid = entity.pid;
-        if (prid) {
-            if (!this.remoteIdLocalIdMap[prid]) {
-                if (!this.remoteIsServer && entity.prid) {
-                    entity.pid = entity.prid;
-                    this.remoteIdLocalIdMap[prid] = entity.pid;
-                    this.localIdRemoteIdMap[entity.pid] = prid;
-                } else {
-                    var pid:string = '' + this.engine.model.idRegister.getNewId();
-                    entity.pid = pid;
-                    this.remoteIdLocalIdMap[prid] = entity.pid;
-                    this.localIdRemoteIdMap[entity.pid] = prid;
-                }
-            } else {
-                entity.pid = this.remoteIdLocalIdMap[prid]
-            }
-            delete entity.prid; // Delete parent original ID for new. Will be set on send.
-        } else {
-            entity.pid = null;
-            entity.prid = null;
-        }
-        */
 
         // If entity is core then checking that user is admin
         if (entity.id === '0') {

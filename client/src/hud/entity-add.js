@@ -24,6 +24,9 @@ var EntityAdd = (function () {
             this.engine.ws.sendObject(entity);
         }
     };
+    EntityAdd.prototype.deselectEntity = function () {
+        this.engine.state.setEditedEntity(null);
+    };
     return EntityAdd;
 })();
 exports.EntityAdd = EntityAdd;

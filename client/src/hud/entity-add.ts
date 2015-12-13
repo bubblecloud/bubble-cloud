@@ -4,12 +4,12 @@ import {ClientEngine} from "../components/ClientEngine";
 import Quaternion = BABYLON.Quaternion;
 
 export class EntityAdd {
-    engine: ClientEngine;
-    addEntityType: string;
-    entityTypes: any[] = [
-        {type:'surface', label: 'Surface'},
-        {type:'primitive', label: 'Primitive'},
-        {type:'model', label: 'Model'}
+    engine:ClientEngine;
+    addEntityType:string;
+    entityTypes:any[] = [
+        {type: 'surface', label: 'Surface'},
+        {type: 'primitive', label: 'Primitive'},
+        {type: 'model', label: 'Model'}
     ];
 
     constructor() {
@@ -33,5 +33,9 @@ export class EntityAdd {
             entity.removed = true;
             this.engine.ws.sendObject(entity);
         }
+    }
+
+    deselectEntity(): void {
+        this.engine.state.setEditedEntity(null);
     }
 }
