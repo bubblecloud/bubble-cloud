@@ -48,7 +48,7 @@ var Renderer = (function () {
             this.avatarShape = shape;
         }
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.remoteIdLocalIdMap[editedEntity.id] === entity.id) {
+        if (editedEntity && editedEntity.id === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     };
@@ -75,7 +75,7 @@ var Renderer = (function () {
             actuator.update(this.clientEngine, entity);
         }
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.remoteIdLocalIdMap[editedEntity.id] === entity.id) {
+        if (editedEntity && editedEntity.id === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     };
@@ -92,7 +92,7 @@ var Renderer = (function () {
             }
         }
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.remoteIdLocalIdMap[editedEntity.id] === entity.id) {
+        if (editedEntity && editedEntity.id === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     };

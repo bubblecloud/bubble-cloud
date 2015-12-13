@@ -74,7 +74,7 @@ export class Renderer {
 
         // If entity is edited locally then notify state listeners.
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.remoteIdLocalIdMap[editedEntity.id] === entity.id) {
+        if (editedEntity && editedEntity.id === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     }
@@ -110,7 +110,7 @@ export class Renderer {
 
         // If entity is edited locally then notify state listeners.
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.remoteIdLocalIdMap[editedEntity.id] === entity.id) {
+        if (editedEntity && editedEntity.id === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     }
@@ -129,7 +129,7 @@ export class Renderer {
 
         // If entity is edited locally then notify state listeners.
         var editedEntity = this.clientEngine.state.getEditedEntity();
-        if (editedEntity && this.clientEngine.model.remoteIdLocalIdMap[editedEntity.id] === entity.id) {
+        if (editedEntity && editedEntity.id === entity.id) {
             this.clientEngine.state.stateChanged();
         }
     }
