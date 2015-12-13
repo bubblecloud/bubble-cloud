@@ -57,8 +57,14 @@ export class EntityProperties implements ClientStateListener {
             var worldMatrix = mesh.getWorldMatrix();
             var worldMatrixInverted = new Matrix();
             worldMatrix.invertToRef(worldMatrixInverted);
+
             var entityWorldPosition = BABYLON.Vector3.TransformCoordinates(this.currentEditedEntity.position, worldMatrix);
             this.currentEditedEntity.position = entityWorldPosition;
+
+            var localRotationMatrix = new Matrix();
+            this.currentEditedEntity.rotationQuaternion.toRotationMatrix(localRotationMatrix);
+            this.currentEditedEntity.rotationQuaternion.fromRotationMatrix(localRotationMatrix.multiply(worldMatrix));
+            this.currentEditedEntity.rotationQuaternion.normalize();
         }
 
         this.currentEditedEntity.pid = null;

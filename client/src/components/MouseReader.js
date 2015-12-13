@@ -23,15 +23,23 @@ var MouseReader = (function () {
                         if (entity) {
                             var parentEntity = _this.engine.model.clone(id);
                             var entityWorldPosition;
+                            var worldRotationMatrix;
                             if (entity.pid) {
                                 var mesh = _this.engine.renderer.scene.getMeshByName(entity.pid);
                                 var worldMatrix = mesh.getWorldMatrix();
                                 var worldMatrixInverted = new Matrix();
                                 worldMatrix.invertToRef(worldMatrixInverted);
                                 entityWorldPosition = BABYLON.Vector3.TransformCoordinates(entity.position, worldMatrix);
+                                var localRotationMatrix = new Matrix();
+                                entity.rotationQuaternion.toRotationMatrix(localRotationMatrix);
+                                var worldRotationMatrix = new Matrix();
+                                worldRotationMatrix = worldRotationMatrix.multiply(worldMatrix);
                             }
                             else {
                                 entityWorldPosition = entity.position;
+                                var localRotationMatrix = new Matrix();
+                                entity.rotationQuaternion.toRotationMatrix(localRotationMatrix);
+                                worldRotationMatrix = localRotationMatrix;
                             }
                             entity.pid = parentEntity.id;
                             entity.prid = parentEntity.rid;
@@ -42,6 +50,8 @@ var MouseReader = (function () {
                                 worldMatrix.invertToRef(worldMatrixInverted);
                                 var entityLocalPosition = BABYLON.Vector3.TransformCoordinates(entityWorldPosition, worldMatrixInverted);
                                 entity.position = entityLocalPosition;
+                                entity.rotationQuaternion.fromRotationMatrix(worldRotationMatrix.multiply(worldMatrixInverted));
+                                entity.rotationQuaternion.normalize();
                             }
                             _this.engine.ws.sendObject(entity);
                             _this.engine.state.stateChanged();

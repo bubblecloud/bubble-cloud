@@ -31,14 +31,23 @@ export class MouseReader {
 
                             // Extract world position of entity according to current parent or absence of parent.
                             var entityWorldPosition: Vector3;
+                            var worldRotationMatrix: Matrix;
                             if (entity.pid) {
                                 var mesh = this.engine.renderer.scene.getMeshByName(entity.pid);
                                 var worldMatrix = mesh.getWorldMatrix();
                                 var worldMatrixInverted = new Matrix();
                                 worldMatrix.invertToRef(worldMatrixInverted);
                                 entityWorldPosition = BABYLON.Vector3.TransformCoordinates(entity.position, worldMatrix);
+
+                                var localRotationMatrix = new Matrix();
+                                entity.rotationQuaternion.toRotationMatrix(localRotationMatrix);
+                                var worldRotationMatrix = new Matrix();
+                                worldRotationMatrix = worldRotationMatrix.multiply(worldMatrix);
                             } else {
                                 entityWorldPosition = entity.position;
+                                var localRotationMatrix = new Matrix();
+                                entity.rotationQuaternion.toRotationMatrix(localRotationMatrix);
+                                worldRotationMatrix = localRotationMatrix;
                             }
 
                             entity.pid = parentEntity.id;
@@ -52,6 +61,9 @@ export class MouseReader {
                                 worldMatrix.invertToRef(worldMatrixInverted);
                                 var entityLocalPosition = BABYLON.Vector3.TransformCoordinates(entityWorldPosition, worldMatrixInverted);
                                 entity.position = entityLocalPosition;
+
+                                entity.rotationQuaternion.fromRotationMatrix(worldRotationMatrix.multiply(worldMatrixInverted));
+                                entity.rotationQuaternion.normalize();
                             }
 
                             this.engine.ws.sendObject(entity);
