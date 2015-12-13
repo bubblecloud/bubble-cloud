@@ -5,6 +5,7 @@ var OutConnection = (function () {
         this.running = false;
         this.wsClient = null;
         this.remoteIdLocalIdMap = {};
+        this.localIdRemoteIdMap = {};
         this.disconnect = function () {
             for (var oid in this.remoteIdLocalIdMap) {
                 var id = this.remoteIdLocalIdMap[oid];
@@ -51,25 +52,15 @@ var OutConnection = (function () {
             delete entity._id;
         }
         this.receivedTime = new Date().getTime();
-        var rid = entity.id;
-        if (!this.remoteIdLocalIdMap[rid]) {
-            entity.id = '' + this.engine.model.idRegister.getNewId();
-            this.remoteIdLocalIdMap[rid] = entity.id;
-        }
-        else {
-            entity.id = this.remoteIdLocalIdMap[rid];
-        }
-        var prid = entity.pid;
-        if (prid) {
-            if (!this.remoteIdLocalIdMap[prid]) {
-                var pid = '' + this.engine.model.idRegister.getNewId();
-                entity.pid = pid;
-                this.remoteIdLocalIdMap[prid] = entity.pid;
-            }
-            else {
-                entity.pid = this.remoteIdLocalIdMap[prid];
-            }
-            delete entity.prid;
+        var id = entity.id;
+        entity.id = entity.rid;
+        entity.rid = id;
+        var pid = entity.pid;
+        entity.pid = entity.prid;
+        entity.prid = pid;
+        entity.id = this.engine.model.idRegister.processReceivedIdPair(entity.id, entity.rid, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
+        if (entity.prid) {
+            entity.pid = this.engine.model.idRegister.processReceivedIdPair(entity.pid, entity.prid, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
         }
         else {
             entity.pid = null;

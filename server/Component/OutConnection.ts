@@ -19,6 +19,7 @@ export class OutConnection {
     wsClient: ServerWsClient = null;
 
     remoteIdLocalIdMap: {[key: string]:string} = {};
+    localIdRemoteIdMap: {[key: string]:string} = {};
 
     constructor(url: string, x: number, y: number, z: number, engine: ServerEngine) {
         this.url = url;
@@ -62,12 +63,26 @@ export class OutConnection {
 
         this.receivedTime = new Date().getTime();
 
+        // Swap to local IDs
+        var id = entity.id;
+        entity.id = entity.rid;
+        entity.rid = id;
+        var pid = entity.pid;
+        entity.pid = entity.prid;
+        entity.prid = pid;
+
+        entity.id = this.engine.model.idRegister.processReceivedIdPair(entity.id, entity.rid, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
+        if (entity.prid) {
+            entity.pid = this.engine.model.idRegister.processReceivedIdPair(entity.pid, entity.prid, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
+        } else {
+            entity.pid = null;
+            entity.prid = null;
+        }
+
+        /*
         var rid = entity.id;
         if(!this.remoteIdLocalIdMap[rid]) {
             entity.id = '' + this.engine.model.idRegister.getNewId();
-            /*while (this.remoteIdLocalIdMap[rid]) { // Reallocate until free ID is found
-                entity.id = '' + this.engine.model.idRegister.getNewId();
-            }*/
             this.remoteIdLocalIdMap[rid] = entity.id;
         } else {
             entity.id = this.remoteIdLocalIdMap[rid]
@@ -78,9 +93,6 @@ export class OutConnection {
         if (prid) {
             if (!this.remoteIdLocalIdMap[prid]) {
                 var pid:string = '' + this.engine.model.idRegister.getNewId();
-               /*while (this.remoteIdLocalIdMap[prid]) { // Reallocate until free ID is found
-                    pid = '' + this.engine.model.idRegister.getNewId();
-                }*/
                 entity.pid = pid;
                 this.remoteIdLocalIdMap[prid] = entity.pid;
             } else {
@@ -91,6 +103,7 @@ export class OutConnection {
             entity.pid = null;
             entity.prid = null;
         }
+        */
 
         entity.external = true;
         if (!entity.pid) {
