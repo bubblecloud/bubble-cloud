@@ -6,9 +6,9 @@ var Surface = (function () {
         this.environment = 'common';
         this.type = 'surface';
     }
-    Surface.prototype.construct = function () {
+    Surface.prototype.construct = function (engine) {
         var newEntity = new ClientEntity_1.SurfaceEntity();
-        newEntity.newId();
+        newEntity.id = '' + engine.model.idRegister.getNewId();
         newEntity.repo = this.repository;
         newEntity.type = this.type;
         newEntity.dynamic = true;

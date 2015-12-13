@@ -75,7 +75,7 @@ var ClientEngine = (function () {
         if (!this.core) {
             this.core = this.model.copy('0', new ClientEntity_1.CoreEntity());
             this.core.oid = '0';
-            this.core.newId();
+            this.core.id = '' + this.model.idRegister.getNewId();
         }
         else {
             var id = this.core.id;

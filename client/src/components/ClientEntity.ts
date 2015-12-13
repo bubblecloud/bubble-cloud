@@ -1,15 +1,5 @@
 import Vector3 = BABYLON.Vector3;
 import Quaternion = BABYLON.Quaternion;
-var entityIdCounter = 1;
-
-export function reserveId(oid: string) {
-    entityIdCounter = Math.max(entityIdCounter, Number(oid));
-}
-
-export function getNewId() : number {
-    entityIdCounter++;
-    return entityIdCounter;
-}
 
 /**
  * Entity value object.
@@ -38,11 +28,6 @@ export class ClientEntity {
     removed: boolean = false;
     external: boolean = false;
     dynamic: boolean = false;
-
-    newId() {
-        entityIdCounter++;
-        this.id = '' + entityIdCounter;
-    }
 }
 
 export class PrimitiveEntity extends ClientEntity {

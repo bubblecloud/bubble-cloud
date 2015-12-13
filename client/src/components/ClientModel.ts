@@ -3,10 +3,11 @@ import {ClientEntity} from "./ClientEntity";
 import Vector3 = BABYLON.Vector3;
 import Matrix = BABYLON.Matrix;
 import Quaternion = BABYLON.Quaternion;
-import {reserveId} from "./ClientEntity";
-import {getNewId} from "./ClientEntity";
+import {IdRegister} from "./IdRegister";
 
 export class ClientModel {
+
+    idRegister: IdRegister = new IdRegister();
 
     entities : {[key: string]: ClientEntity} = {};
 
@@ -85,9 +86,9 @@ export class ClientModel {
         var localCopy = new ClientEntity();
         var entity = this.entities[id];
 
-        if (!entity.oid) {
+        /*if (!entity.oid) {
             localCopy.oid = entity.id;
-            localCopy.newId();
+            localCopy.id = '' + this.idRegister.getNewId();
             entity.oid  = localCopy.id;
             this.oidIdMap[entity.oid] = entity.id;
             this.idOidMap[entity.id] = entity.oid;
@@ -99,7 +100,7 @@ export class ClientModel {
         if (entity.pid) {
             if (!entity.poid) {
                 localCopy.poid = entity.pid;
-                localCopy.pid = '' + getNewId();
+                localCopy.pid = '' + this.idRegister.getNewId();
                 entity.poid = localCopy.pid;
                 if (this.entities[entity.pid]) {
                     this.entities[entity.pid].oid = entity.poid;
@@ -110,8 +111,12 @@ export class ClientModel {
                 localCopy.poid = entity.pid;
                 localCopy.pid = entity.poid;
             }
-        }
+        }*/
 
+        localCopy.oid = entity.id;
+        localCopy.id = entity.oid;
+        localCopy.poid = entity.pid;
+        localCopy.pid = entity.poid;
 
         localCopy.name = entity.name;
         localCopy.type = entity.type;
@@ -147,16 +152,18 @@ export class ClientModel {
     }
 
     put(entity: ClientEntity) : void {
-        if (entity.oid && !this.oidIdMap[entity.oid]) {
+        /*if (entity.oid && !this.oidIdMap[entity.oid]) {
             this.oidIdMap[entity.oid] = entity.id;
             this.idOidMap[entity.id] = entity.oid;
-            reserveId(entity.oid);
+            this.idRegister.reserveId(entity.oid);
         }
         if (entity.poid && !this.oidIdMap[entity.poid]) {
             this.oidIdMap[entity.poid] = entity.pid;
             this.idOidMap[entity.pid] = entity.poid;
-            reserveId(entity.poid);
-        }
+            this.idRegister.reserveId(entity.poid);
+        }*/
+        entity.oid = this.idRegister.processReceivedIdPair(entity.id, entity.oid, this.idOidMap, this.oidIdMap);
+        entity.poid = this.idRegister.processReceivedIdPair(entity.pid, entity.poid, this.idOidMap, this.oidIdMap);
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {
             Object.getOwnPropertyNames(entity).forEach(name => {

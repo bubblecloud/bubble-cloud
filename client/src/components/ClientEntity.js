@@ -5,16 +5,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Vector3 = BABYLON.Vector3;
 var Quaternion = BABYLON.Quaternion;
-var entityIdCounter = 1;
-function reserveId(oid) {
-    entityIdCounter = Math.max(entityIdCounter, Number(oid));
-}
-exports.reserveId = reserveId;
-function getNewId() {
-    entityIdCounter++;
-    return entityIdCounter;
-}
-exports.getNewId = getNewId;
 var ClientEntity = (function () {
     function ClientEntity() {
         this.position = new Vector3(0, 0, 0);
@@ -25,10 +15,6 @@ var ClientEntity = (function () {
         this.external = false;
         this.dynamic = false;
     }
-    ClientEntity.prototype.newId = function () {
-        entityIdCounter++;
-        this.id = '' + entityIdCounter;
-    };
     return ClientEntity;
 })();
 exports.ClientEntity = ClientEntity;

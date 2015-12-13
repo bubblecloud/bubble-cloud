@@ -9,9 +9,9 @@ export class Primitive implements Actuator {
     environment: string = 'common';
     type: string = 'primitive';
 
-    construct():ClientEntity {
+    construct(engine: ClientEngine):ClientEntity {
         var newEntity: PrimitiveEntity = new PrimitiveEntity();
-        newEntity.newId();
+        newEntity.id = '' + engine.model.idRegister.getNewId();
         newEntity.repo = this.repository;
         newEntity.type = this.type;
         newEntity.dynamic = true;

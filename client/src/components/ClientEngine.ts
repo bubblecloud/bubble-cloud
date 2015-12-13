@@ -15,6 +15,7 @@ import {WaterWorldModule} from "../environments/water-world/WaterWorldModule";
 import {CommonModule} from "../environments/common/CommonModule";
 import {ClientGrid} from "./ClientGrid";
 import {MaterialRegister} from "./MaterialRegister";
+import {IdRegister} from "./IdRegister";
 
 export class ClientEngine {
     api: RpcApi = getProxy('rpc', RpcApi);
@@ -25,6 +26,7 @@ export class ClientEngine {
     state: ClientState = new ClientState();
     grid: ClientGrid = new ClientGrid();
     model: ClientModel = new ClientModel();
+
     private core: CoreEntity = new CoreEntity();
 
     avatarController: AvatarController = new AvatarController(this);
@@ -96,7 +98,7 @@ export class ClientEngine {
         if (!this.core) {
             this.core = <CoreEntity> this.model.copy('0', new CoreEntity());
             this.core.oid = '0';
-            this.core.newId();
+            this.core.id = '' + this.model.idRegister.getNewId();
         } else {
             var id = this.core.id;
             this.model.copy('0', this.core);

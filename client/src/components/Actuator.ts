@@ -7,8 +7,9 @@ export interface Actuator {
     type: string;
     /**
      * Constructs new entity for sending to server.
+     * @param engine the client engine
      */
-    construct(): ClientEntity;
+    construct(engine: ClientEngine): ClientEntity;
     /**
      * Adds entity received form server to scene.
      * @param engine the client engine

@@ -6,9 +6,9 @@ var Primitive = (function () {
         this.environment = 'common';
         this.type = 'primitive';
     }
-    Primitive.prototype.construct = function () {
+    Primitive.prototype.construct = function (engine) {
         var newEntity = new ClientEntity_1.PrimitiveEntity();
-        newEntity.newId();
+        newEntity.id = '' + engine.model.idRegister.getNewId();
         newEntity.repo = this.repository;
         newEntity.type = this.type;
         newEntity.dynamic = true;

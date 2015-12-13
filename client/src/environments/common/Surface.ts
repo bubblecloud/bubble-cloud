@@ -14,9 +14,9 @@ export class Surface implements Actuator {
     environment: string = 'common';
     type: string = 'surface';
 
-    construct():ClientEntity {
+    construct(engine: ClientEngine):ClientEntity {
         var newEntity: SurfaceEntity = new SurfaceEntity();
-        newEntity.newId();
+        newEntity.id = '' + engine.model.idRegister.getNewId();
         newEntity.repo = this.repository;
         newEntity.type = this.type;
         newEntity.dynamic = true;
