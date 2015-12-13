@@ -54,7 +54,6 @@ var MouseReader = (function () {
                                 entity.rotationQuaternion.normalize();
                             }
                             _this.engine.ws.sendObject(entity);
-                            _this.engine.state.stateChanged();
                         }
                     }
                     else {

@@ -67,7 +67,7 @@ export class MouseReader {
                             }
 
                             this.engine.ws.sendObject(entity);
-                            this.engine.state.stateChanged();
+                            //this.engine.state.stateChanged();
                         }
                     } else {
                         var entity = this.engine.model.clone(id);
