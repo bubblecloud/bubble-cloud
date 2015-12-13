@@ -59,50 +59,15 @@ var InConnection = (function () {
         if (!entity.external) {
             entity.owner = this.email;
         }
-        var rid = entity.id;
-        if (!this.remoteIdLocalIdMap[rid]) {
-            if (!this.remoteIsServer && entity.rid) {
-                if (entity.dynamic === true) {
-                    console.log('Access denied: Client attempted to write to dynamic entity it did not add in this session.');
-                    return;
-                }
-                if (!this.engine.model.entities[entity.rid]) {
-                    console.log('Access denied: Client attempted to update non existent persistent entity it did not add in this session: ' + entity.rid);
-                    return;
-                }
-                console.log('Client updating persistent entity: ' + entity.rid);
-                entity.id = entity.rid;
-                this.remoteIdLocalIdMap[rid] = entity.id;
-                this.localIdRemoteIdMap[entity.id] = rid;
-            }
-            else {
-                entity.id = '' + this.engine.model.idRegister.getNewId();
-                this.remoteIdLocalIdMap[rid] = entity.id;
-                this.localIdRemoteIdMap[entity.id] = rid;
-            }
-        }
-        else {
-            entity.id = this.remoteIdLocalIdMap[rid];
-        }
-        var prid = entity.pid;
-        if (prid) {
-            if (!this.remoteIdLocalIdMap[prid]) {
-                if (!this.remoteIsServer && entity.prid) {
-                    entity.pid = entity.prid;
-                    this.remoteIdLocalIdMap[prid] = entity.pid;
-                    this.localIdRemoteIdMap[entity.pid] = prid;
-                }
-                else {
-                    var pid = '' + this.engine.model.idRegister.getNewId();
-                    entity.pid = pid;
-                    this.remoteIdLocalIdMap[prid] = entity.pid;
-                    this.localIdRemoteIdMap[entity.pid] = prid;
-                }
-            }
-            else {
-                entity.pid = this.remoteIdLocalIdMap[prid];
-            }
-            delete entity.prid;
+        var id = entity.id;
+        entity.id = entity.rid;
+        entity.rid = id;
+        var pid = entity.pid;
+        entity.pid = entity.prid;
+        entity.prid = pid;
+        entity.id = this.engine.model.idRegister.processReceivedIdPair(entity.id, entity.rid, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
+        if (entity.prid) {
+            entity.pid = this.engine.model.idRegister.processReceivedIdPair(entity.pid, entity.prid, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
         }
         else {
             entity.pid = null;

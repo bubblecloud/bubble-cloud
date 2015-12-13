@@ -68,6 +68,24 @@ export class InConnection {
             entity.owner = this.email;
         }
 
+
+        // Swap to local IDs
+        var id = entity.id;
+        entity.id = entity.rid;
+        entity.rid = id;
+        var pid = entity.pid;
+        entity.pid = entity.prid;
+        entity.prid = pid;
+
+        entity.id = this.engine.model.idRegister.processReceivedIdPair(entity.id, entity.rid, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
+        if (entity.prid) {
+            entity.pid = this.engine.model.idRegister.processReceivedIdPair(entity.pid, entity.prid, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
+        } else {
+            entity.pid = null;
+            entity.prid = null;
+        }
+
+        /*
         // Map IDs
         var rid = entity.id;
         if(!this.remoteIdLocalIdMap[rid]) {
@@ -86,9 +104,6 @@ export class InConnection {
                 this.localIdRemoteIdMap[entity.id] = rid;
             } else {
                 entity.id = '' + this.engine.model.idRegister.getNewId();
-                /*while (this.remoteIdLocalIdMap[entity.id]) { // Reallocate until free ID is found
-                    entity.id = '' + this.engine.model.idRegister.getNewId();
-                }*/
                 this.remoteIdLocalIdMap[rid] = entity.id;
                 this.localIdRemoteIdMap[entity.id] = rid;
             }
@@ -106,9 +121,6 @@ export class InConnection {
                     this.localIdRemoteIdMap[entity.pid] = prid;
                 } else {
                     var pid:string = '' + this.engine.model.idRegister.getNewId();
-                    /*while (this.remoteIdLocalIdMap[pid]) { // Reallocate until free ID is found
-                        pid = '' + this.engine.model.idRegister.getNewId();
-                    }*/
                     entity.pid = pid;
                     this.remoteIdLocalIdMap[prid] = entity.pid;
                     this.localIdRemoteIdMap[entity.pid] = prid;
@@ -121,8 +133,7 @@ export class InConnection {
             entity.pid = null;
             entity.prid = null;
         }
-
-
+        */
 
         // If entity is core then checking that user is admin
         if (entity.id === '0') {
