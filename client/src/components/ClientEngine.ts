@@ -56,18 +56,18 @@ export class ClientEngine {
         this.ws.setOnReceiveObject( (entity: ClientEntity) => {
             // Swap to local IDs
             var id = entity.id;
-            entity.id = entity.oid;
-            entity.oid = id;
+            entity.id = entity.rid;
+            entity.rid = id;
             var pid = entity.pid;
-            entity.pid = entity.poid;
-            entity.poid = pid;
+            entity.pid = entity.prid;
+            entity.prid = pid;
 
-            entity.id = this.model.idRegister.processReceivedIdPair(entity.id, entity.oid, this.model.localIdRemoteIdMap, this.model.remoteIdLocalIdMap);
-            if (entity.poid) {
-                entity.pid = this.model.idRegister.processReceivedIdPair(entity.pid, entity.poid, this.model.localIdRemoteIdMap, this.model.remoteIdLocalIdMap);
+            entity.id = this.model.idRegister.processReceivedIdPair(entity.id, entity.rid, this.model.localIdRemoteIdMap, this.model.remoteIdLocalIdMap);
+            if (entity.prid) {
+                entity.pid = this.model.idRegister.processReceivedIdPair(entity.pid, entity.prid, this.model.localIdRemoteIdMap, this.model.remoteIdLocalIdMap);
             } else {
                 entity.pid = null;
-                entity.poid = null;
+                entity.prid = null;
             }
 
             if (entity.removed) {
@@ -113,12 +113,12 @@ export class ClientEngine {
     getCore(): CoreEntity {
         if (!this.core) {
             this.core = <CoreEntity> this.model.copy('0', new CoreEntity());
-            this.core.oid = '0';
+            this.core.rid = '0';
             this.core.id = '' + this.model.idRegister.getNewId();
         } else {
             var id = this.core.id;
             this.model.copy('0', this.core);
-            this.core.oid = '0';
+            this.core.rid = '0';
             this.core.id = id;
         }
         return this.core;

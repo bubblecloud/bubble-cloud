@@ -29,9 +29,9 @@ export function reserveId(id: string) {
  */
 export class ServerEntity {
     id: string; // current ID
-    oid: string; // original ID received from remote peer
+    rid: string; // remote ID received from remote peer
     pid: string; // parent ID
-    poid: string; // original parent ID
+    prid: string; // parent remote ID
     _id: string; // unique persistent ID
 
     type: string; // The entity type

@@ -52,57 +52,57 @@ export class InConnection {
         }
 
         // Map IDs
-        var oid = entity.id;
-        if(!this.remoteIdLocalIdMap[oid]) {
-            if (!this.remoteIsServer && entity.oid) {
+        var rid = entity.id;
+        if(!this.remoteIdLocalIdMap[rid]) {
+            if (!this.remoteIsServer && entity.rid) {
                 if (entity.dynamic === true) {
                     console.log('Access denied: Client attempted to write to dynamic entity it did not add in this session.');
                     return;
                 }
-                if (!this.engine.model.entities[entity.oid]) {
-                    console.log('Access denied: Client attempted to update non existent persistent entity it did not add in this session: ' + entity.oid);
+                if (!this.engine.model.entities[entity.rid]) {
+                    console.log('Access denied: Client attempted to update non existent persistent entity it did not add in this session: ' + entity.rid);
                     return;
                 }
-                console.log('Client updating persistent entity: ' + entity.oid);
-                entity.id = entity.oid;
-                this.remoteIdLocalIdMap[oid] = entity.id;
-                this.localIdRemoteIdMap[entity.id] = oid;
+                console.log('Client updating persistent entity: ' + entity.rid);
+                entity.id = entity.rid;
+                this.remoteIdLocalIdMap[rid] = entity.id;
+                this.localIdRemoteIdMap[entity.id] = rid;
             } else {
                 newId(entity);
                 while (this.remoteIdLocalIdMap[entity.id]) { // Reallocate until free ID is found
                     newId(entity);
                 }
-                this.remoteIdLocalIdMap[oid] = entity.id;
-                this.localIdRemoteIdMap[entity.id] = oid;
+                this.remoteIdLocalIdMap[rid] = entity.id;
+                this.localIdRemoteIdMap[entity.id] = rid;
             }
         } else {
-            entity.id = this.remoteIdLocalIdMap[oid]
+            entity.id = this.remoteIdLocalIdMap[rid]
         }
 
         // Map parent IDs.
-        var poid = entity.pid;
-        if (poid) {
-            if (!this.remoteIdLocalIdMap[poid]) {
-                if (!this.remoteIsServer && entity.poid) {
-                    entity.pid = entity.poid;
-                    this.remoteIdLocalIdMap[poid] = entity.pid;
-                    this.localIdRemoteIdMap[entity.pid] = poid;
+        var prid = entity.pid;
+        if (prid) {
+            if (!this.remoteIdLocalIdMap[prid]) {
+                if (!this.remoteIsServer && entity.prid) {
+                    entity.pid = entity.prid;
+                    this.remoteIdLocalIdMap[prid] = entity.pid;
+                    this.localIdRemoteIdMap[entity.pid] = prid;
                 } else {
                     var pid:string = '' + getNewId();
                     while (this.remoteIdLocalIdMap[pid]) { // Reallocate until free ID is found
                         pid = '' + getNewId();
                     }
                     entity.pid = pid;
-                    this.remoteIdLocalIdMap[poid] = entity.pid;
-                    this.localIdRemoteIdMap[entity.pid] = poid;
+                    this.remoteIdLocalIdMap[prid] = entity.pid;
+                    this.localIdRemoteIdMap[entity.pid] = prid;
                 }
             } else {
-                entity.pid = this.remoteIdLocalIdMap[poid]
+                entity.pid = this.remoteIdLocalIdMap[prid]
             }
-            delete entity.poid; // Delete parent original ID for new. Will be set on send.
+            delete entity.prid; // Delete parent original ID for new. Will be set on send.
         } else {
             entity.pid = null;
-            entity.poid = null;
+            entity.prid = null;
         }
 
 

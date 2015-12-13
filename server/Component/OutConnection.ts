@@ -33,8 +33,8 @@ export class OutConnection {
     send: (entity: ServerEntity) => void = function (entity: ServerEntity): void {
         if (this.wsClient && this.running) {
             //console.log('sending entity to remote server: ' + entity.id)
-            delete entity.oid;
-            delete entity.poid;
+            delete entity.rid;
+            delete entity.prid;
             entity.external = true;
             if (!entity.pid) {
                 entity.position.x += this.x;
@@ -64,34 +64,34 @@ export class OutConnection {
 
         this.receivedTime = new Date().getTime();
 
-        var oid = entity.id;
-        if(!this.remoteIdLocalIdMap[oid]) {
+        var rid = entity.id;
+        if(!this.remoteIdLocalIdMap[rid]) {
             newId(entity);
-            while (this.remoteIdLocalIdMap[oid]) { // Reallocate until free ID is found
+            while (this.remoteIdLocalIdMap[rid]) { // Reallocate until free ID is found
                 newId(entity);
             }
-            this.remoteIdLocalIdMap[oid] = entity.id;
+            this.remoteIdLocalIdMap[rid] = entity.id;
         } else {
-            entity.id = this.remoteIdLocalIdMap[oid]
+            entity.id = this.remoteIdLocalIdMap[rid]
         }
 
         // Map parent original ID.
-        var poid = entity.pid;
-        if (poid) {
-            if (!this.remoteIdLocalIdMap[poid]) {
+        var prid = entity.pid;
+        if (prid) {
+            if (!this.remoteIdLocalIdMap[prid]) {
                 var pid:string = '' + getNewId();
-                while (this.remoteIdLocalIdMap[poid]) { // Reallocate until free ID is found
+                while (this.remoteIdLocalIdMap[prid]) { // Reallocate until free ID is found
                     pid = '' + getNewId();
                 }
                 entity.pid = pid;
-                this.remoteIdLocalIdMap[poid] = entity.pid;
+                this.remoteIdLocalIdMap[prid] = entity.pid;
             } else {
-                entity.pid = this.remoteIdLocalIdMap[poid]
+                entity.pid = this.remoteIdLocalIdMap[prid]
             }
-            delete entity.poid; // Delete parent original ID for new. Will be set on send.
+            delete entity.prid; // Delete parent original ID for new. Will be set on send.
         } else {
             entity.pid = null;
-            entity.poid = null;
+            entity.prid = null;
         }
 
         entity.external = true;

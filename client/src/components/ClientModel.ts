@@ -83,37 +83,10 @@ export class ClientModel {
         var localCopy = new ClientEntity();
         var entity = this.entities[id];
 
-        /*if (!entity.oid) {
-            localCopy.oid = entity.id;
-            localCopy.id = '' + this.idRegister.getNewId();
-            entity.oid  = localCopy.id;
-            this.oidIdMap[entity.oid] = entity.id;
-            this.idOidMap[entity.id] = entity.oid;
-        } else {
-            localCopy.oid = entity.id;
-            localCopy.id = entity.oid;
-        }
-
-        if (entity.pid) {
-            if (!entity.poid) {
-                localCopy.poid = entity.pid;
-                localCopy.pid = '' + this.idRegister.getNewId();
-                entity.poid = localCopy.pid;
-                if (this.entities[entity.pid]) {
-                    this.entities[entity.pid].oid = entity.poid;
-                }
-                this.oidIdMap[entity.poid] = entity.pid;
-                this.idOidMap[entity.pid] = entity.poid;
-            } else {
-                localCopy.poid = entity.pid;
-                localCopy.pid = entity.poid;
-            }
-        }*/
-
         localCopy.id = entity.id;
-        localCopy.oid = entity.oid;
+        localCopy.rid = entity.rid;
         localCopy.pid = entity.pid;
-        localCopy.poid = entity.poid;
+        localCopy.prid = entity.prid;
 
         localCopy.name = entity.name;
         localCopy.type = entity.type;
@@ -149,17 +122,6 @@ export class ClientModel {
     }
 
     put(entity: ClientEntity) : void {
-        /*if (entity.oid && !this.oidIdMap[entity.oid]) {
-            this.oidIdMap[entity.oid] = entity.id;
-            this.idOidMap[entity.id] = entity.oid;
-            this.idRegister.reserveId(entity.oid);
-        }
-        if (entity.poid && !this.oidIdMap[entity.poid]) {
-            this.oidIdMap[entity.poid] = entity.pid;
-            this.idOidMap[entity.pid] = entity.poid;
-            this.idRegister.reserveId(entity.poid);
-        }*/
-
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {
             Object.getOwnPropertyNames(entity).forEach(name => {
@@ -168,10 +130,6 @@ export class ClientModel {
             if (this.onUpdate) {
                 this.onUpdate(existingEntity);
             }
-            /*if (entity.id == '0') {
-                console.log('Updating: ' + JSON.stringify(entity));
-                console.log('Existing: ' + JSON.stringify(existingEntity));
-            }*/
             if (this.mobiles.indexOf(existingEntity) < 0) {
                 this.mobiles.push(existingEntity);
             }
@@ -194,8 +152,8 @@ export class ClientModel {
 
     remove(entity: ClientEntity) : void {
         delete this.entities[entity.id];
-        if (entity.oid) {
-            delete this.remoteIdLocalIdMap[entity.oid];
+        if (entity.rid) {
+            delete this.remoteIdLocalIdMap[entity.rid];
             delete this.localIdRemoteIdMap[entity.id];
         }
         if (this.onRemove) {

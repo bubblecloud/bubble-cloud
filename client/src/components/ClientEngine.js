@@ -42,18 +42,18 @@ var ClientEngine = (function () {
         });
         this.ws.setOnReceiveObject(function (entity) {
             var id = entity.id;
-            entity.id = entity.oid;
-            entity.oid = id;
+            entity.id = entity.rid;
+            entity.rid = id;
             var pid = entity.pid;
-            entity.pid = entity.poid;
-            entity.poid = pid;
-            entity.id = _this.model.idRegister.processReceivedIdPair(entity.id, entity.oid, _this.model.localIdRemoteIdMap, _this.model.remoteIdLocalIdMap);
-            if (entity.poid) {
-                entity.pid = _this.model.idRegister.processReceivedIdPair(entity.pid, entity.poid, _this.model.localIdRemoteIdMap, _this.model.remoteIdLocalIdMap);
+            entity.pid = entity.prid;
+            entity.prid = pid;
+            entity.id = _this.model.idRegister.processReceivedIdPair(entity.id, entity.rid, _this.model.localIdRemoteIdMap, _this.model.remoteIdLocalIdMap);
+            if (entity.prid) {
+                entity.pid = _this.model.idRegister.processReceivedIdPair(entity.pid, entity.prid, _this.model.localIdRemoteIdMap, _this.model.remoteIdLocalIdMap);
             }
             else {
                 entity.pid = null;
-                entity.poid = null;
+                entity.prid = null;
             }
             if (entity.removed) {
                 _this.model.remove(entity);
@@ -88,13 +88,13 @@ var ClientEngine = (function () {
     ClientEngine.prototype.getCore = function () {
         if (!this.core) {
             this.core = this.model.copy('0', new ClientEntity_1.CoreEntity());
-            this.core.oid = '0';
+            this.core.rid = '0';
             this.core.id = '' + this.model.idRegister.getNewId();
         }
         else {
             var id = this.core.id;
             this.model.copy('0', this.core);
-            this.core.oid = '0';
+            this.core.rid = '0';
             this.core.id = id;
         }
         return this.core;

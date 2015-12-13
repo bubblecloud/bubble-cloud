@@ -61,9 +61,9 @@ var ClientModel = (function () {
         var localCopy = new ClientEntity_1.ClientEntity();
         var entity = this.entities[id];
         localCopy.id = entity.id;
-        localCopy.oid = entity.oid;
+        localCopy.rid = entity.rid;
         localCopy.pid = entity.pid;
-        localCopy.poid = entity.poid;
+        localCopy.prid = entity.prid;
         localCopy.name = entity.name;
         localCopy.type = entity.type;
         localCopy.core = entity.core;
@@ -91,16 +91,6 @@ var ClientModel = (function () {
         }
     };
     ClientModel.prototype.put = function (entity) {
-        /*if (entity.oid && !this.oidIdMap[entity.oid]) {
-            this.oidIdMap[entity.oid] = entity.id;
-            this.idOidMap[entity.id] = entity.oid;
-            this.idRegister.reserveId(entity.oid);
-        }
-        if (entity.poid && !this.oidIdMap[entity.poid]) {
-            this.oidIdMap[entity.poid] = entity.pid;
-            this.idOidMap[entity.pid] = entity.poid;
-            this.idRegister.reserveId(entity.poid);
-        }*/
         var existingEntity = this.entities[entity.id];
         if (existingEntity) {
             Object.getOwnPropertyNames(entity).forEach(function (name) {
@@ -129,8 +119,8 @@ var ClientModel = (function () {
     };
     ClientModel.prototype.remove = function (entity) {
         delete this.entities[entity.id];
-        if (entity.oid) {
-            delete this.remoteIdLocalIdMap[entity.oid];
+        if (entity.rid) {
+            delete this.remoteIdLocalIdMap[entity.rid];
             delete this.localIdRemoteIdMap[entity.id];
         }
         if (this.onRemove) {

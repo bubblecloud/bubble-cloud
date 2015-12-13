@@ -27,13 +27,13 @@ var Renderer = (function () {
         var actuator = this.clientEngine.actuatorRegister.get(entity.repo, entity.type);
         if (actuator) {
             actuator.add(this.clientEngine, entity);
-            console.log("entity: " + entity.id + " (" + entity.oid + ") - Added entity type " + entity.repo + " / " + entity.type + " dyn: " + entity.dynamic + " ext: " + entity.external);
+            console.log("entity: " + entity.id + " (" + entity.rid + ") - Added entity type " + entity.repo + " / " + entity.type + " dyn: " + entity.dynamic + " ext: " + entity.external);
         }
         else {
             var newShape = Mesh.CreateBox(entity.id, 1, this.scene);
             newShape.position = entity.interpolatedPosition;
             newShape.rotationQuaternion = entity.interpolatedRotationQuaternion;
-            console.log("entity: " + entity.id + " (" + entity.oid + ") - Unknown entity type " + entity.repo + " / " + entity.type);
+            console.log("entity: " + entity.id + " (" + entity.rid + ") - Unknown entity type " + entity.repo + " / " + entity.type);
         }
         var shape = this.scene.getMeshByName(entity.id);
         if (shape) {
@@ -61,7 +61,7 @@ var Renderer = (function () {
         }
         var shape = this.scene.getMeshByName(entity.id);
         if (!shape) {
-            console.log("entity: " + entity.id + " (" + entity.oid + ") - Updated entity not added yet: " + entity.repo + "/" + entity.type);
+            console.log("entity: " + entity.id + " (" + entity.rid + ") - Updated entity not added yet: " + entity.repo + "/" + entity.type);
             return;
         }
         this.updateParentRelationship(entity, shape);
@@ -83,7 +83,7 @@ var Renderer = (function () {
         var actuator = this.clientEngine.actuatorRegister.get(entity.repo, entity.type);
         if (actuator) {
             actuator.remove(this.clientEngine, entity);
-            console.log("entity: " + entity.id + " (" + entity.oid + ") - Removed entity type " + entity.repo + "/" + entity.type);
+            console.log("entity: " + entity.id + " (" + entity.rid + ") - Removed entity type " + entity.repo + "/" + entity.type);
         }
         else {
             var shape = this.scene.getMeshByName(entity.id);

@@ -27,7 +27,7 @@ export class MouseReader {
                         if (entity) {
                             var parentEntity = this.engine.model.clone(id);
                             entity.pid = parentEntity.id;
-                            entity.poid = parentEntity.oid;
+                            entity.prid = parentEntity.rid;
                             this.engine.ws.sendObject(entity);
                             this.engine.state.stateChanged();
                         }

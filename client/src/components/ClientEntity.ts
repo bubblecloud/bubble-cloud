@@ -6,9 +6,9 @@ import Quaternion = BABYLON.Quaternion;
  */
 export class ClientEntity {
     id: string; // ID
-    oid: string; // original ID
+    rid: string; // remote ID
     pid: string; // parent ID
-    poid: string; // original parent ID
+    prid: string; // remote parent ID
     _id: string; // unique persistent ID
 
     name: string; // The entity name

@@ -13,7 +13,7 @@ var EntityProperties = (function () {
     };
     EntityProperties.prototype.clearParent = function () {
         this.currentEditedEntity.pid = null;
-        this.currentEditedEntity.poid = null;
+        this.currentEditedEntity.prid = null;
         this.engine.ws.sendObject(this.currentEditedEntity);
     };
     EntityProperties.prototype.stateChange = function () {
@@ -28,9 +28,9 @@ var EntityProperties = (function () {
             this.name = editedEntity.name;
             this.type = editedEntity.type;
             this.id = editedEntity.id;
-            this.oid = editedEntity.oid;
+            this.rid = editedEntity.rid;
             this.pid = editedEntity.pid;
-            this.poid = editedEntity.poid;
+            this.prid = editedEntity.prid;
             if (this.pid && this.engine.model.remoteIdLocalIdMap[this.pid] && this.engine.model.entities[this.engine.model.remoteIdLocalIdMap[this.pid]]) {
                 this.parent = this.engine.model.entities[this.engine.model.remoteIdLocalIdMap[this.pid]].name;
             }
@@ -57,9 +57,9 @@ var EntityProperties = (function () {
             this.name = null;
             this.type = null;
             this.id = null;
-            this.oid = null;
+            this.rid = null;
             this.pid = null;
-            this.poid = null;
+            this.prid = null;
             this.parent = null;
             this.dynamic = null;
             this.external = null;

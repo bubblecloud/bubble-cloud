@@ -22,7 +22,7 @@ var MouseReader = (function () {
                         if (entity) {
                             var parentEntity = _this.engine.model.clone(id);
                             entity.pid = parentEntity.id;
-                            entity.poid = parentEntity.oid;
+                            entity.prid = parentEntity.rid;
                             _this.engine.ws.sendObject(entity);
                             _this.engine.state.stateChanged();
                         }
