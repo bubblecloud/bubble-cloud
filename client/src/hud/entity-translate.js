@@ -10,8 +10,19 @@ var EntityTranslate = (function () {
         if (entity) {
             var rotationMatrix = new Matrix();
             this.engine.avatarController.avatar.rotationQuaternion.toRotationMatrix(rotationMatrix);
-            var stepDirection = Vector3.TransformCoordinates(translation.scale(this.engine.grid.positionStep * 1.4), rotationMatrix);
-            entity.position.copyFrom(this.engine.grid.positionSnap(entity.position.add(stepDirection)));
+            var stepDirection = Vector3.TransformCoordinates(translation.scale(this.engine.grid.positionStep), rotationMatrix);
+            if (entity.pid) {
+                var mesh = this.engine.renderer.scene.getMeshByName(entity.pid);
+                var worldMatrix = mesh.getWorldMatrix();
+                var worldMatrixInverted = new Matrix();
+                worldMatrix.invertToRef(worldMatrixInverted);
+                var entityWorldPosition = BABYLON.Vector3.TransformCoordinates(entity.position, worldMatrix);
+                entityWorldPosition = entityWorldPosition.add(stepDirection);
+                entity.position = BABYLON.Vector3.TransformCoordinates(entityWorldPosition, worldMatrixInverted);
+            }
+            else {
+                entity.position = entity.position.add(stepDirection);
+            }
             this.engine.ws.sendObject(entity);
         }
     };
