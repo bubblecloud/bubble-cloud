@@ -75,8 +75,8 @@ var ClientModel = (function () {
         localCopy.scaling = new Vector3(entity.scaling.x, entity.scaling.y, entity.scaling.z);
         return localCopy;
     };
-    ClientModel.prototype.copy = function (sourceEntityId, targetEntity) {
-        var sourceEntity = this.entities[sourceEntityId];
+    ClientModel.prototype.copy = function (remoteEntityId, targetEntity) {
+        var sourceEntity = this.entities[this.remoteIdLocalIdMap[remoteEntityId]];
         if (sourceEntity) {
             Object.getOwnPropertyNames(sourceEntity).forEach(function (name) {
                 if (name.indexOf('interp') == 0) {

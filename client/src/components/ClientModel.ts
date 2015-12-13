@@ -102,11 +102,11 @@ export class ClientModel {
 
     /**
      * Copies properties from identified entity to the target entity.
-     * @param sourceEntityId the source entity id
+     * @param remoteEntityId the remote entity id
      * @param targetEntity the target entity
      */
-    copy(sourceEntityId: string, targetEntity:ClientEntity): ClientEntity {
-        var sourceEntity = this.entities[sourceEntityId];
+    copy(remoteEntityId: string, targetEntity:ClientEntity): ClientEntity {
+        var sourceEntity = this.entities[this.remoteIdLocalIdMap[remoteEntityId]];
         if (sourceEntity) {
             Object.getOwnPropertyNames(sourceEntity).forEach(name => {
                 // Skipping client side parameters.

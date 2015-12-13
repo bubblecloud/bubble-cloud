@@ -113,13 +113,8 @@ export class ClientEngine {
     getCore(): CoreEntity {
         if (!this.core) {
             this.core = <CoreEntity> this.model.copy('0', new CoreEntity());
-            this.core.rid = '0';
-            this.core.id = '' + this.model.idRegister.getNewId();
         } else {
-            var id = this.core.id;
             this.model.copy('0', this.core);
-            this.core.rid = '0';
-            this.core.id = id;
         }
         return this.core;
     }
