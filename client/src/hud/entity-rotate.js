@@ -9,9 +9,24 @@ var EntityRotate = (function () {
     EntityRotate.prototype.rotate = function (rotationAxis) {
         var entity = this.engine.state.getEditedEntity();
         if (entity) {
+            var avatarRotationMatrix = new Matrix();
+            this.engine.avatarController.avatar.rotationQuaternion.toRotationMatrix(avatarRotationMatrix);
+            var avatarRotationAxis = Vector3.TransformCoordinates(rotationAxis, avatarRotationMatrix);
+            var localRotationAxis;
+            if (entity.pid) {
+                var mesh = this.engine.renderer.scene.getMeshByName(entity.pid);
+                var worldMatrix = mesh.getWorldMatrix();
+                var worldMatrixInverted = new Matrix();
+                worldMatrix.invertToRef(worldMatrixInverted);
+                var entityWorldPosition = BABYLON.Vector3.TransformCoordinates(new Vector3(0, 0, 0), worldMatrix);
+                entityWorldPosition = entityWorldPosition.add(avatarRotationAxis);
+                localRotationAxis = BABYLON.Vector3.TransformCoordinates(entityWorldPosition, worldMatrixInverted);
+            }
+            else {
+                localRotationAxis = avatarRotationAxis;
+            }
             var currentRotationMatrix = new Matrix();
             entity.rotationQuaternion.toRotationMatrix(currentRotationMatrix);
-            var localRotationAxis = Vector3.TransformCoordinates(rotationAxis, currentRotationMatrix);
             var rotationQuaternion = Quaternion.RotationAxis(localRotationAxis, Math.PI * this.engine.grid.rotationStep / 180);
             var rotationMatrix = new Matrix();
             rotationQuaternion.toRotationMatrix(rotationMatrix);
