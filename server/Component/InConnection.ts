@@ -69,8 +69,10 @@ export class InConnection {
         }
 
 
-        // Swap to local IDs
-        var id = entity.id;
+        // Map IDs
+        this.engine.model.idRegister.mapIdsOfReceivedEntity(entity, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
+
+        /*var id = entity.id;
         entity.id = entity.rid;
         entity.rid = id;
         var pid = entity.pid;
@@ -83,7 +85,7 @@ export class InConnection {
         } else {
             entity.pid = null;
             entity.prid = null;
-        }
+        }*/
 
         /*
         // Map IDs

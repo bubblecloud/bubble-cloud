@@ -28,6 +28,22 @@ var IdRegister = (function () {
             return newLocalId;
         }
     };
+    IdRegister.prototype.mapIdsOfReceivedEntity = function (entity, localIdRemoteIdMap, remoteIdLocalIdMap) {
+        var id = entity.id;
+        entity.id = entity.rid;
+        entity.rid = id;
+        var pid = entity.pid;
+        entity.pid = entity.prid;
+        entity.prid = pid;
+        entity.id = this.processReceivedIdPair(entity.id, entity.rid, localIdRemoteIdMap, remoteIdLocalIdMap);
+        if (entity.prid) {
+            entity.pid = this.processReceivedIdPair(entity.pid, entity.prid, localIdRemoteIdMap, remoteIdLocalIdMap);
+        }
+        else {
+            entity.pid = null;
+            entity.prid = null;
+        }
+    };
     return IdRegister;
 })();
 exports.IdRegister = IdRegister;

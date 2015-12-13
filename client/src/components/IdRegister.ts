@@ -1,3 +1,4 @@
+import {ServerEntity} from "../../../server/Component/ServerEntity";
 /**
  * Class for keeping track of IDs.
  */
@@ -38,6 +39,24 @@ export class IdRegister {
             remoteIdLocalIdMap[remoteId] = newLocalId;
             // Return the new local ID.
             return newLocalId;
+        }
+    }
+
+    mapIdsOfReceivedEntity(entity: ServerEntity, localIdRemoteIdMap : {[key: string]: string}, remoteIdLocalIdMap : {[key: string]: string}): void {
+        // Swap to local IDs
+        var id = entity.id;
+        entity.id = entity.rid;
+        entity.rid = id;
+        var pid = entity.pid;
+        entity.pid = entity.prid;
+        entity.prid = pid;
+
+        entity.id = this.processReceivedIdPair(entity.id, entity.rid, localIdRemoteIdMap, remoteIdLocalIdMap);
+        if (entity.prid) {
+            entity.pid = this.processReceivedIdPair(entity.pid, entity.prid, localIdRemoteIdMap, remoteIdLocalIdMap);
+        } else {
+            entity.pid = null;
+            entity.prid = null;
         }
     }
 }

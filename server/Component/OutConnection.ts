@@ -63,7 +63,10 @@ export class OutConnection {
 
         this.receivedTime = new Date().getTime();
 
-        // Swap to local IDs
+        // Map IDs
+        this.engine.model.idRegister.mapIdsOfReceivedEntity(entity, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
+
+        /*
         var id = entity.id;
         entity.id = entity.rid;
         entity.rid = id;
@@ -78,6 +81,7 @@ export class OutConnection {
             entity.pid = null;
             entity.prid = null;
         }
+        */
 
         /*
         var rid = entity.id;

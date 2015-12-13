@@ -52,20 +52,7 @@ var OutConnection = (function () {
             delete entity._id;
         }
         this.receivedTime = new Date().getTime();
-        var id = entity.id;
-        entity.id = entity.rid;
-        entity.rid = id;
-        var pid = entity.pid;
-        entity.pid = entity.prid;
-        entity.prid = pid;
-        entity.id = this.engine.model.idRegister.processReceivedIdPair(entity.id, entity.rid, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
-        if (entity.prid) {
-            entity.pid = this.engine.model.idRegister.processReceivedIdPair(entity.pid, entity.prid, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
-        }
-        else {
-            entity.pid = null;
-            entity.prid = null;
-        }
+        this.engine.model.idRegister.mapIdsOfReceivedEntity(entity, this.localIdRemoteIdMap, this.remoteIdLocalIdMap);
         entity.external = true;
         if (!entity.pid) {
             entity.position.x -= this.x;
