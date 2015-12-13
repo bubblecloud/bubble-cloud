@@ -52,6 +52,15 @@ export class EntityProperties implements ClientStateListener {
     }
 
     clearParent(): void {
+        if (this.currentEditedEntity.pid) {
+            var mesh = this.engine.renderer.scene.getMeshByName(this.currentEditedEntity.pid);
+            var worldMatrix = mesh.getWorldMatrix();
+            var worldMatrixInverted = new Matrix();
+            worldMatrix.invertToRef(worldMatrixInverted);
+            var entityWorldPosition = BABYLON.Vector3.TransformCoordinates(this.currentEditedEntity.position, worldMatrix);
+            this.currentEditedEntity.position = entityWorldPosition;
+        }
+
         this.currentEditedEntity.pid = null;
         this.currentEditedEntity.prid = null;
         this.engine.ws.sendObject(this.currentEditedEntity);

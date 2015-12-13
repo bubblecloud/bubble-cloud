@@ -1,5 +1,7 @@
 import {ClientEngine} from "./ClientEngine";
 import {EditorState} from "./EditorState";
+import Matrix = BABYLON.Matrix;
+import Vector3 = BABYLON.Vector3;
 
 export class MouseReader {
 
@@ -26,8 +28,32 @@ export class MouseReader {
                         var entity = this.engine.state.getEditedEntity();
                         if (entity) {
                             var parentEntity = this.engine.model.clone(id);
+
+                            // Extract world position of entity according to current parent or absence of parent.
+                            var entityWorldPosition: Vector3;
+                            if (entity.pid) {
+                                var mesh = this.engine.renderer.scene.getMeshByName(entity.pid);
+                                var worldMatrix = mesh.getWorldMatrix();
+                                var worldMatrixInverted = new Matrix();
+                                worldMatrix.invertToRef(worldMatrixInverted);
+                                entityWorldPosition = BABYLON.Vector3.TransformCoordinates(entity.position, worldMatrix);
+                            } else {
+                                entityWorldPosition = entity.position;
+                            }
+
                             entity.pid = parentEntity.id;
                             entity.prid = parentEntity.rid;
+
+                            // Set local position according to new parent.
+                            if (entity.pid) {
+                                var mesh = this.engine.renderer.scene.getMeshByName(entity.pid);
+                                var worldMatrix = mesh.getWorldMatrix();
+                                var worldMatrixInverted = new Matrix();
+                                worldMatrix.invertToRef(worldMatrixInverted);
+                                var entityLocalPosition = BABYLON.Vector3.TransformCoordinates(entityWorldPosition, worldMatrixInverted);
+                                entity.position = entityLocalPosition;
+                            }
+
                             this.engine.ws.sendObject(entity);
                             this.engine.state.stateChanged();
                         }

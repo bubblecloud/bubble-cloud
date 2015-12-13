@@ -1,4 +1,5 @@
 var hud_1 = require("../hud");
+var Matrix = BABYLON.Matrix;
 var EditorState_1 = require("../components/EditorState");
 var EntityProperties = (function () {
     function EntityProperties() {
@@ -12,6 +13,14 @@ var EntityProperties = (function () {
         document.body.style.cursor = 'crosshair';
     };
     EntityProperties.prototype.clearParent = function () {
+        if (this.currentEditedEntity.pid) {
+            var mesh = this.engine.renderer.scene.getMeshByName(this.currentEditedEntity.pid);
+            var worldMatrix = mesh.getWorldMatrix();
+            var worldMatrixInverted = new Matrix();
+            worldMatrix.invertToRef(worldMatrixInverted);
+            var entityWorldPosition = BABYLON.Vector3.TransformCoordinates(this.currentEditedEntity.position, worldMatrix);
+            this.currentEditedEntity.position = entityWorldPosition;
+        }
         this.currentEditedEntity.pid = null;
         this.currentEditedEntity.prid = null;
         this.engine.ws.sendObject(this.currentEditedEntity);

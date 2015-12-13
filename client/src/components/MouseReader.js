@@ -1,4 +1,5 @@
 var EditorState_1 = require("./EditorState");
+var Matrix = BABYLON.Matrix;
 var MouseReader = (function () {
     function MouseReader(engine) {
         var _this = this;
@@ -21,8 +22,27 @@ var MouseReader = (function () {
                         var entity = _this.engine.state.getEditedEntity();
                         if (entity) {
                             var parentEntity = _this.engine.model.clone(id);
+                            var entityWorldPosition;
+                            if (entity.pid) {
+                                var mesh = _this.engine.renderer.scene.getMeshByName(entity.pid);
+                                var worldMatrix = mesh.getWorldMatrix();
+                                var worldMatrixInverted = new Matrix();
+                                worldMatrix.invertToRef(worldMatrixInverted);
+                                entityWorldPosition = BABYLON.Vector3.TransformCoordinates(entity.position, worldMatrix);
+                            }
+                            else {
+                                entityWorldPosition = entity.position;
+                            }
                             entity.pid = parentEntity.id;
                             entity.prid = parentEntity.rid;
+                            if (entity.pid) {
+                                var mesh = _this.engine.renderer.scene.getMeshByName(entity.pid);
+                                var worldMatrix = mesh.getWorldMatrix();
+                                var worldMatrixInverted = new Matrix();
+                                worldMatrix.invertToRef(worldMatrixInverted);
+                                var entityLocalPosition = BABYLON.Vector3.TransformCoordinates(entityWorldPosition, worldMatrixInverted);
+                                entity.position = entityLocalPosition;
+                            }
                             _this.engine.ws.sendObject(entity);
                             _this.engine.state.stateChanged();
                         }
