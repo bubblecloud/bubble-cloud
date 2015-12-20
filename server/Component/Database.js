@@ -1,4 +1,3 @@
-/// <reference path="../../typings/mongodb/mongodb.d.ts" />
 var mongodb = require('mongodb');
 var configuration = require('../../Configuration');
 var MongoClient = mongodb.MongoClient;

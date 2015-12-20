@@ -1,4 +1,3 @@
-/// <reference path="../../typings/mongodb/mongodb.d.ts" />
 var es6_promise_1 = require('es6-promise');
 var database = require('./Database');
 var UserDao = (function () {
