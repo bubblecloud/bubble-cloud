@@ -135,7 +135,7 @@ export class Renderer {
     }
 
     updateParentRelationship(entity: ClientEntity, shape:AbstractMesh) {
-        if (entity.pid) {
+        if (entity.pid && entity.id != entity.pid) {
             var parentShape = this.scene.getMeshByName(entity.pid);
             if (!parentShape) {
                 if (!this.orphans[entity.pid]) {

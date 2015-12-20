@@ -97,7 +97,7 @@ var Renderer = (function () {
         }
     };
     Renderer.prototype.updateParentRelationship = function (entity, shape) {
-        if (entity.pid) {
+        if (entity.pid && entity.id != entity.pid) {
             var parentShape = this.scene.getMeshByName(entity.pid);
             if (!parentShape) {
                 if (!this.orphans[entity.pid]) {
