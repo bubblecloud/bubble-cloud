@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -5,6 +6,9 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Vector3 = BABYLON.Vector3;
 var Quaternion = BABYLON.Quaternion;
+/**
+ * Entity value object.
+ */
 var ClientEntity = (function () {
     function ClientEntity() {
         this.position = new Vector3(0, 0, 0);
@@ -16,7 +20,7 @@ var ClientEntity = (function () {
         this.dynamic = false;
     }
     return ClientEntity;
-})();
+}());
 exports.ClientEntity = ClientEntity;
 var PrimitiveEntity = (function (_super) {
     __extends(PrimitiveEntity, _super);
@@ -24,7 +28,7 @@ var PrimitiveEntity = (function (_super) {
         _super.apply(this, arguments);
     }
     return PrimitiveEntity;
-})(ClientEntity);
+}(ClientEntity));
 exports.PrimitiveEntity = PrimitiveEntity;
 var SurfaceEntity = (function (_super) {
     __extends(SurfaceEntity, _super);
@@ -32,7 +36,7 @@ var SurfaceEntity = (function (_super) {
         _super.apply(this, arguments);
     }
     return SurfaceEntity;
-})(ClientEntity);
+}(ClientEntity));
 exports.SurfaceEntity = SurfaceEntity;
 var CoreEntity = (function (_super) {
     __extends(CoreEntity, _super);
@@ -77,5 +81,6 @@ var CoreEntity = (function (_super) {
         this.roleMembers[role].splice(this.roleMembers[role].indexOf(userId), 1);
     };
     return CoreEntity;
-})(ClientEntity);
+}(ClientEntity));
 exports.CoreEntity = CoreEntity;
+//# sourceMappingURL=ClientEntity.js.map
